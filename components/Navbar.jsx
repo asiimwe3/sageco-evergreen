@@ -3,28 +3,27 @@ import { useState } from 'react'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
+  const links = [
+    { href: '/properties', label: 'Properties' },
+    { href: '/brokers', label: 'Brokers' },
+    { href: '/projects', label: 'Green Projects' },
+    { href: '/careers', label: 'Careers' },
+    { href: '/contact', label: 'Contact' },
+  ]
   return (
-    <nav className="bg-primary text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-secondary">SAGECO EVERGREEN</Link>
-        <div className="hidden md:flex gap-6 text-sm font-medium">
-          <Link href="/" className="hover:text-secondary">Home</Link>
-          <Link href="/properties" className="hover:text-secondary">Properties</Link>
-          <Link href="/brokers" className="hover:text-secondary">Brokers</Link>
-          <Link href="/projects" className="hover:text-secondary">Green Projects</Link>
-          <Link href="/careers" className="hover:text-secondary">Careers</Link>
-          <Link href="/contact" className="hover:text-secondary">Contact</Link>
+    <nav className="bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <Link href="/" className="text-2xl font-bold text-primary">🌿 SAGECO <span className="text-secondary">EVERGREEN</span></Link>
+        <div className="hidden md:flex gap-6 items-center">
+          {links.map(l => <Link key={l.href} href={l.href} className="text-gray-600 hover:text-primary font-medium">{l.label}</Link>)}
+          <Link href="/book" className="bg-primary text-white px-5 py-2 rounded-full hover:opacity-90 font-bold">Book Viewing</Link>
         </div>
-        <button onClick={() => setOpen(!open)} className="md:hidden text-white text-2xl">☰</button>
+        <button onClick={() => setOpen(!open)} className="md:hidden text-2xl">☰</button>
       </div>
       {open && (
-        <div className="md:hidden bg-dark px-4 pb-4 flex flex-col gap-3 text-sm">
-          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/properties" onClick={() => setOpen(false)}>Properties</Link>
-          <Link href="/brokers" onClick={() => setOpen(false)}>Brokers</Link>
-          <Link href="/projects" onClick={() => setOpen(false)}>Green Projects</Link>
-          <Link href="/careers" onClick={() => setOpen(false)}>Careers</Link>
-          <Link href="/contact" onClick={() => setOpen(false)}>Contact</Link>
+        <div className="md:hidden bg-white border-t px-4 py-4 space-y-3">
+          {links.map(l => <Link key={l.href} href={l.href} className="block text-gray-700 font-medium" onClick={() => setOpen(false)}>{l.label}</Link>)}
+          <Link href="/book" className="block bg-primary text-white text-center py-2 rounded-full font-bold" onClick={() => setOpen(false)}>Book Viewing</Link>
         </div>
       )}
     </nav>
