@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const PESAPAL_ENV = process.env.PESAPAL_ENV || 'sandbox'
+const PESAPAL_ENV = process.env.PESAPAL_ENV || 'live'
 const BASE_URL = PESAPAL_ENV === 'live'
   ? 'https://pay.pesapal.com/v3'
   : 'https://cybqa.pesapal.com/pesapalv3'
@@ -13,38 +13,49 @@ async function getToken() {
   return res.data.token
 }
 
-async function registerIPN(token) {
+async function registerIPN(token, siteUrl) {
   const res = await axios.post(`${BASE_URL}/api/URLSetup/RegisterIPN`, {
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/pesapal/ipn`,
-    ipn_notification_type: 'POST'
+    url: `${siteUrl}/api/pesapal/ipn`,
+    ipn_notification_type: 'GET'
   }, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', Accept: 'application/json' } })
   return res.data.ipn_id
 }
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
-  const { name, email, phone, amount, date, message } = req.body
+  if (req.method !== 'POST') return res.status(405).end()
+  const {
+    amount, currency = 'UGX', description, email, phone,
+    first_name, last_name, reference, callback_url
+  } = req.body
+
   try {
     const token = await getToken()
-    const ipn_id = await registerIPN(token)
-    const order_id = `SAGECO-${Date.now()}`
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen.vercel.app'
+    const ipn_id = await registerIPN(token, siteUrl)
+    const callbackUrl = callback_url || `${siteUrl}/payment-success`
+
     const orderRes = await axios.post(`${BASE_URL}/api/Transactions/SubmitOrderRequest`, {
-      id: order_id,
-      currency: 'UGX',
-      amount: parseInt(amount),
-      description: `Property Viewing Fee - ${date}`,
-      callback_url: `${process.env.NEXT_PUBLIC_SITE_URL}/payment-success?order=${order_id}`,
+      id: reference || `ORDER-${Date.now()}`,
+      currency,
+      amount,
+      description,
+      callback_url: callbackUrl,
       notification_id: ipn_id,
       billing_address: {
         email_address: email,
         phone_number: phone,
-        first_name: name.split(' ')[0],
-        last_name: name.split(' ')[1] || '',
+        first_name,
+        last_name,
+        country_code: 'UG',
       }
     }, { headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json', Accept: 'application/json' } })
-    return res.json({ redirect_url: orderRes.data.redirect_url, order_tracking_id: orderRes.data.order_tracking_id })
+
+    return res.status(200).json({
+      redirect_url: orderRes.data.redirect_url,
+      order_tracking_id: orderRes.data.order_tracking_id
+    })
   } catch (err) {
-    console.error(err?.response?.data || err.message)
-    return res.status(500).json({ error: 'PesaPal error', details: err?.response?.data })
+    console.error('PesaPal error:', err.response?.data || err.message)
+    return res.status(500).json({ error: 'Payment initiation failed', detail: err.response?.data || err.message })
   }
 }
