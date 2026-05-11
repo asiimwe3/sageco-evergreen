@@ -1,51 +1,90 @@
+import { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Head from 'next/head'
-import { useState } from 'react'
-
-const sampleProperties = [
-  { id: 1, title: 'Modern Villa - Kololo', price: '$250,000', type: 'For Sale', beds: 4, baths: 3, area: 3200, city: 'Kampala', image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400' },
-  { id: 2, title: 'Commercial Office - CBD', price: '$5,000/mo', type: 'For Rent', beds: 0, baths: 2, area: 1800, city: 'Kampala', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400' },
-  { id: 3, title: 'Family Home - Ntinda', price: '$120,000', type: 'For Sale', beds: 3, baths: 2, area: 2100, city: 'Kampala', image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400' },
-]
+import Link from 'next/link'
+import { supabase } from '../lib/supabase'
 
 export default function Properties() {
+  const [properties, setProperties] = useState([])
+  const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('All')
-  const filtered = filter === 'All' ? sampleProperties : sampleProperties.filter(p => p.type === filter)
+  const categories = ['All', 'Residential', 'Commercial', 'Land', 'Green Project']
+
+  useEffect(() => {
+    fetchProperties()
+  }, [])
+
+  async function fetchProperties() {
+    setLoading(true)
+    let query = supabase.from('properties').select('*').eq('status', 'available').order('created_at', { ascending: false })
+    const { data, error } = await query
+    if (!error) setProperties(data || [])
+    setLoading(false)
+  }
+
+  const filtered = filter === 'All' ? properties : properties.filter(p => p.category === filter)
 
   return (
     <>
-      <Head><title>Properties - SAGECO EVERGREEN</title></Head>
+      <Head><title>Properties | SAGECO EVERGREEN</title></Head>
       <Navbar />
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold text-primary mb-2">Properties</h1>
-        <p className="text-gray-500 mb-8">Browse our premium listings</p>
-        <div className="flex gap-3 mb-8">
-          {['All','For Sale','For Rent'].map(f => (
-            <button key={f} onClick={() => setFilter(f)}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${filter===f ? 'bg-primary text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
-              {f}
+      <section className="bg-primary text-white py-16 px-4 text-center">
+        <h1 className="text-4xl font-bold mb-2">Our Properties</h1>
+        <p className="text-green-100">Browse available properties across Uganda</p>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Filter */}
+        <div className="flex gap-3 flex-wrap justify-center mb-8">
+          {categories.map(c => (
+            <button key={c} onClick={() => setFilter(c)}
+              className={`px-5 py-2 rounded-full font-medium border transition ${filter === c ? 'bg-primary text-white border-primary' : 'border-gray-300 text-gray-600 hover:border-primary'}`}>
+              {c}
             </button>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filtered.map(p => (
-            <div key={p.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
-              <img src={p.image} alt={p.title} className="w-full h-48 object-cover" />
-              <div className="p-5">
-                <span className="text-xs bg-secondary text-dark font-bold px-2 py-1 rounded">{p.type}</span>
-                <h3 className="text-lg font-bold text-primary mt-2">{p.title}</h3>
-                <p className="text-2xl font-bold text-secondary mt-1">{p.price}</p>
-                <div className="flex gap-4 text-gray-500 text-sm mt-3">
-                  {p.beds > 0 && <span>🛏 {p.beds} beds</span>}
-                  <span>🚿 {p.baths} baths</span>
-                  <span>📐 {p.area} sqft</span>
-                </div>
-                <a href={`/book?property=${p.id}`} className="mt-4 block bg-primary text-white text-center py-2 rounded-lg hover:opacity-90">Book Viewing</a>
-              </div>
-            </div>
-          ))}
+
+        {/* Upload CTA */}
+        <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-8 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <p className="font-bold text-primary">Are you a property owner?</p>
+            <p className="text-gray-500 text-sm">List your property on SAGECO EVERGREEN for free</p>
+          </div>
+          <Link href="/upload-property" className="bg-primary text-white px-6 py-2 rounded-full font-bold hover:opacity-90">List Property</Link>
         </div>
+
+        {loading ? (
+          <div className="text-center py-20 text-gray-400">Loading properties...</div>
+        ) : filtered.length === 0 ? (
+          <div className="text-center py-20">
+            <div className="text-5xl mb-4">🏡</div>
+            <p className="text-gray-500 text-lg">No properties found in this category yet.</p>
+            <Link href="/upload-property" className="mt-4 inline-block bg-primary text-white px-6 py-2 rounded-full font-bold">Be the first to list</Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map(p => (
+              <div key={p.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
+                {p.images?.[0] ? (
+                  <img src={p.images[0]} alt={p.title} className="w-full h-48 object-cover" />
+                ) : (
+                  <div className="w-full h-48 bg-green-100 flex items-center justify-center text-5xl">🏡</div>
+                )}
+                <div className="p-5">
+                  <span className="text-xs bg-green-100 text-primary px-2 py-1 rounded-full font-medium">{p.category}</span>
+                  <h3 className="text-lg font-bold text-gray-800 mt-2">{p.title}</h3>
+                  <p className="text-gray-500 text-sm mt-1">📍 {p.location}</p>
+                  {p.bedrooms && <p className="text-gray-400 text-sm mt-1">🛏 {p.bedrooms} beds · 🚿 {p.bathrooms} baths</p>}
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="text-primary font-bold text-lg">UGX {Number(p.price).toLocaleString()}</span>
+                    <Link href={`/book?property=${p.id}&title=${encodeURIComponent(p.title)}`} className="bg-primary text-white text-sm px-4 py-2 rounded-full hover:opacity-90">Book Viewing</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <Footer />
     </>
