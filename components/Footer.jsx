@@ -1,27 +1,31 @@
+import Link from 'next/link'
+
 export default function Footer() {
   return (
-    <footer className="bg-dark text-white py-10 mt-16">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-primary text-white mt-16 py-12 px-4">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h3 className="text-secondary font-bold text-lg mb-2">SAGECO EVERGREEN</h3>
-          <p className="text-gray-400 text-sm">Your premier destination for real estate listings, connecting you with top brokers and sustainable projects.</p>
+          <h3 className="text-xl font-bold mb-2">🌿 SAGECO EVERGREEN</h3>
+          <p className="text-green-200 text-sm">Premium real estate with a green conscience. Building Uganda's future, one property at a time.</p>
         </div>
         <div>
-          <h4 className="font-bold mb-2">Quick Links</h4>
-          <ul className="text-gray-400 text-sm space-y-1">
-            <li><a href="/properties" className="hover:text-secondary">Properties</a></li>
-            <li><a href="/brokers" className="hover:text-secondary">Brokers</a></li>
-            <li><a href="/projects" className="hover:text-secondary">Green Projects</a></li>
-            <li><a href="/careers" className="hover:text-secondary">Careers</a></li>
-          </ul>
+          <h4 className="font-bold mb-3">Quick Links</h4>
+          <div className="space-y-2">
+            {[['/', 'Home'], ['/properties', 'Properties'], ['/brokers', 'Brokers'], ['/contact', 'Contact']].map(([href, label]) => (
+              <Link key={href} href={href} className="block text-green-200 hover:text-white text-sm">{label}</Link>
+            ))}
+          </div>
         </div>
         <div>
-          <h4 className="font-bold mb-2">Contact</h4>
-          <p className="text-gray-400 text-sm">info@sagecoevergreen.com</p>
-          <p className="text-gray-400 text-sm">+256 700 000 000</p>
+          <h4 className="font-bold mb-3">Contact</h4>
+          <p className="text-green-200 text-sm">📧 info@sagecoevergreen.com</p>
+          <p className="text-green-200 text-sm mt-1">📞 +256 700 000 000</p>
+          <p className="text-green-200 text-sm mt-1">📍 Kampala, Uganda</p>
         </div>
       </div>
-      <div className="text-center text-gray-500 text-xs mt-8">© 2026 SAGECO EVERGREEN. All rights reserved.</div>
+      <div className="text-center text-green-300 text-sm mt-8 border-t border-green-700 pt-6">
+        © {new Date().getFullYear()} SAGECO EVERGREEN. All rights reserved.
+      </div>
     </footer>
   )
 }
