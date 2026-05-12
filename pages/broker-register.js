@@ -11,7 +11,7 @@ export default function BrokerRegister() {
   })
   const [photoFile, setPhotoFile] = useState(null)
   const [brokerId, setBrokerId] = useState(null)
-  const [paymentType, setPaymentType] = useState('registration') // 'registration' or 'activation'
+  const [paymentType, setPaymentType] = useState('registration')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -37,12 +37,21 @@ export default function BrokerRegister() {
       }
     }
 
-    const { data, error: err } = await supabase.from('brokers').insert([{
-      ...form, photo_url, registration_status: 'pending'
-    }]).select().single()
+    // Use server-side API route to bypass RLS
+    const res = await fetch('/api/register-broker', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...form, photo_url })
+    })
+    const result = await res.json()
 
-    if (err) { setError('Failed to register: ' + err.message); setLoading(false); return }
-    setBrokerId(data.id)
+    if (!res.ok || result.error) {
+      setError('Failed to register: ' + (result.error || 'Unknown error'))
+      setLoading(false)
+      return
+    }
+
+    setBrokerId(result.broker.id)
     setLoading(false)
     setStep(2)
   }
@@ -86,7 +95,6 @@ export default function BrokerRegister() {
         <p className="text-green-100 mt-2">Join SAGECO EVERGREEN as a verified real estate broker</p>
       </section>
 
-      {/* Steps indicator */}
       <div className="max-w-xl mx-auto px-4 pt-8">
         <div className="flex items-center justify-center gap-4 mb-8">
           {['Profile Details', 'Pay & Activate'].map((s, i) => (
@@ -161,7 +169,6 @@ export default function BrokerRegister() {
             {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4">{error}</div>}
 
             <div className="space-y-4">
-              {/* Registration */}
               <div className="border-2 border-primary rounded-xl p-6 text-left">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="font-bold text-lg text-primary">Broker Registration</h3>
@@ -178,7 +185,6 @@ export default function BrokerRegister() {
                 </button>
               </div>
 
-              {/* Activation */}
               <div className="border-2 border-secondary rounded-xl p-6 text-left bg-yellow-50">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="font-bold text-lg">Dashboard Activation</h3>
