@@ -20,55 +20,47 @@ async function getToken() {
 
 export default async function handler(req, res) {
   const { orderTrackingId, orderMerchantReference } = req.query
-
   if (!orderTrackingId) return res.status(400).json({ error: 'Missing orderTrackingId' })
 
   try {
     const token = await getToken()
-
-    // Get transaction status from PesaPal
     const statusRes = await axios.get(
       `${BASE_URL}/api/Transactions/GetTransactionStatus?orderTrackingId=${orderTrackingId}`,
       { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
     )
 
-    const { payment_status_description, amount } = statusRes.data
+    const { payment_status_description } = statusRes.data
+    if (payment_status_description !== 'Completed') return res.status(200).json({ status: 'pending' })
 
-    if (payment_status_description === 'Completed') {
-      const ref = orderMerchantReference || ''
+    const ref = orderMerchantReference || ''
 
-      // Update broker record based on reference
-      if (ref.startsWith('BROKER-REGISTRATION-')) {
-        const brokerId = ref.replace('BROKER-REGISTRATION-', '').split('-')[0]
-        // Find broker by partial ID match
-        const { data: brokers } = await supabaseAdmin
-          .from('brokers')
-          .select('id')
-          .ilike('id', `${brokerId}%`)
-          .limit(1)
+    // BROKER-REG-<id8> = registration payment
+    if (ref.startsWith('BROKER-REG-')) {
+      const partialId = ref.replace('BROKER-REG-', '')
+      const { data: brokers } = await supabaseAdmin.from('brokers').select('id').ilike('id', `${partialId}%`).limit(1)
+      if (brokers?.length > 0) {
+        await supabaseAdmin.from('brokers').update({
+          registration_paid: true,
+          registration_status: 'registered',
+          registration_ref: orderTrackingId
+        }).eq('id', brokers[0].id)
+      }
+    }
 
-        if (brokers && brokers.length > 0) {
-          await supabaseAdmin.from('brokers').update({
-            registration_paid: true,
-            registration_status: 'registered',
-            registration_ref: orderTrackingId
-          }).eq('id', brokers[0].id)
-        }
-      } else if (ref.startsWith('BROKER-ACTIVATION-')) {
-        const brokerId = ref.replace('BROKER-ACTIVATION-', '').split('-')[0]
-        const { data: brokers } = await supabaseAdmin
-          .from('brokers')
-          .select('id')
-          .ilike('id', `${brokerId}%`)
-          .limit(1)
-
-        if (brokers && brokers.length > 0) {
-          await supabaseAdmin.from('brokers').update({
-            activation_paid: true,
-            registration_status: 'active',
-            activation_ref: orderTrackingId
-          }).eq('id', brokers[0].id)
-        }
+    // BROKER-PLAN-BASIC/PRO/PREMIUM-<id8> = dashboard subscription
+    if (ref.startsWith('BROKER-PLAN-')) {
+      const parts = ref.split('-') // ['BROKER','PLAN','BASIC','id8']
+      const plan = parts[2]?.toLowerCase()
+      const partialId = parts[3]
+      const { data: brokers } = await supabaseAdmin.from('brokers').select('id').ilike('id', `${partialId}%`).limit(1)
+      if (brokers?.length > 0) {
+        await supabaseAdmin.from('brokers').update({
+          activation_paid: true,
+          registration_status: 'active',
+          subscription_plan: plan,
+          activation_ref: orderTrackingId,
+          subscription_start: new Date().toISOString()
+        }).eq('id', brokers[0].id)
       }
     }
 
