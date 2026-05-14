@@ -22,6 +22,11 @@ export default async function handler(req, res) {
     first_name, last_name, reference, callback_url
   } = req.body
 
+  // Safety check - PesaPal limit is UGX 30,000
+  if (currency === 'UGX' && amount > 30000) {
+    return res.status(400).json({ error: 'Amount exceeds maximum allowed (UGX 30,000 per transaction)' })
+  }
+
   try {
     const token = await getToken()
     const callbackUrl = callback_url || `${SITE_URL}/payment-success`
