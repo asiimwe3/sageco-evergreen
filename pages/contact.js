@@ -33,12 +33,12 @@ export default function Contact() {
     <>
       <Head>
         <title>Contact Us | SAGECO EVERGREEN</title>
-        <meta name="description" content="Get in touch with SAGECO EVERGREEN. Reach our team in Kampala for property inquiries, broker registration, and real estate services in Uganda." />
+        <meta name="description" content="Contact SAGECO EVERGREEN CO.LTD in Kyenjojo, Uganda. Call +256 750 414 366, email sagecoevergreen@gmail.com or visit us for real estate services." />
         <link rel="canonical" href={`${SITE_URL}/contact`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/contact`} />
         <meta property="og:title" content="Contact Us | SAGECO EVERGREEN" />
-        <meta property="og:description" content="Get in touch with SAGECO EVERGREEN for property inquiries and real estate services in Uganda." />
+        <meta property="og:description" content="Contact SAGECO EVERGREEN CO.LTD in Kyenjojo, Uganda for real estate services." />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
       </Head>
       <Navbar />
@@ -48,11 +48,43 @@ export default function Contact() {
       </section>
       <div className="max-w-3xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <address className="bg-gray-50 rounded-xl p-6 space-y-4 not-italic">
-            <div><span className="text-2xl">📧</span><p className="font-bold mt-1">Email</p><a href="mailto:info@sagecoevergreen.com" className="text-gray-600 hover:text-primary">info@sagecoevergreen.com</a></div>
-            <div><span className="text-2xl">📞</span><p className="font-bold mt-1">Phone</p><a href="tel:+256700000000" className="text-gray-600 hover:text-primary">+256 700 000 000</a></div>
-            <div><span className="text-2xl">💬</span><p className="font-bold mt-1">WhatsApp</p><a href="https://wa.me/256700000000" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary">Chat on WhatsApp</a></div>
-            <div><span className="text-2xl">📍</span><p className="font-bold mt-1">Address</p><p className="text-gray-600">Kampala, Uganda</p></div>
+          <address className="bg-gray-50 rounded-xl p-6 space-y-5 not-italic">
+            <div>
+              <span className="text-2xl">📍</span>
+              <p className="font-bold mt-1">Location</p>
+              <p className="text-gray-600">Kyenjojo, Uganda</p>
+              <a
+                href="https://maps.google.com/?q=Kyenjojo,Uganda"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary text-sm hover:underline"
+              >View on Google Maps →</a>
+            </div>
+            <div>
+              <span className="text-2xl">📧</span>
+              <p className="font-bold mt-1">Email</p>
+              <a href="mailto:sagecoevergreen@gmail.com" className="text-gray-600 hover:text-primary">sagecoevergreen@gmail.com</a>
+            </div>
+            <div>
+              <span className="text-2xl">📞</span>
+              <p className="font-bold mt-1">Phone</p>
+              <a href="tel:+256750414366" className="block text-gray-600 hover:text-primary">+256 750 414 366</a>
+              <a href="tel:+256782067425" className="block text-gray-600 hover:text-primary">+256 782 067 425</a>
+              <a href="tel:+256772002326" className="block text-gray-600 hover:text-primary">+256 772 002 326</a>
+            </div>
+            <div>
+              <span className="text-2xl">💬</span>
+              <p className="font-bold mt-1">WhatsApp</p>
+              <div className="flex flex-col gap-1">
+                <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary">+256 750 414 366</a>
+                <a href="https://wa.me/256782067425" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary">+256 782 067 425</a>
+              </div>
+            </div>
+            <div>
+              <span className="text-2xl">🐦</span>
+              <p className="font-bold mt-1">Social</p>
+              <a href="https://twitter.com/PropertyMasterUg" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@PropertyMasterUg</a>
+            </div>
           </address>
           <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-xl p-6 space-y-4">
             {status === "sent" && <div className="bg-green-50 text-green-700 p-3 rounded-lg">✅ Message sent! We will be in touch.</div>}
@@ -68,6 +100,20 @@ export default function Contact() {
               {status === "sending" ? "Sending..." : "Send Message"}
             </button>
           </form>
+        </div>
+
+        {/* Google Maps Embed */}
+        <div className="mt-10 rounded-xl overflow-hidden shadow-md">
+          <iframe
+            title="SAGECO EVERGREEN Location — Kyenjojo, Uganda"
+            src="https://maps.google.com/maps?q=Kyenjojo,Uganda&output=embed"
+            width="100%"
+            height="300"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
         </div>
       </div>
       <Footer />
