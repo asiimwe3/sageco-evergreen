@@ -101,7 +101,7 @@ export default function Properties() {
                   {p.bedrooms && <p className="text-gray-400 text-sm mt-1">🛏 {p.bedrooms} beds · 🚿 {p.bathrooms} baths</p>}
                   <div className="flex items-center justify-between mt-4">
                     <span className="text-primary font-bold text-lg">UGX {Number(p.price).toLocaleString()}</span>
-                    <Link href={`/book?property=${p.id}&title=${encodeURIComponent(p.title)}`} className="bg-primary text-white text-sm px-4 py-2 rounded-full hover:opacity-90">Book Viewing</Link>
+                    <Link href={`/book?property=${p.id}&title=${encodeURIComponent(p.title)}${p.broker_id ? "&broker_id="+p.broker_id+"&broker_name="+encodeURIComponent(p.broker_name||"Broker") : ""}`} className="bg-primary text-white text-sm px-4 py-2 rounded-full hover:opacity-90">Book Viewing</Link>
                   </div>
                 </div>
               </article>
@@ -113,3 +113,4 @@ export default function Properties() {
     </>
   )
 }
+
