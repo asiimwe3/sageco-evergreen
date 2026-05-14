@@ -30,14 +30,28 @@ export default function Apply() {
 
     let cv_url = null
     if (cvFile) {
-      const fd = new FormData()
-      fd.append("file", cvFile)
-      fd.append("bucket", "cvs")
-      const uploadRes = await fetch("/api/upload-cv", { method: "POST", body: fd })
-      if (uploadRes.ok) {
-        const d = await uploadRes.json()
-        cv_url = d.url
-      }
+      const reader = new FileReader()
+      cv_url = await new Promise(resolve => {
+        reader.onload = async (e) => {
+          const base64Data = e.target.result.split(",")[1]
+          const uploadRes = await fetch("/api/upload-cv", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              fileData: base64Data,
+              fileName: cvFile.name,
+              mimeType: cvFile.type
+            })
+          })
+          if (uploadRes.ok) {
+            const d = await uploadRes.json()
+            resolve(d.url)
+          } else {
+            resolve(null)
+          }
+        }
+        reader.readAsDataURL(cvFile)
+      })
     }
 
     const res = await fetch("/api/apply", {
