@@ -26,10 +26,17 @@ export default function Footer() {
         <div>
           <h4 className="font-bold mb-3">Contact</h4>
           <a href="mailto:sagecoevergreen@gmail.com" className="block text-green-200 hover:text-white text-sm">📧 sagecoevergreen@gmail.com</a>
-          <a href="tel:+256750414366" className="block text-green-200 hover:text-white text-sm mt-1">📞 +256 750 414 366</a>
+          <div className="flex items-center gap-2 mt-1">
+            <a href="tel:+256750414366" className="text-green-200 hover:text-white text-sm">📞 +256 750 414 366</a>
+            <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer"
+              className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-400">WA</a>
+          </div>
           <a href="tel:+256782067425" className="block text-green-200 hover:text-white text-sm mt-1">📞 +256 782 067 425</a>
-          <a href="tel:+256772002326" className="block text-green-200 hover:text-white text-sm mt-1">📞 +256 772 002 326</a>
-          <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer" className="block text-green-200 hover:text-white text-sm mt-1">💬 WhatsApp Us</a>
+          <div className="flex items-center gap-2 mt-1">
+            <a href="tel:+256772002326" className="text-green-200 hover:text-white text-sm">📞 +256 772 002 326</a>
+            <a href="https://wa.me/256772002326" target="_blank" rel="noopener noreferrer"
+              className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-400">WA</a>
+          </div>
         </div>
       </div>
       <div className="text-center text-green-300 text-sm mt-8 border-t border-green-700 pt-6">
