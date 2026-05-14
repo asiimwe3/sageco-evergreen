@@ -1,24 +1,41 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js"
 
 const supabaseAdmin = createClient(
-  'https://emldbjqegftrngxypeca.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" })
 
   try {
-    const body = req.body
+    const {
+      title, description, price, location, category,
+      bedrooms, bathrooms, area_sqft, images
+    } = req.body
 
-    const { data, error } = await supabaseAdmin.from('properties').insert([{
-      ...body,
-      status: 'pending'
+    if (!title || !price || !location) {
+      return res.status(400).json({ error: "Missing required fields: title, price, location" })
+    }
+
+    const sanitize = (str) => typeof str === "string" ? str.trim().slice(0, 1000) : str
+
+    const { data, error } = await supabaseAdmin.from("properties").insert([{
+      title: sanitize(title),
+      description: sanitize(description),
+      price: parseFloat(price),
+      location: sanitize(location),
+      category: sanitize(category),
+      bedrooms: bedrooms ? parseInt(bedrooms) : null,
+      bathrooms: bathrooms ? parseInt(bathrooms) : null,
+      area_sqft: area_sqft ? parseFloat(area_sqft) : null,
+      images: Array.isArray(images) ? images : [],
+      status: "pending"
     }]).select().single()
 
     if (error) return res.status(400).json({ error: error.message })
     return res.status(200).json({ property: data })
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ error: "Internal server error" })
   }
 }
