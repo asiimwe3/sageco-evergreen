@@ -75,34 +75,60 @@ export default function BrokerRegister() {
 
     let photo_url = null
     if (photoFile) {
-      const ext = photoFile.name.split(".").pop()
-      const fileName = `broker-${Date.now()}.${ext}`
-      const formData = new FormData()
-      formData.append("file", photoFile)
-      formData.append("fileName", fileName)
-      const uploadRes = await fetch("/api/upload-photo", { method: "POST", body: formData })
-      if (uploadRes.ok) {
-        const uploadData = await uploadRes.json()
-        photo_url = uploadData.url
+      try {
+        const reader = new FileReader()
+        photo_url = await new Promise((resolve) => {
+          const timer = setTimeout(() => resolve(null), 8000) // 8s timeout
+          reader.onload = async (e) => {
+            clearTimeout(timer)
+            try {
+              const base64Data = e.target.result.split(",")[1]
+              const uploadRes = await fetch("/api/upload-photo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  fileData: base64Data,
+                  fileName: photoFile.name,
+                  mimeType: photoFile.type
+                })
+              })
+              const d = await uploadRes.json()
+              resolve(d.url || null)
+            } catch { resolve(null) }
+          }
+          reader.onerror = () => { clearTimeout(timer); resolve(null) }
+          reader.readAsDataURL(photoFile)
+        })
+      } catch { photo_url = null }
+    }
+
+    try {
+      const controller = new AbortController()
+      const timeout = setTimeout(() => controller.abort(), 15000) // 15s timeout
+      const res = await fetch("/api/register-broker", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, photo_url }),
+        signal: controller.signal
+      })
+      clearTimeout(timeout)
+      const result = await res.json()
+
+      if (!res.ok || result.error) {
+        setError("Failed to register: " + (result.error || "Unknown error"))
+        setLoading(false)
+        return
       }
-    }
 
-    const res = await fetch("/api/register-broker", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, photo_url })
-    })
-    const result = await res.json()
-
-    if (!res.ok || result.error) {
-      setError("Failed to register: " + (result.error || "Unknown error"))
+      setBrokerId(result.broker.id)
       setLoading(false)
-      return
+      setStep(2)
+    } catch (err) {
+      setError(err.name === "AbortError"
+        ? "Registration timed out. Please check your connection and try again."
+        : "An error occurred. Please try again.")
+      setLoading(false)
     }
-
-    setBrokerId(result.broker.id)
-    setLoading(false)
-    setStep(2)
   }
 
   async function handleRegistrationPayment() {
@@ -238,7 +264,7 @@ export default function BrokerRegister() {
               </div>
               <button type="submit" disabled={loading}
                 className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg hover:opacity-90 disabled:opacity-50">
-                {loading ? "Saving..." : "Continue →"}
+                {loading ? (photoFile ? "Uploading photo..." : "Saving...") : "Continue →"}
               </button>
             </form>
           </div>
