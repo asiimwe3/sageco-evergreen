@@ -10,8 +10,10 @@ async function getToken() {
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
     body: JSON.stringify({ consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET })
   })
-  const data = await res.json()
-  if (!data.token) throw new Error('Failed to get PesaPal token: ' + JSON.stringify(data))
+  const text = await res.text()
+  let data
+  try { data = JSON.parse(text) } catch(e) { throw new Error('Token parse error: ' + text.substring(0,200)) }
+  if (!data.token) throw new Error('No token: ' + JSON.stringify(data))
   return data.token
 }
 
@@ -51,10 +53,18 @@ export default async function handler(req, res) {
       })
     })
 
-    const orderData = await orderRes.json()
+    const rawText = await orderRes.text()
+    let orderData
+    try { orderData = JSON.parse(rawText) } catch(e) {
+      return res.status(500).json({ error: 'PesaPal non-JSON response', detail: rawText.substring(0, 300) })
+    }
+
+    if (orderData.error) {
+      return res.status(400).json({ error: orderData.error?.message || 'PesaPal error', detail: orderData.error })
+    }
 
     if (!orderData.redirect_url) {
-      return res.status(500).json({ error: 'No redirect URL from PesaPal', detail: orderData })
+      return res.status(500).json({ error: 'No redirect URL', detail: orderData })
     }
 
     return res.status(200).json({
