@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /payment-success
+Disallow: /broker-payment-success
+Disallow: /api/
+
+Sitemap: https://sageco-evergreen.vercel.app/api/sitemap.xml
