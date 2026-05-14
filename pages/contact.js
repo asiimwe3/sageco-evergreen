@@ -68,16 +68,16 @@ export default function Contact() {
             <div>
               <span className="text-2xl">📞</span>
               <p className="font-bold mt-1">Phone</p>
-              <a href="tel:+256750414366" className="block text-gray-600 hover:text-primary">+256 750 414 366</a>
-              <a href="tel:+256782067425" className="block text-gray-600 hover:text-primary">+256 782 067 425</a>
-              <a href="tel:+256772002326" className="block text-gray-600 hover:text-primary">+256 772 002 326</a>
-            </div>
-            <div>
-              <span className="text-2xl">💬</span>
-              <p className="font-bold mt-1">WhatsApp</p>
-              <div className="flex flex-col gap-1">
-                <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary">+256 750 414 366</a>
-                <a href="https://wa.me/256782067425" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary">+256 782 067 425</a>
+              <div className="flex items-center gap-3 mt-1">
+                <a href="tel:+256750414366" className="text-gray-600 hover:text-primary">+256 750 414 366</a>
+                <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer"
+                  className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-600">WhatsApp</a>
+              </div>
+              <a href="tel:+256782067425" className="block text-gray-600 hover:text-primary mt-1">+256 782 067 425</a>
+              <div className="flex items-center gap-3 mt-1">
+                <a href="tel:+256772002326" className="text-gray-600 hover:text-primary">+256 772 002 326</a>
+                <a href="https://wa.me/256772002326" target="_blank" rel="noopener noreferrer"
+                  className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-600">WhatsApp</a>
               </div>
             </div>
             <div>
