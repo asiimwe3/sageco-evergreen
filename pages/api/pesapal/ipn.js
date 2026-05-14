@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { createClient } from '@supabase/supabase-js'
 
 const BASE_URL = 'https://pay.pesapal.com/v3'
@@ -11,11 +10,13 @@ const supabaseAdmin = createClient(
 )
 
 async function getToken() {
-  const res = await axios.post(`${BASE_URL}/api/Auth/RequestToken`, {
-    consumer_key: CONSUMER_KEY,
-    consumer_secret: CONSUMER_SECRET,
-  }, { headers: { 'Content-Type': 'application/json', Accept: 'application/json' } })
-  return res.data.token
+  const res = await fetch(`${BASE_URL}/api/Auth/RequestToken`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({ consumer_key: CONSUMER_KEY, consumer_secret: CONSUMER_SECRET })
+  })
+  const data = await res.json()
+  return data.token
 }
 
 export default async function handler(req, res) {
@@ -24,17 +25,18 @@ export default async function handler(req, res) {
 
   try {
     const token = await getToken()
-    const statusRes = await axios.get(
+    const statusRes = await fetch(
       `${BASE_URL}/api/Transactions/GetTransactionStatus?orderTrackingId=${orderTrackingId}`,
       { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } }
     )
+    const statusData = await statusRes.json()
 
-    const { payment_status_description } = statusRes.data
-    if (payment_status_description !== 'Completed') return res.status(200).json({ status: 'pending' })
+    if (statusData.payment_status_description !== 'Completed') {
+      return res.status(200).json({ status: 'pending' })
+    }
 
     const ref = orderMerchantReference || ''
 
-    // BROKER-REG-<id8> = registration payment
     if (ref.startsWith('BROKER-REG-')) {
       const partialId = ref.replace('BROKER-REG-', '')
       const { data: brokers } = await supabaseAdmin.from('brokers').select('id').ilike('id', `${partialId}%`).limit(1)
@@ -47,9 +49,8 @@ export default async function handler(req, res) {
       }
     }
 
-    // BROKER-PLAN-BASIC/PRO/PREMIUM-<id8> = dashboard subscription
     if (ref.startsWith('BROKER-PLAN-')) {
-      const parts = ref.split('-') // ['BROKER','PLAN','BASIC','id8']
+      const parts = ref.split('-')
       const plan = parts[2]?.toLowerCase()
       const partialId = parts[3]
       const { data: brokers } = await supabaseAdmin.from('brokers').select('id').ilike('id', `${partialId}%`).limit(1)
@@ -57,16 +58,13 @@ export default async function handler(req, res) {
         await supabaseAdmin.from('brokers').update({
           activation_paid: true,
           registration_status: 'active',
-          subscription_plan: plan,
-          activation_ref: orderTrackingId,
-          subscription_start: new Date().toISOString()
+          activation_ref: `${plan}:${orderTrackingId}`
         }).eq('id', brokers[0].id)
       }
     }
 
     return res.status(200).json({ status: 'ok' })
   } catch (err) {
-    console.error('IPN error:', err.response?.data || err.message)
     return res.status(500).json({ error: err.message })
   }
 }
