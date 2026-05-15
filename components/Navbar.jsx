@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 export default function Navbar() {
@@ -12,8 +13,11 @@ export default function Navbar() {
   ]
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-primary">🌿 SAGECO <span className="text-secondary">EVERGREEN</span></Link>
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.jpg" alt="SAGECO EVERGREEN Logo" width={48} height={48} className="rounded-full object-contain" priority />
+          <span className="text-xl font-bold text-primary hidden sm:block">SAGECO <span className="text-secondary">EVERGREEN</span></span>
+        </Link>
         <div className="hidden md:flex gap-6 items-center">
           {links.map(l => <Link key={l.href} href={l.href} className="text-gray-600 hover:text-primary font-medium">{l.label}</Link>)}
           <Link href="/book" className="bg-primary text-white px-5 py-2 rounded-full hover:opacity-90 font-bold">Book Viewing</Link>
