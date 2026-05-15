@@ -7,6 +7,7 @@ export default function Navbar() {
   const links = [
     { href: '/properties', label: 'Properties' },
     { href: '/brokers', label: 'Brokers' },
+    { href: '/plans', label: 'Plans' },
     { href: '/projects', label: 'Green Projects' },
     { href: '/careers', label: 'Careers' },
     { href: '/contact', label: 'Contact' },
