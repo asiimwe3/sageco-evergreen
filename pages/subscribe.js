@@ -7,8 +7,8 @@ import { useState, useEffect } from "react"
 const SITE_URL = typeof window !== "undefined" ? window.location.origin : "https://sageco-evergreen-rho.vercel.app"
 
 const PLAN_CONFIG = {
-  basic:   { name: "Basic",   price: 15000, features: "3 listings · Standard profile · 1 month" },
-  pro:     { name: "Pro",     price: 25000, features: "10 listings · Featured profile · 1 month" },
+  basic:   { name: "Basic",   price: 15000, features: "10 listings · Standard profile · 1 month" },
+  pro:     { name: "Pro",     price: 25000, features: "50 listings · Featured profile · 1 month" },
   premium: { name: "Premium", price: 30000, features: "Unlimited listings · Top placement · 1 month" },
 }
 
@@ -168,3 +168,4 @@ export default function Subscribe() {
     </>
   )
 }
+
