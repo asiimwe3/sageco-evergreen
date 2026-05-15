@@ -12,39 +12,57 @@ export default async function handler(req, res) {
   if (!message) return res.status(400).json({ error: "Message required" });
 
   try {
-    // Fetch latest data from Supabase
-    const [{ data: properties }, { data: brokers }, { data: projects }, { data: careers }] =
+    const [{ data: properties }, { data: brokers }, { data: applications }] =
       await Promise.all([
-        supabase.from("properties").select("title, location, price, type, status, bedrooms, bathrooms, size_sqft").order("created_at", { ascending: false }).limit(20),
-        supabase.from("brokers").select("full_name, phone, email, specialization, location").limit(20),
-        supabase.from("projects").select("name, description, location, status").limit(20),
-        supabase.from("careers").select("title, department, type, location").limit(10),
+        supabase
+          .from("properties")
+          .select("title, location, price, category, status, bedrooms, bathrooms, area_sqft, description")
+          .eq("status", "available")
+          .order("created_at", { ascending: false })
+          .limit(20),
+        supabase
+          .from("brokers")
+          .select("full_name, phone, email, specialization, location, plan, registration_status")
+          .eq("registration_status", "approved")
+          .limit(20),
+        supabase
+          .from("job_applications")
+          .select("job_title, department")
+          .limit(10),
       ]);
 
+    // Get unique open job titles
+    const openJobs = [...new Set((applications || []).map(a => `${a.job_title} (${a.department})`))];
+
     const context = `
-You are a helpful customer support assistant for SAGECO EVERGREEN, a premier real estate platform in Uganda.
-Be friendly, professional, and concise. Answer questions about properties, brokers, projects, careers, and bookings.
-If someone wants to book a viewing, direct them to /book. For contact, direct to /contact.
+You are a friendly and professional customer support assistant for SAGECO EVERGREEN CO. LTD, a premier real estate company based in Kyenjojo, Uganda.
+Be concise, warm, and helpful. Use simple language. Answer questions about properties, brokers, careers, and how to book viewings.
+Never make up data — only use what is provided below.
+For bookings direct users to /book. For careers direct to /careers. For contact direct to /contact or WhatsApp +256750414366.
 
-CURRENT LIVE DATA (as of now):
+COMPANY INFO:
+- Name: SAGECO EVERGREEN CO. LTD
+- Location: Kyenjojo, Uganda
+- Phone: 0750 414 366 (WhatsApp), 0782 067 425, 0772 002 326
+- Email: sagecoevergreen@gmail.com
+- Website: https://sageco-evergreen-rho.vercel.app
 
-PROPERTIES (${properties?.length || 0} listings):
-${properties?.map(p => `- ${p.title} | ${p.location} | UGX ${p.price?.toLocaleString()} | ${p.type} | ${p.bedrooms}bed/${p.bathrooms}bath | ${p.size_sqft}sqft | Status: ${p.status}`).join("\n") || "No properties listed."}
+AVAILABLE PROPERTIES (${properties?.length || 0} listings):
+${properties?.map(p => `• ${p.title} | ${p.location} | UGX ${Number(p.price).toLocaleString()} | ${p.category}${p.bedrooms ? ` | ${p.bedrooms}bed/${p.bathrooms}bath` : ""} | ${p.area_sqft} sqft`).join("\n") || "No properties available right now."}
 
-BROKERS (${brokers?.length || 0} available):
-${brokers?.map(b => `- ${b.full_name} | ${b.specialization} | ${b.location} | ${b.phone} | ${b.email}`).join("\n") || "No brokers listed."}
+APPROVED BROKERS (${brokers?.length || 0}):
+${brokers?.map(b => `• ${b.full_name} | ${b.specialization} | ${b.location} | ${b.phone} | ${b.email} | Plan: ${b.plan}`).join("\n") || "No brokers listed."}
 
-GREEN PROJECTS (${projects?.length || 0}):
-${projects?.map(p => `- ${p.name} | ${p.location} | ${p.status}: ${p.description}`).join("\n") || "No projects listed."}
+CAREER OPENINGS:
+${openJobs.length ? openJobs.map(j => `• ${j}`).join("\n") : "No open positions currently. Check /careers for updates."}
 
-CAREERS (${careers?.length || 0} openings):
-${careers?.map(c => `- ${c.title} | ${c.department} | ${c.type} | ${c.location}`).join("\n") || "No open positions."}
+HOW TO BOOK A VIEWING:
+Clients pay UGX 30,000 (split: UGX 10,000 to SAGECO, UGX 20,000 to the broker). Visit /book to get started.
 `.trim();
 
-    // Build messages array
     const messages = [
       { role: "system", content: context },
-      ...history.slice(-6), // keep last 6 messages for context
+      ...history.slice(-6),
       { role: "user", content: message },
     ];
 
@@ -68,7 +86,7 @@ ${careers?.map(c => `- ${c.title} | ${c.department} | ${c.type} | ${c.location}`
     const reply = data.choices[0].message.content;
     return res.status(200).json({ reply });
   } catch (err) {
-    console.error("Chat error:", err);
+    console.error("Chat error:", err.message);
     return res.status(500).json({ error: "Sorry, I'm having trouble responding. Please try again." });
   }
 }
