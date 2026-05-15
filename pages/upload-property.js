@@ -2,7 +2,6 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Head from 'next/head'
-import { supabase } from '../lib/supabase'
 
 export default function UploadProperty() {
   const [form, setForm] = useState({
@@ -27,11 +26,8 @@ export default function UploadProperty() {
     const newPreviews = []
 
     for (const file of files) {
-      // Create local preview immediately
-      const localUrl = URL.createObjectURL(file)
-      newPreviews.push(localUrl)
+      newPreviews.push(URL.createObjectURL(file))
 
-      // Convert to base64
       const base64 = await new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = () => resolve(reader.result)
@@ -39,18 +35,14 @@ export default function UploadProperty() {
         reader.readAsDataURL(file)
       })
 
-      // Upload via server-side API (bypasses Supabase RLS)
       const res = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64: base64, fileName: file.name, bucket: 'property-images' })
       })
       const data = await res.json()
-      if (data.url) {
-        urls.push(data.url)
-      } else {
-        setError('Failed to upload one or more images: ' + (data.error || 'Unknown error'))
-      }
+      if (data.url) urls.push(data.url)
+      else setError('Image upload failed: ' + (data.error || 'Unknown error'))
     }
 
     setPreviews(prev => [...prev, ...newPreviews])
@@ -65,16 +57,15 @@ export default function UploadProperty() {
       setError('Please fill in all required fields.')
       return
     }
-    const { error: err } = await supabase.from('properties').insert([{
-      ...form,
-      price: parseFloat(form.price),
-      bedrooms: form.bedrooms ? parseInt(form.bedrooms) : null,
-      bathrooms: form.bathrooms ? parseInt(form.bathrooms) : null,
-      area_sqft: form.area_sqft ? parseFloat(form.area_sqft) : null,
-      images: images,
-      status: 'available'
-    }])
-    if (err) { setError('Failed to submit: ' + err.message); return }
+
+    // Use server-side API to bypass RLS
+    const res = await fetch('/api/add-property', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...form, images })
+    })
+    const data = await res.json()
+    if (!res.ok) { setError('Failed to submit: ' + (data.error || 'Unknown error')); return }
     setSuccess(true)
   }
 
