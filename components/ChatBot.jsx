@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 const QUICK_REPLIES = [
   "Show available properties",
@@ -7,6 +8,8 @@ const QUICK_REPLIES = [
   "Career openings",
   "How to book a viewing?",
 ];
+
+const AVATAR = "/chatbot-avatar.jpg";
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
@@ -60,43 +63,69 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button — uses avatar photo */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-green-700 hover:bg-green-800 text-white rounded-full shadow-lg flex items-center justify-center transition-all"
+        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-xl border-4 border-green-600 overflow-hidden hover:scale-105 transition-transform"
         aria-label="Chat with us"
       >
         {open ? (
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <div className="w-full h-full bg-green-700 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-          </svg>
+          <Image
+            src={AVATAR}
+            alt="SAGECO Chat Assistant"
+            width={64}
+            height={64}
+            className="object-cover w-full h-full"
+          />
         )}
       </button>
 
       {/* Chat window */}
       {open && (
-        <div className="fixed bottom-24 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200" style={{ maxHeight: "70vh" }}>
+        <div className="fixed bottom-28 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200" style={{ maxHeight: "70vh" }}>
           {/* Header */}
           <div className="bg-green-700 text-white px-4 py-3 flex items-center gap-3">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <span className="text-green-700 font-bold text-sm">SE</span>
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-400 shrink-0">
+              <Image
+                src={AVATAR}
+                alt="SAGECO Assistant"
+                width={40}
+                height={40}
+                className="object-cover w-full h-full"
+              />
             </div>
             <div>
               <p className="font-semibold text-sm">SAGECO Support</p>
               <p className="text-xs text-green-200">Always up to date • Replies instantly</p>
             </div>
+            <button
+              onClick={() => setOpen(false)}
+              className="ml-auto text-green-200 hover:text-white transition"
+              aria-label="Close chat"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
             {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div key={i} className={`flex items-end gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                {m.role === "assistant" && (
+                  <div className="w-7 h-7 rounded-full overflow-hidden border border-green-300 shrink-0 mb-1">
+                    <Image src={AVATAR} alt="Bot" width={28} height={28} className="object-cover w-full h-full" />
+                  </div>
+                )}
                 <div
-                  className={`max-w-[80%] px-3 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
+                  className={`max-w-[78%] px-3 py-2 rounded-2xl text-sm whitespace-pre-wrap ${
                     m.role === "user"
                       ? "bg-green-700 text-white rounded-br-sm"
                       : "bg-white text-gray-800 shadow-sm border border-gray-100 rounded-bl-sm"
@@ -107,7 +136,10 @@ export default function ChatBot() {
               </div>
             ))}
             {loading && (
-              <div className="flex justify-start">
+              <div className="flex justify-start items-end gap-2">
+                <div className="w-7 h-7 rounded-full overflow-hidden border border-green-300 shrink-0">
+                  <Image src={AVATAR} alt="Bot" width={28} height={28} className="object-cover w-full h-full" />
+                </div>
                 <div className="bg-white border border-gray-100 shadow-sm px-4 py-2 rounded-2xl rounded-bl-sm">
                   <span className="flex gap-1">
                     <span className="w-2 h-2 bg-green-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
