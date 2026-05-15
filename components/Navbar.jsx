@@ -13,6 +13,8 @@ export default function Navbar() {
     { href: '/plans', label: 'Plans' },
     { href: '/projects', label: 'Green Projects' },
     { href: '/careers', label: 'Careers' },
+    { href: '/docs', label: 'Docs' },
+    { href: '/faq', label: 'FAQ' },
     { href: '/contact', label: 'Contact' },
   ]
 
