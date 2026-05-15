@@ -2,7 +2,6 @@ import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 import Head from "next/head"
 import { useState, useEffect } from "react"
-import { supabase } from "../../lib/supabase"
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
 
@@ -25,8 +24,15 @@ export default function AdminOfficers() {
 
   async function fetchOfficers() {
     setLoading(true)
-    const { data } = await supabase.from("officers").select("*").order("created_at", { ascending: false })
-    setOfficers(data || [])
+    try {
+      const res = await fetch("/api/admin/get-officers", {
+        headers: { "x-admin-secret": ADMIN_SECRET }
+      })
+      const d = await res.json()
+      setOfficers(d.officers || [])
+    } catch (e) {
+      setMsg("Error loading officers: " + e.message)
+    }
     setLoading(false)
   }
 
@@ -51,6 +57,16 @@ export default function AdminOfficers() {
     setSaving(false)
   }
 
+  async function handleDelete(id) {
+    if (!confirm("Remove this officer?")) return
+    await fetch("/api/admin/add-officer", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
+      body: JSON.stringify({ id })
+    })
+    fetchOfficers()
+  }
+
   async function toggleStatus(officer) {
     const newStatus = officer.status === "active" ? "inactive" : "active"
     await fetch("/api/admin/add-officer", {
@@ -71,6 +87,7 @@ export default function AdminOfficers() {
           <h1 className="text-2xl font-bold text-primary mb-6">Admin Access</h1>
           <input type="password" placeholder="Enter admin password"
             value={password} onChange={e => setPassword(e.target.value)}
+            onKeyDown={e => { if (e.key === "Enter") { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}}
             className="w-full border rounded-lg px-4 py-3 mb-4 focus:ring-2 focus:ring-primary outline-none"
           />
           <button onClick={() => { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}
@@ -167,7 +184,20 @@ export default function AdminOfficers() {
         )}
 
         {loading ? (
-          <div className="text-center py-12 text-gray-400">Loading officers...</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[...Array(3)].map((_,i) => (
+              <div key={i} className="bg-white rounded-2xl shadow-sm border p-5 animate-pulse">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gray-200" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-3/4" />
+                    <div className="h-3 bg-gray-200 rounded w-1/2" />
+                    <div className="h-3 bg-gray-200 rounded w-2/3" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : officers.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">👥</div>
@@ -190,9 +220,9 @@ export default function AdminOfficers() {
                       {o.status}
                     </span>
                     <button onClick={() => toggleStatus(o)}
-                      className="text-xs text-gray-400 hover:text-primary underline">
-                      Toggle
-                    </button>
+                      className="text-xs text-gray-400 hover:text-primary underline">Toggle</button>
+                    <button onClick={() => handleDelete(o.id)}
+                      className="text-xs text-red-400 hover:text-red-600 underline">Remove</button>
                   </div>
                 </div>
               </div>
