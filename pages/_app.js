@@ -1,9 +1,10 @@
 import "../styles/globals.css"
 import Head from "next/head"
+import { AuthProvider } from "../context/AuthContext"
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <AuthProvider>
       <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -14,6 +15,6 @@ export default function App({ Component, pageProps }) {
         <link rel="shortcut icon" href="/favicon.ico" />
       </Head>
       <Component {...pageProps} />
-    </>
+    </AuthProvider>
   )
 }
