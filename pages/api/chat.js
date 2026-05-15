@@ -31,60 +31,80 @@ export default async function handler(req, res) {
           .limit(10),
       ]);
 
-    // Get unique open job titles
     const openJobs = [...new Set((applications || []).map(a => `${a.job_title} (${a.department})`))];
 
-    const context = `
-You are a friendly and professional customer support assistant for SAGECO EVERGREEN CO. LTD, a premier real estate company based in Kyenjojo, Uganda.
-Be concise, warm, and helpful. Use simple language. Answer questions about properties, brokers, careers, and how to book viewings.
-Never make up data — only use what is provided below.
-For bookings direct users to /book. For careers direct to /careers. For contact direct to /contact or WhatsApp +256750414366.
-
+    const liveData = `
 COMPANY INFO:
 - Name: SAGECO EVERGREEN CO. LTD
 - Location: Kyenjojo, Uganda
 - Phone: 0750 414 366 (WhatsApp), 0782 067 425, 0772 002 326
 - Email: sagecoevergreen@gmail.com
-- Website: https://sageco-evergreen-rho.vercel.app
 
 AVAILABLE PROPERTIES (${properties?.length || 0} listings):
-${properties?.map(p => `• ${p.title} | ${p.location} | UGX ${Number(p.price).toLocaleString()} | ${p.category}${p.bedrooms ? ` | ${p.bedrooms}bed/${p.bathrooms}bath` : ""} | ${p.area_sqft} sqft`).join("\n") || "No properties available right now."}
+${properties?.map(p => `• ${p.title} | ${p.location} | UGX ${Number(p.price).toLocaleString()} | ${p.category}${p.bedrooms ? ` | ${p.bedrooms}bed/${p.bathrooms}bath` : ""}`).join("\n") || "No properties available right now."}
 
 APPROVED BROKERS (${brokers?.length || 0}):
-${brokers?.map(b => `• ${b.full_name} | ${b.specialization} | ${b.location} | ${b.phone} | ${b.email} | Plan: ${b.plan}`).join("\n") || "No brokers listed."}
+${brokers?.map(b => `• ${b.full_name} | ${b.specialization} | ${b.location} | ${b.phone}`).join("\n") || "No brokers listed."}
 
 CAREER OPENINGS:
-${openJobs.length ? openJobs.map(j => `• ${j}`).join("\n") : "No open positions currently. Check /careers for updates."}
+${openJobs.length ? openJobs.join("\n") : "Check /careers for updates."}
 
-HOW TO BOOK A VIEWING:
-Clients pay UGX 30,000 (split: UGX 10,000 to SAGECO, UGX 20,000 to the broker). Visit /book to get started.
-`.trim();
+BOOKING INFO:
+Clients pay UGX 30,000 total to book a viewing. Visit /book to get started.
+    `.trim();
 
-    const messages = [
-      { role: "system", content: context },
-      ...history.slice(-6),
-      { role: "user", content: message },
+    // Build input array for Responses API
+    // Prepend conversation history then the new user message with live data injected
+    const inputMessages = [
+      ...history.slice(-6).map(m => ({
+        role: m.role,
+        content: m.content,
+      })),
+      {
+        role: "user",
+        content: `${message}\n\n[LIVE SITE DATA]\n${liveData}`,
+      },
     ];
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        "OpenAI-Beta": "responses=v1",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages,
-        max_tokens: 500,
-        temperature: 0.7,
+        prompt: {
+          id: "pmpt_6a06cb6cdab081979f512da93ca5f10406038a73cf0331e1",
+          version: "1",
+        },
+        input: inputMessages,
       }),
     });
 
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error?.message || "OpenAI error");
 
-    const reply = data.choices[0].message.content;
+    if (!response.ok) {
+      console.error("OpenAI Responses API error:", JSON.stringify(data));
+      throw new Error(data.error?.message || "OpenAI error");
+    }
+
+    // Extract text from the response output
+    const output = data.output || [];
+    let reply = "";
+    for (const item of output) {
+      if (item.type === "message" && Array.isArray(item.content)) {
+        for (const block of item.content) {
+          if (block.type === "output_text") {
+            reply += block.text;
+          }
+        }
+      }
+    }
+
+    if (!reply) reply = "Sorry, I couldn't generate a response. Please try again.";
     return res.status(200).json({ reply });
+
   } catch (err) {
     console.error("Chat error:", err.message);
     return res.status(500).json({ error: "Sorry, I'm having trouble responding. Please try again." });
