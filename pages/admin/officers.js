@@ -1,13 +1,7 @@
-import Navbar from "../../components/Navbar"
-import Footer from "../../components/Footer"
-import Head from "next/head"
+import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
 
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
-
 export default function AdminOfficers() {
-  const [authed, setAuthed] = useState(false)
-  const [password, setPassword] = useState("")
   const [officers, setOfficers] = useState([])
   const [loading, setLoading] = useState(false)
   const [showForm, setShowForm] = useState(false)
@@ -18,21 +12,15 @@ export default function AdminOfficers() {
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState("")
 
-  useEffect(() => {
-    if (authed) fetchOfficers()
-  }, [authed])
+  useEffect(() => { fetchOfficers() }, [])
 
   async function fetchOfficers() {
     setLoading(true)
     try {
-      const res = await fetch("/api/admin/get-officers", {
-        headers: { "x-admin-secret": ADMIN_SECRET }
-      })
+      const res = await fetch("/api/admin/get-officers", { headers: { "x-admin-secret": ADMIN_SECRET } })
       const d = await res.json()
       setOfficers(d.officers || [])
-    } catch (e) {
-      setMsg("Error loading officers: " + e.message)
-    }
+    } catch (e) { setMsg("Error: " + e.message) }
     setLoading(false)
   }
 
@@ -47,13 +35,11 @@ export default function AdminOfficers() {
     })
     const d = await res.json()
     if (res.ok) {
-      setMsg("Officer added successfully!")
+      setMsg("Officer added!")
       setForm({ full_name: "", email: "", phone: "", role: "officer", department: "", bio: "", status: "active" })
       setShowForm(false)
       fetchOfficers()
-    } else {
-      setMsg("Error: " + (d.error || "Failed"))
-    }
+    } else { setMsg("Error: " + (d.error || "Failed")) }
     setSaving(false)
   }
 
@@ -77,160 +63,107 @@ export default function AdminOfficers() {
     fetchOfficers()
   }
 
-  if (!authed) {
-    return (
-      <>
-        <Head><title>Admin — Officers | SAGECO EVERGREEN</title><meta name="robots" content="noindex" /></Head>
-        <Navbar />
-        <div className="max-w-sm mx-auto px-4 py-20 text-center">
-          <div className="text-4xl mb-4">🔐</div>
-          <h1 className="text-2xl font-bold text-primary mb-6">Admin Access</h1>
-          <input type="password" placeholder="Enter admin password"
-            value={password} onChange={e => setPassword(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter") { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}}
-            className="w-full border rounded-lg px-4 py-3 mb-4 focus:ring-2 focus:ring-primary outline-none"
-          />
-          <button onClick={() => { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}
-            className="w-full bg-primary text-white py-3 rounded-full font-bold hover:opacity-90">
-            Enter
-          </button>
-        </div>
-        <Footer />
-      </>
-    )
-  }
-
-  const ROLES = ["officer", "senior_officer", "manager", "director"]
-  const DEPTS = ["Sales", "Operations", "Finance", "Marketing", "Legal", "Management"]
-  const STATUS_COLORS = { active: "bg-green-100 text-green-700", inactive: "bg-red-100 text-red-600" }
-
   return (
-    <>
-      <Head><title>Officers Admin | SAGECO EVERGREEN</title><meta name="robots" content="noindex" /></Head>
-      <Navbar />
-      <section className="bg-primary text-white py-10 px-4">
-        <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
+    <AdminGate title="Officers">
+      <div className="p-6 max-w-5xl mx-auto">
+        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
           <div>
-            <h1 className="text-3xl font-bold">Officers Management</h1>
-            <p className="text-green-100 text-sm mt-1">{officers.length} officers registered</p>
+            <h1 className="text-2xl font-bold text-gray-800">Company Officers</h1>
+            <p className="text-gray-500 text-sm">{officers.length} team members</p>
           </div>
           <button onClick={() => setShowForm(!showForm)}
-            className="bg-white text-primary px-6 py-2 rounded-full font-bold hover:opacity-90">
+            className="bg-primary text-white px-5 py-2 rounded-full font-bold text-sm hover:opacity-90">
             {showForm ? "Cancel" : "+ Add Officer"}
           </button>
         </div>
-      </section>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
         {msg && (
-          <div className={`p-4 rounded-xl mb-6 text-sm font-medium ${msg.startsWith("Error") ? "bg-red-50 text-red-600" : "bg-green-50 text-green-700"}`}>
+          <div className={`p-3 rounded-xl mb-4 text-sm font-medium ${msg.startsWith("Error") ? "bg-red-50 text-red-600" : "bg-green-50 text-green-700"}`}>
             {msg}
           </div>
         )}
 
         {showForm && (
-          <form onSubmit={handleAdd} className="bg-white rounded-2xl shadow-md p-8 mb-8">
-            <h2 className="text-xl font-bold mb-6 text-gray-800">Add New Officer</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Full Name *</label>
-                <input required value={form.full_name} onChange={e => setForm({...form, full_name: e.target.value})}
-                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+          <form onSubmit={handleAdd} className="bg-white rounded-2xl shadow-sm border p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h2 className="text-lg font-bold text-gray-800 md:col-span-2">New Officer</h2>
+            {[
+              { key: "full_name", label: "Full Name", placeholder: "Full name" },
+              { key: "email", label: "Email", placeholder: "email@sageco.co" },
+              { key: "phone", label: "Phone", placeholder: "+256..." },
+              { key: "department", label: "Department", placeholder: "Sales, Admin..." },
+            ].map(f => (
+              <div key={f.key}>
+                <label className="block text-xs font-bold text-gray-600 mb-1">{f.label}</label>
+                <input required={f.key === "full_name"} value={form[f.key]}
+                  onChange={e => setForm({ ...form, [f.key]: e.target.value })}
+                  placeholder={f.placeholder}
+                  className="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" />
               </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Email *</label>
-                <input required type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
-                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Phone</label>
-                <input value={form.phone} onChange={e => setForm({...form, phone: e.target.value})}
-                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Role</label>
-                <select value={form.role} onChange={e => setForm({...form, role: e.target.value})}
-                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
-                  {ROLES.map(r => <option key={r} value={r}>{r.replace("_"," ").replace(/\b\w/g,c=>c.toUpperCase())}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Department</label>
-                <select value={form.department} onChange={e => setForm({...form, department: e.target.value})}
-                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
-                  <option value="">Select...</option>
-                  {DEPTS.map(d => <option key={d}>{d}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Status</label>
-                <select value={form.status} onChange={e => setForm({...form, status: e.target.value})}
-                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
+            ))}
+            <div>
+              <label className="block text-xs font-bold text-gray-600 mb-1">Role</label>
+              <select value={form.role} onChange={e => setForm({ ...form, role: e.target.value })}
+                className="w-full border rounded-lg px-3 py-2 text-sm">
+                {["officer", "manager", "director", "CEO", "accountant", "receptionist"].map(r => (
+                  <option key={r} value={r}>{r}</option>
+                ))}
+              </select>
             </div>
-            <div className="mt-4">
-              <label className="block text-sm font-bold text-gray-700 mb-1">Bio (optional)</label>
-              <textarea rows={3} value={form.bio} onChange={e => setForm({...form, bio: e.target.value})}
-                className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+            <div className="md:col-span-2">
+              <label className="block text-xs font-bold text-gray-600 mb-1">Bio</label>
+              <textarea value={form.bio} onChange={e => setForm({ ...form, bio: e.target.value })}
+                rows={2} placeholder="Short bio..."
+                className="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary outline-none" />
             </div>
-            <button type="submit" disabled={saving}
-              className="mt-6 bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90 disabled:opacity-50">
-              {saving ? "Saving..." : "Add Officer"}
-            </button>
+            <div className="md:col-span-2 flex gap-3">
+              <button type="submit" disabled={saving}
+                className="bg-primary text-white px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 disabled:opacity-50">
+                {saving ? "Saving..." : "Add Officer"}
+              </button>
+            </div>
           </form>
         )}
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {[...Array(3)].map((_,i) => (
-              <div key={i} className="bg-white rounded-2xl shadow-sm border p-5 animate-pulse">
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-200" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-4 bg-gray-200 rounded w-3/4" />
-                    <div className="h-3 bg-gray-200 rounded w-1/2" />
-                    <div className="h-3 bg-gray-200 rounded w-2/3" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : officers.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="text-5xl mb-4">👥</div>
-            <p className="text-gray-500">No officers added yet. Click + Add Officer to get started.</p>
-          </div>
+          <div className="text-center py-16 text-gray-400">Loading...</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {officers.map(o => (
-              <div key={o.id} className="bg-white rounded-2xl shadow-sm border p-5 flex gap-4 items-start">
-                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-2xl font-bold text-primary flex-shrink-0">
-                  {o.full_name?.[0] || "?"}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-bold text-gray-800 truncate">{o.full_name}</p>
-                  <p className="text-xs text-gray-500">{o.role?.replace("_"," ")} · {o.department || "—"}</p>
-                  <p className="text-xs text-gray-400 truncate mt-1">{o.email}</p>
-                  {o.phone && <p className="text-xs text-gray-400">{o.phone}</p>}
-                  <div className="flex items-center gap-2 mt-3">
-                    <span className={`text-xs px-2 py-1 rounded-full font-semibold ${STATUS_COLORS[o.status] || "bg-gray-100 text-gray-500"}`}>
-                      {o.status}
-                    </span>
-                    <button onClick={() => toggleStatus(o)}
-                      className="text-xs text-gray-400 hover:text-primary underline">Toggle</button>
-                    <button onClick={() => handleDelete(o.id)}
-                      className="text-xs text-red-400 hover:text-red-600 underline">Remove</button>
+              <div key={o.id} className="bg-white rounded-2xl shadow-sm border p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  {o.photo_url ? (
+                    <img src={o.photo_url} alt={o.full_name} className="w-12 h-12 rounded-full object-cover" />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">
+                      {o.full_name?.[0]}
+                    </div>
+                  )}
+                  <div>
+                    <p className="font-bold text-gray-800">{o.full_name}</p>
+                    <p className="text-xs text-gray-500 capitalize">{o.role} · {o.department || "—"}</p>
                   </div>
+                </div>
+                <p className="text-xs text-gray-400 mb-1">{o.email}</p>
+                <p className="text-xs text-gray-400 mb-3">{o.phone}</p>
+                {o.bio && <p className="text-xs text-gray-500 italic mb-3 line-clamp-2">"{o.bio}"</p>}
+                <div className="flex gap-2">
+                  <button onClick={() => toggleStatus(o)}
+                    className={`flex-1 text-xs py-1.5 rounded-lg font-semibold border transition ${o.status === "active" ? "border-green-300 text-green-600 hover:bg-green-50" : "border-gray-300 text-gray-500 hover:border-primary hover:text-primary"}`}>
+                    {o.status === "active" ? "✓ Active" : "Inactive"}
+                  </button>
+                  <button onClick={() => handleDelete(o.id)}
+                    className="flex-1 text-xs py-1.5 rounded-lg font-semibold border border-red-200 text-red-500 hover:bg-red-50">
+                    Remove
+                  </button>
                 </div>
               </div>
             ))}
+            {officers.length === 0 && !loading && (
+              <div className="md:col-span-3 text-center py-16 text-gray-400">No officers added yet.</div>
+            )}
           </div>
         )}
       </div>
-      <Footer />
-    </>
+    </AdminGate>
   )
 }
