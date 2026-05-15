@@ -1,11 +1,15 @@
 import Link from "next/link"
+import Image from "next/image"
 
 export default function Footer() {
   return (
     <footer className="bg-primary text-white mt-16 py-12 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h3 className="text-xl font-bold mb-2">🌿 SAGECO EVERGREEN</h3>
+          <div className="flex items-center gap-3 mb-3">
+            <Image src="/logo.jpg" alt="SAGECO EVERGREEN Logo" width={56} height={56} className="rounded-full object-contain bg-white p-0.5" />
+            <h3 className="text-xl font-bold">SAGECO EVERGREEN</h3>
+          </div>
           <p className="text-green-200 text-sm">Premium real estate with a green conscience. Building Uganda's future, one property at a time.</p>
           <p className="text-green-300 text-sm mt-3">📍 Kyenjojo, Uganda</p>
           <a
