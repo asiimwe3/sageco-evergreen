@@ -10,6 +10,7 @@ export default function UploadProperty() {
     category: 'Residential', bedrooms: '', bathrooms: '', area_sqft: ''
   })
   const [images, setImages] = useState([])
+  const [previews, setPreviews] = useState([])
   const [uploading, setUploading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
@@ -18,17 +19,41 @@ export default function UploadProperty() {
 
   async function handleImageUpload(e) {
     const files = Array.from(e.target.files)
+    if (!files.length) return
     setUploading(true)
+    setError('')
+
     const urls = []
+    const newPreviews = []
+
     for (const file of files) {
-      const ext = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { data, error } = await supabase.storage.from('property-images').upload(fileName, file, { upsert: true })
-      if (!error && data) {
-        const { data: urlData } = supabase.storage.from('property-images').getPublicUrl(fileName)
-        urls.push(urlData.publicUrl)
+      // Create local preview immediately
+      const localUrl = URL.createObjectURL(file)
+      newPreviews.push(localUrl)
+
+      // Convert to base64
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = () => resolve(reader.result)
+        reader.onerror = reject
+        reader.readAsDataURL(file)
+      })
+
+      // Upload via server-side API (bypasses Supabase RLS)
+      const res = await fetch('/api/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64: base64, fileName: file.name, bucket: 'property-images' })
+      })
+      const data = await res.json()
+      if (data.url) {
+        urls.push(data.url)
+      } else {
+        setError('Failed to upload one or more images: ' + (data.error || 'Unknown error'))
       }
     }
+
+    setPreviews(prev => [...prev, ...newPreviews])
     setImages(prev => [...prev, ...urls])
     setUploading(false)
   }
@@ -132,15 +157,26 @@ export default function UploadProperty() {
               <label className="block text-sm font-bold text-gray-700 mb-1">Property Images</label>
               <input type="file" multiple accept="image/*" onChange={handleImageUpload}
                 className="w-full border rounded-lg px-4 py-3" />
-              {uploading && <p className="text-sm text-primary mt-1">Uploading images...</p>}
-              {images.length > 0 && (
-                <div className="flex gap-2 mt-2 flex-wrap">
-                  {images.map((url, i) => <img key={i} src={url} alt="" className="w-20 h-20 object-cover rounded-lg" />)}
+              {uploading && (
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                  <p className="text-sm text-primary">Uploading images...</p>
+                </div>
+              )}
+              {previews.length > 0 && (
+                <div className="flex gap-2 mt-3 flex-wrap">
+                  {previews.map((url, i) => (
+                    <div key={i} className="relative">
+                      <img src={url} alt={`Preview ${i+1}`} className="w-24 h-24 object-cover rounded-lg border-2 border-green-200" />
+                      {images[i] && <div className="absolute top-1 right-1 bg-green-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">✓</div>}
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
-            <button type="submit" className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg hover:opacity-90">
-              Submit Property Listing
+            <button type="submit" disabled={uploading}
+              className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg hover:opacity-90 disabled:opacity-50">
+              {uploading ? 'Uploading images...' : 'Submit Property Listing'}
             </button>
           </form>
         </div>
