@@ -12,101 +12,136 @@ export default async function handler(req, res) {
   if (!message) return res.status(400).json({ error: "Message required" });
 
   try {
-    const [{ data: properties }, { data: brokers }, { data: applications }] =
-      await Promise.all([
-        supabase
-          .from("properties")
-          .select("title, location, price, category, status, bedrooms, bathrooms, area_sqft, description")
-          .eq("status", "available")
-          .order("created_at", { ascending: false })
-          .limit(20),
-        supabase
-          .from("brokers")
-          .select("full_name, phone, email, specialization, location, plan, registration_status")
-          .eq("registration_status", "approved")
-          .limit(20),
-        supabase
-          .from("job_applications")
-          .select("job_title, department")
-          .limit(10),
-      ]);
+    const [
+      { data: properties },
+      { data: brokers },
+      { data: officers },
+      { data: applications },
+      { data: bookings }
+    ] = await Promise.all([
+      supabase
+        .from("properties")
+        .select("title, location, price, category, status, bedrooms, bathrooms, area_sqft, description")
+        .order("created_at", { ascending: false })
+        .limit(30),
+      supabase
+        .from("brokers")
+        .select("full_name, phone, email, specialization, location, plan, registration_status")
+        .eq("registration_status", "approved")
+        .limit(20),
+      supabase
+        .from("officers")
+        .select("full_name, role, department, bio")
+        .eq("status", "active")
+        .limit(10),
+      supabase
+        .from("job_applications")
+        .select("job_title, department")
+        .limit(10),
+      supabase
+        .from("bookings")
+        .select("id")
+        .limit(1),
+    ]);
 
+    const availableProperties = (properties || []).filter(p => p.status === "available");
     const openJobs = [...new Set((applications || []).map(a => `${a.job_title} (${a.department})`))];
 
-    const liveData = `
-COMPANY INFO:
-- Name: SAGECO EVERGREEN CO. LTD
-- Location: Kyenjojo, Uganda
-- Phone: 0750 414 366 (WhatsApp), 0782 067 425, 0772 002 326
-- Email: sagecoevergreen@gmail.com
+    const systemPrompt = `You are the official AI assistant for SAGECO EVERGREEN CO. LTD — a real estate company based in Kyenjojo, Uganda. You work exclusively for SAGECO EVERGREEN and only answer questions related to this company.
 
-AVAILABLE PROPERTIES (${properties?.length || 0} listings):
-${properties?.map(p => `• ${p.title} | ${p.location} | UGX ${Number(p.price).toLocaleString()} | ${p.category}${p.bedrooms ? ` | ${p.bedrooms}bed/${p.bathrooms}bath` : ""}`).join("\n") || "No properties available right now."}
+== COMPANY PROFILE ==
+Name: SAGECO EVERGREEN CO. LTD
+Location: Kyenjojo, Uganda
+Phone: 0750 414 366 (WhatsApp), 0782 067 425, 0772 002 326 (WhatsApp)
+Email: sagecoevergreen@gmail.com
+Website: https://sageco-evergreen-rho.vercel.app
+About: We are a premier real estate platform connecting property buyers, sellers, and renters with verified brokers across Uganda. We specialize in residential homes, commercial spaces, land, and eco-friendly green developments.
 
-APPROVED BROKERS (${brokers?.length || 0}):
-${brokers?.map(b => `• ${b.full_name} | ${b.specialization} | ${b.location} | ${b.phone}`).join("\n") || "No brokers listed."}
+== HOW BOOKING WORKS ==
+- Clients pay UGX 30,000 total to book a property viewing
+- UGX 10,000 goes to SAGECO EVERGREEN (service fee)
+- UGX 20,000 goes to the assigned broker
+- Payment is via Mobile Money (MTN/Airtel) or card through PesaPal
+- After payment, broker contacts client within 24 hours
+- Book at: /book
 
-CAREER OPENINGS:
-${openJobs.length ? openJobs.join("\n") : "Check /careers for updates."}
+== SUBSCRIPTION PLANS FOR BROKERS ==
+- Free: 3 property listings, no expiry, no charge
+- Basic: 10 listings, UGX 15,000/month
+- Pro: 50 listings, UGX 25,000/month  
+- Premium: Unlimited listings, UGX 30,000/month
+- Subscribe at: /plans
 
-BOOKING INFO:
-Clients pay UGX 30,000 total to book a viewing. Visit /book to get started.
-    `.trim();
+== BROKER REGISTRATION ==
+- Register at /broker-register
+- Upload a photo and fill in details
+- Registration fee applies via PesaPal
+- Profile reviewed and activated by admin
+- Approved brokers earn UGX 20,000 per confirmed viewing booking
 
-    // Build input array for Responses API
-    // Prepend conversation history then the new user message with live data injected
+== LIVE PROPERTY LISTINGS (${properties?.length || 0} total, ${availableProperties.length} available) ==
+${availableProperties.length > 0
+  ? availableProperties.map(p =>
+      `• ${p.title} | ${p.location} | UGX ${Number(p.price).toLocaleString()} | ${p.category}${p.bedrooms ? ` | ${p.bedrooms} bed/${p.bathrooms} bath` : ""}${p.description ? ` | ${p.description.slice(0, 80)}` : ""}`
+    ).join("\n")
+  : "No properties currently marked available — check /properties for all listings."
+}
+
+== APPROVED BROKERS (${brokers?.length || 0}) ==
+${brokers?.length > 0
+  ? brokers.map(b => `• ${b.full_name} | ${b.specialization} | ${b.location} | ${b.phone}`).join("\n")
+  : "No brokers listed yet."
+}
+
+== COMPANY OFFICERS (${officers?.length || 0}) ==
+${officers?.length > 0
+  ? officers.map(o => `• ${o.full_name} — ${o.role}${o.department ? `, ${o.department}` : ""}${o.bio ? `: ${o.bio.slice(0, 80)}` : ""}`).join("\n")
+  : "Officer information not available."
+}
+
+== CAREER OPENINGS ==
+${openJobs.length > 0 ? openJobs.join("\n") : "No open positions at the moment. Check /careers for updates."}
+
+== IMPORTANT RULES ==
+- Only answer questions about SAGECO EVERGREEN and real estate in Uganda
+- If asked about other companies or unrelated topics, politely redirect to SAGECO EVERGREEN services
+- Always be helpful, professional, and friendly
+- For urgent matters direct users to WhatsApp: 0750 414 366
+- Working hours: Monday–Saturday, 8am–6pm EAT
+- Chatbot is available 24/7`;
+
     const inputMessages = [
-      ...history.slice(-6).map(m => ({
-        role: m.role,
-        content: m.content,
-      })),
-      {
-        role: "user",
-        content: `${message}\n\n[LIVE SITE DATA]\n${liveData}`,
-      },
+      { role: "system", content: systemPrompt },
+      ...history.slice(-8).map(m => ({ role: m.role, content: m.content })),
+      { role: "user", content: message },
     ];
 
-    const response = await fetch("https://api.openai.com/v1/responses", {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-        "OpenAI-Beta": "responses=v1",
       },
       body: JSON.stringify({
-        prompt: {
-          id: "pmpt_6a06cb6cdab081979f512da93ca5f10406038a73cf0331e1",
-          version: "1",
-        },
-        input: inputMessages,
+        model: "gpt-4o-mini",
+        messages: inputMessages,
+        max_tokens: 600,
+        temperature: 0.4,
       }),
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("OpenAI Responses API error:", JSON.stringify(data));
+      console.error("OpenAI error:", JSON.stringify(data));
       throw new Error(data.error?.message || "OpenAI error");
     }
 
-    // Extract text from the response output
-    const output = data.output || [];
-    let reply = "";
-    for (const item of output) {
-      if (item.type === "message" && Array.isArray(item.content)) {
-        for (const block of item.content) {
-          if (block.type === "output_text") {
-            reply += block.text;
-          }
-        }
-      }
-    }
-
-    if (!reply) reply = "Sorry, I couldn't generate a response. Please try again.";
+    const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't generate a response. Please try again.";
     return res.status(200).json({ reply });
 
   } catch (err) {
     console.error("Chat error:", err.message);
-    return res.status(500).json({ error: "Sorry, I'm having trouble responding. Please try again." });
+    return res.status(500).json({ error: "Sorry, I'm having trouble responding right now. Please call us on 0750 414 366 or email sagecoevergreen@gmail.com" });
   }
 }
