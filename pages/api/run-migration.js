@@ -6,20 +6,13 @@ const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
 export default async function handler(req, res) {
   if (req.headers["x-admin-secret"] !== ADMIN_SECRET) return res.status(403).end()
   
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
-  const projectRef = supabaseUrl.match(/https:\/\/([^.]+)/)?.[1]
+  const projectRef = "emldbjqegftrngxypeca"
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-  if (!projectRef || !serviceKey) {
-    return res.status(500).json({ error: "Missing config" })
-  }
-
+  // Use Supabase's session pooler (port 5432) or transaction pooler (port 6543)
+  // Connection string format for pooler:
   const client = new Client({
-    host: `db.${projectRef}.supabase.co`,
-    port: 5432,
-    database: "postgres",
-    user: "postgres",
-    password: serviceKey,
+    connectionString: `postgresql://postgres.${projectRef}:${serviceKey}@aws-0-eu-west-1.pooler.supabase.com:5432/postgres`,
     ssl: { rejectUnauthorized: false }
   })
 
@@ -48,7 +41,7 @@ export default async function handler(req, res) {
         await client.query(sql)
         results.push({ sql: sql.slice(0, 60), status: "ok" })
       } catch (e) {
-        results.push({ sql: sql.slice(0, 60), status: "error", detail: e.message })
+        results.push({ sql: sql.slice(0, 60), status: "error", detail: e.message.slice(0,80) })
       }
     }
 
