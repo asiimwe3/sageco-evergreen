@@ -59,6 +59,7 @@ export default function BrokerRegister() {
   })
   const [photoFile, setPhotoFile] = useState(null)
   const [brokerId, setBrokerId] = useState(null)
+  const [brokerCode, setBrokerCode] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -121,6 +122,7 @@ export default function BrokerRegister() {
       }
 
       setBrokerId(result.broker.id)
+      setBrokerCode(result.broker.broker_id)
       setLoading(false)
       setStep(2)
     } catch (err) {
@@ -275,6 +277,13 @@ export default function BrokerRegister() {
           <div className="bg-white rounded-2xl shadow-md p-8 max-w-xl mx-auto text-center">
             <div className="text-5xl mb-4">🏠</div>
             <h2 className="text-2xl font-bold text-primary mb-2">Open Your Broker Account</h2>
+            {brokerCode && (
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
+                <p className="text-xs text-gray-500 mb-1">Your Broker ID (save this)</p>
+                <p className="text-2xl font-black text-primary tracking-widest">{brokerCode}</p>
+                <p className="text-xs text-gray-400 mt-1">Use this to log into your dashboard and manage listings</p>
+              </div>
+            )}
             <p className="text-gray-500 mb-6">Pay a one-time registration fee to activate your verified broker profile.</p>
             {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm">{error}</div>}
             <div className="border-2 border-primary rounded-xl p-6 mb-6 text-left space-y-2">
@@ -330,3 +339,4 @@ export default function BrokerRegister() {
     </>
   )
 }
+
