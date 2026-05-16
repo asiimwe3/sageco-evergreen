@@ -42,6 +42,18 @@ export default function AdminBrokers() {
     else setMsg("Error: " + d.error)
   }
 
+  async function deleteBroker(id, name) {
+    if (!confirm(`Delete broker "${name}"? This cannot be undone.`)) return
+    const res = await fetch("/api/admin/delete-broker", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-admin-secret": ADMIN_SECRET },
+      body: JSON.stringify({ id })
+    })
+    const d = await res.json()
+    if (d.ok) { setMsg("Broker deleted."); fetchBrokers() }
+    else setMsg("Error: " + d.error)
+  }
+
   const filtered = brokers.filter(b => {
     const matchStatus = filter === "all" || b.registration_status === filter
     const matchSearch = !search || b.full_name?.toLowerCase().includes(search.toLowerCase()) || b.email?.toLowerCase().includes(search.toLowerCase())
@@ -111,15 +123,15 @@ export default function AdminBrokers() {
                 {expanded === b.id && (
                   <div className="border-t px-5 pb-5 pt-4 bg-gray-50">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm">
+                      <div><span className="text-gray-400 block">Broker ID</span><span className="font-black text-primary tracking-wider">{b.broker_id || "—"}</span></div>
                       <div><span className="text-gray-400 block">Location</span><span className="font-semibold">{b.location || "—"}</span></div>
                       <div><span className="text-gray-400 block">Specialization</span><span className="font-semibold">{b.specialization || "—"}</span></div>
-                      <div><span className="text-gray-400 block">Plan Expires</span><span className="font-semibold">{b.plan_expires_at ? new Date(b.plan_expires_at).toLocaleDateString("en-GB") : "—"}</span></div>
+                      <div><span className="text-gray-400 block">Plan Expires</span><span className={`font-semibold ${b.plan_expires_at && new Date(b.plan_expires_at) < new Date() ? "text-red-500" : "text-gray-800"}`}>{b.plan_expires_at ? new Date(b.plan_expires_at).toLocaleDateString("en-GB") : "—"}</span></div>
                       <div><span className="text-gray-400 block">Reg. Paid</span><span className="font-semibold">{b.registration_paid ? "Yes ✓" : "No"}</span></div>
-                      <div><span className="text-gray-400 block">Activation Paid</span><span className="font-semibold">{b.activation_paid ? "Yes ✓" : "No"}</span></div>
                       <div><span className="text-gray-400 block">Joined</span><span className="font-semibold">{new Date(b.created_at).toLocaleDateString("en-GB")}</span></div>
                     </div>
                     {b.bio && <p className="text-gray-500 text-sm mb-4 italic">"{b.bio}"</p>}
-                    <div className="flex gap-3 flex-wrap">
+                    <div className="flex gap-3 flex-wrap items-center">
                       <select defaultValue=""
                         onChange={e => { if (e.target.value) updateBroker(b.id, { registration_status: e.target.value }) }}
                         className="text-sm border rounded-lg px-3 py-2">
@@ -137,6 +149,10 @@ export default function AdminBrokers() {
                         <option value="pro">Pro</option>
                         <option value="premium">Premium</option>
                       </select>
+                      <button onClick={() => deleteBroker(b.id, b.full_name)}
+                        className="ml-auto text-sm px-4 py-2 rounded-lg font-bold border border-red-300 text-red-500 hover:bg-red-50 transition">
+                        🗑 Delete
+                      </button>
                     </div>
                   </div>
                 )}
@@ -151,3 +167,4 @@ export default function AdminBrokers() {
     </AdminGate>
   )
 }
+
