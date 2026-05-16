@@ -5,18 +5,28 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
+function generateBrokerId() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+  let id = "SGC-"
+  for (let i = 0; i < 6; i++) id += chars[Math.floor(Math.random() * chars.length)]
+  return id
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" })
-
   try {
     const { full_name, email, phone, location, specialization, bio, photo_url } = req.body
-
-    if (!full_name || !email || !phone) {
-      return res.status(400).json({ error: "Missing required fields" })
-    }
-
-    // Basic input sanitization
+    if (!full_name || !email || !phone) return res.status(400).json({ error: "Missing required fields" })
     const sanitize = (str) => typeof str === "string" ? str.trim().slice(0, 500) : str
+
+    // Generate unique broker_id
+    let broker_id, attempts = 0
+    do {
+      broker_id = generateBrokerId()
+      const { data: existing } = await supabaseAdmin.from("brokers").select("id").eq("broker_id", broker_id).single()
+      if (!existing) break
+      attempts++
+    } while (attempts < 10)
 
     const { data, error } = await supabaseAdmin.from("brokers").insert([{
       full_name: sanitize(full_name),
@@ -25,8 +35,10 @@ export default async function handler(req, res) {
       location: sanitize(location),
       specialization: sanitize(specialization),
       bio: sanitize(bio),
-      photo_url: sanitize(photo_url),
-      registration_status: "pending"
+      photo_url: photo_url ? sanitize(photo_url) : null,
+      broker_id,
+      registration_status: "pending",
+      plan: "free"
     }]).select().single()
 
     if (error) return res.status(400).json({ error: error.message })
