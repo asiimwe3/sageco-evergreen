@@ -11,6 +11,7 @@ export default function UploadProperty() {
   const [images, setImages] = useState([])
   const [previews, setPreviews] = useState([])
   const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState([]) // per-file progress 0-100
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
 
@@ -24,9 +25,16 @@ export default function UploadProperty() {
 
     const urls = []
     const newPreviews = []
+    const progressArr = new Array(files.length).fill(0)
+    setUploadProgress(progressArr)
 
-    for (const file of files) {
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i]
       newPreviews.push(URL.createObjectURL(file))
+      setPreviews(prev => [...prev, URL.createObjectURL(file)])
+
+      // Simulate progress while reading
+      setUploadProgress(prev => { const a = [...prev]; a[i] = 20; return a })
 
       const base64 = await new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -35,17 +43,21 @@ export default function UploadProperty() {
         reader.readAsDataURL(file)
       })
 
+      setUploadProgress(prev => { const a = [...prev]; a[i] = 50; return a })
+
       const res = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ imageBase64: base64, fileName: file.name, bucket: 'property-images' })
       })
       const data = await res.json()
+
+      setUploadProgress(prev => { const a = [...prev]; a[i] = 100; return a })
+
       if (data.url) urls.push(data.url)
       else setError('Image upload failed: ' + (data.error || 'Unknown error'))
     }
 
-    setPreviews(prev => [...prev, ...newPreviews])
     setImages(prev => [...prev, ...urls])
     setUploading(false)
   }
@@ -58,7 +70,6 @@ export default function UploadProperty() {
       return
     }
 
-    // Use server-side API to bypass RLS
     const res = await fetch('/api/add-property', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -84,6 +95,11 @@ export default function UploadProperty() {
     </>
   )
 
+  const totalFiles = uploadProgress.length
+  const overallPercent = totalFiles > 0
+    ? Math.round(uploadProgress.reduce((a, b) => a + b, 0) / totalFiles)
+    : 0
+
   return (
     <>
       <Head><title>List a Property | SAGECO EVERGREEN</title></Head>
@@ -95,7 +111,7 @@ export default function UploadProperty() {
 
       <div className="max-w-2xl mx-auto px-4 py-10">
         <div className="bg-white rounded-2xl shadow-md p-8">
-          {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4">{error}</div>}
+          {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm">{error}</div>}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1">Property Title *</label>
@@ -144,30 +160,56 @@ export default function UploadProperty() {
                 placeholder="Describe the property..."
                 className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:border-primary" />
             </div>
+
+            {/* Image Upload with Progress */}
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1">Property Images</label>
               <input type="file" multiple accept="image/*" onChange={handleImageUpload}
-                className="w-full border rounded-lg px-4 py-3" />
-              {uploading && (
-                <div className="flex items-center gap-2 mt-2">
-                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                  <p className="text-sm text-primary">Uploading images...</p>
+                disabled={uploading}
+                className="w-full border rounded-lg px-4 py-3 disabled:opacity-50" />
+
+              {uploading && totalFiles > 0 && (
+                <div className="mt-3 space-y-2">
+                  <div className="flex justify-between text-xs text-gray-600 mb-1">
+                    <span>Uploading {totalFiles} image{totalFiles > 1 ? 's' : ''}...</span>
+                    <span className="font-bold text-primary">{overallPercent}%</span>
+                  </div>
+                  <div className="w-full bg-gray-100 rounded-full h-2.5">
+                    <div
+                      className="bg-primary h-2.5 rounded-full transition-all duration-300"
+                      style={{ width: `${overallPercent}%` }}
+                    />
+                  </div>
+                  {uploadProgress.map((p, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-gray-500">
+                      <span className="w-20 truncate">Image {i + 1}</span>
+                      <div className="flex-1 bg-gray-100 rounded-full h-1.5">
+                        <div className="bg-green-400 h-1.5 rounded-full transition-all duration-300" style={{ width: `${p}%` }} />
+                      </div>
+                      <span className="w-8 text-right">{p}%</span>
+                    </div>
+                  ))}
                 </div>
               )}
+
               {previews.length > 0 && (
                 <div className="flex gap-2 mt-3 flex-wrap">
                   {previews.map((url, i) => (
                     <div key={i} className="relative">
                       <img src={url} alt={`Preview ${i+1}`} className="w-24 h-24 object-cover rounded-lg border-2 border-green-200" />
-                      {images[i] && <div className="absolute top-1 right-1 bg-green-500 rounded-full w-4 h-4 flex items-center justify-center text-white text-xs">✓</div>}
+                      {images[i]
+                        ? <div className="absolute top-1 right-1 bg-green-500 rounded-full w-5 h-5 flex items-center justify-center text-white text-xs">✓</div>
+                        : uploading && <div className="absolute inset-0 bg-black/30 rounded-lg flex items-center justify-center text-white text-xs font-bold">{uploadProgress[i] || 0}%</div>
+                      }
                     </div>
                   ))}
                 </div>
               )}
             </div>
+
             <button type="submit" disabled={uploading}
               className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg hover:opacity-90 disabled:opacity-50">
-              {uploading ? 'Uploading images...' : 'Submit Property Listing'}
+              {uploading ? `Uploading images... (${overallPercent}%)` : 'Submit Property Listing'}
             </button>
           </form>
         </div>
