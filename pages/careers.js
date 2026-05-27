@@ -97,6 +97,22 @@ export default function Careers() {
       </section>
 
       <div className="max-w-5xl mx-auto px-4 py-10">
+        <div className="mb-8 bg-white border border-green-200 rounded-lg p-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">For employers</p>
+            <h2 className="text-xl font-bold text-gray-800">Job listings are coming soon</h2>
+            <p className="text-gray-600 text-sm mt-1">
+              Employers will be able to list jobs on SAGECO EVERGREEN at UGX 5,000 per job.
+            </p>
+          </div>
+          <Link
+            href="/post-job"
+            className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:opacity-90 text-center whitespace-nowrap"
+          >
+            Post a Job
+          </Link>
+        </div>
+
         {/* Filter */}
         <div className="flex gap-3 flex-wrap justify-center mb-8">
           {departments.map(d => (
