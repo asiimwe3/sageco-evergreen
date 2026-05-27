@@ -1,37 +1,109 @@
 import Head from "next/head"
-import Link from "next/link"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import { useState } from "react"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+const LISTING_FEE = 5000
+
+const initialForm = {
+  employer_name: "",
+  contact_name: "",
+  email: "",
+  phone: "",
+  job_title: "",
+  department: "",
+  job_type: "Full-time",
+  location: "",
+  deadline: "",
+  summary: "",
+  requirements: "",
+}
 
 export default function PostJob() {
+  const [form, setForm] = useState(initialForm)
+  const [status, setStatus] = useState("idle")
+  const [error, setError] = useState("")
+
+  const update = (field, value) => setForm({ ...form, [field]: value })
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    setStatus("processing")
+    setError("")
+
+    try {
+      const reference = `JOB-${Date.now()}`
+      const callbackUrl = `${window.location.origin}/job-post-success?ref=${reference}`
+
+      const intentRes = await fetch("/api/job-posts/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          amount_ugx: LISTING_FEE,
+          pesapal_ref: reference,
+        }),
+      })
+
+      const intentData = await intentRes.json()
+      if (!intentRes.ok) {
+        throw new Error(intentData.error || "Could not save job listing.")
+      }
+
+      const payRes = await fetch("/api/pesapal/initiate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: LISTING_FEE,
+          currency: "UGX",
+          description: `SAGECO EVERGREEN Job Listing - ${form.job_title}`,
+          email: form.email,
+          phone: form.phone,
+          first_name: form.contact_name.split(" ")[0] || "Employer",
+          last_name: form.contact_name.split(" ").slice(1).join(" ") || form.employer_name,
+          reference,
+          callback_url: callbackUrl,
+        }),
+      })
+
+      const payData = await payRes.json()
+      if (!payRes.ok || !payData.redirect_url) {
+        throw new Error(payData.error || "Payment initiation failed.")
+      }
+
+      window.location.href = payData.redirect_url
+    } catch (err) {
+      setError(err.message || "Something went wrong. Please try again.")
+      setStatus("idle")
+    }
+  }
+
   return (
     <>
       <Head>
-        <title>Post a Job Coming Soon | SAGECO EVERGREEN</title>
+        <title>Post a Job | SAGECO EVERGREEN</title>
         <meta
           name="description"
-          content="Employers will soon be able to list jobs on SAGECO EVERGREEN for UGX 5,000 per job post."
+          content="Employers can list jobs on SAGECO EVERGREEN for UGX 5,000 per job post."
         />
         <link rel="canonical" href={`${SITE_URL}/post-job`} />
       </Head>
       <Navbar />
 
       <main className="bg-gray-50">
-        <section className="bg-primary text-white px-4 py-16">
-          <div className="max-w-5xl mx-auto grid gap-10 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+        <section className="bg-primary text-white px-4 py-14">
+          <div className="max-w-5xl mx-auto grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-center">
             <div>
               <p className="text-secondary text-sm font-bold uppercase tracking-widest mb-3">
-                Coming Soon
+                Employer job listings
               </p>
               <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
-                Employers will be able to list jobs on SAGECO EVERGREEN
+                Post a job on SAGECO EVERGREEN
               </h1>
               <p className="text-green-100 text-lg leading-relaxed max-w-2xl">
-                We are preparing a simple job posting service for companies,
-                brokers, property owners, and project teams hiring across
-                Uganda's real estate and green project sectors.
+                Reach applicants interested in real estate, brokerage,
+                operations, and green project work across Uganda.
               </p>
             </div>
 
@@ -44,60 +116,116 @@ export default function PostJob() {
                 <span className="text-gray-500 font-medium">per job</span>
               </div>
               <p className="text-gray-600 text-sm mt-4">
-                Each paid job post will be published for applicants to view and
-                apply through the careers section.
+                Submit your job details, pay securely with PesaPal, and the
+                SAGECO team will review the listing for publishing.
               </p>
             </div>
           </div>
         </section>
 
-        <section className="max-w-5xl mx-auto px-4 py-12">
-          <div className="grid gap-5 md:grid-cols-3">
-            <div className="bg-white rounded-lg border p-5">
-              <h2 className="font-bold text-gray-800 mb-2">Create a job post</h2>
-              <p className="text-sm text-gray-600">
-                Add the role title, location, job type, deadline, and applicant
-                requirements.
-              </p>
+        <section className="max-w-5xl mx-auto px-4 py-10">
+          <form onSubmit={handleSubmit} className="bg-white border rounded-lg shadow-sm p-6 space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-800">Employer details</h2>
+              <p className="text-sm text-gray-500 mt-1">These details help us contact you about the listing.</p>
             </div>
-            <div className="bg-white rounded-lg border p-5">
-              <h2 className="font-bold text-gray-800 mb-2">Pay per listing</h2>
-              <p className="text-sm text-gray-600">
-                Pay UGX 5,000 for each job you want published on the platform.
-              </p>
-            </div>
-            <div className="bg-white rounded-lg border p-5">
-              <h2 className="font-bold text-gray-800 mb-2">Receive applicants</h2>
-              <p className="text-sm text-gray-600">
-                Applicants will apply online so employers can review submissions
-                quickly.
-              </p>
-            </div>
-          </div>
 
-          <div className="mt-10 bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-            <h2 className="text-2xl font-bold text-primary mb-2">
-              Need to advertise a job now?
-            </h2>
-            <p className="text-gray-600 mb-5">
-              Contact SAGECO EVERGREEN while online employer posting is being
-              prepared.
-            </p>
-            <div className="flex flex-wrap gap-3 justify-center">
-              <Link
-                href="/contact"
-                className="bg-primary text-white px-6 py-3 rounded-full font-bold hover:opacity-90"
-              >
-                Contact Us
-              </Link>
-              <Link
-                href="/careers"
-                className="border-2 border-primary text-primary px-6 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition"
-              >
-                View Careers
-              </Link>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Employer / Company *</label>
+                <input required value={form.employer_name} onChange={e => update("employer_name", e.target.value)}
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Contact Person *</label>
+                <input required value={form.contact_name} onChange={e => update("contact_name", e.target.value)}
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Email *</label>
+                <input required type="email" value={form.email} onChange={e => update("email", e.target.value)}
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Phone *</label>
+                <input required value={form.phone} onChange={e => update("phone", e.target.value)}
+                  placeholder="+256 700 000 000"
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
             </div>
-          </div>
+
+            <div className="border-t pt-6">
+              <h2 className="text-2xl font-bold text-gray-800">Job details</h2>
+              <p className="text-sm text-gray-500 mt-1">This information will be used to prepare the public listing.</p>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Job Title *</label>
+                <input required value={form.job_title} onChange={e => update("job_title", e.target.value)}
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Department</label>
+                <input value={form.department} onChange={e => update("department", e.target.value)}
+                  placeholder="Sales, Operations, Marketing..."
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Job Type *</label>
+                <select required value={form.job_type} onChange={e => update("job_type", e.target.value)}
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+                  <option>Full-time</option>
+                  <option>Part-time</option>
+                  <option>Contract</option>
+                  <option>Internship</option>
+                  <option>Temporary</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Location *</label>
+                <input required value={form.location} onChange={e => update("location", e.target.value)}
+                  placeholder="Kampala, Kyenjojo, Remote..."
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Application Deadline</label>
+                <input type="date" value={form.deadline} onChange={e => update("deadline", e.target.value)}
+                  className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Job Summary *</label>
+              <textarea required rows={4} value={form.summary} onChange={e => update("summary", e.target.value)}
+                placeholder="Briefly describe the role and responsibilities."
+                className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+            </div>
+
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Requirements *</label>
+              <textarea required rows={5} value={form.requirements} onChange={e => update("requirements", e.target.value)}
+                placeholder="List qualifications, experience, and skills required."
+                className="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary outline-none" />
+            </div>
+
+            <div className="bg-green-50 border border-green-200 rounded-lg p-5">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="font-bold text-gray-800">Payment due</p>
+                  <p className="text-sm text-gray-600">One job listing on SAGECO EVERGREEN</p>
+                </div>
+                <p className="text-2xl font-bold text-primary">UGX {LISTING_FEE.toLocaleString()}</p>
+              </div>
+            </div>
+
+            {error && <div className="bg-red-50 text-red-600 rounded-lg p-3 text-sm">{error}</div>}
+
+            <button type="submit" disabled={status === "processing"}
+              className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg hover:opacity-90 disabled:opacity-50">
+              {status === "processing" ? "Redirecting to PesaPal..." : "Submit and Pay UGX 5,000"}
+            </button>
+          </form>
         </section>
       </main>
 

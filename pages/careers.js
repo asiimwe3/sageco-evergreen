@@ -100,9 +100,9 @@ export default function Careers() {
         <div className="mb-8 bg-white border border-green-200 rounded-lg p-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">For employers</p>
-            <h2 className="text-xl font-bold text-gray-800">Job listings are coming soon</h2>
+            <h2 className="text-xl font-bold text-gray-800">List a job for UGX 5,000</h2>
             <p className="text-gray-600 text-sm mt-1">
-              Employers will be able to list jobs on SAGECO EVERGREEN at UGX 5,000 per job.
+              Employers can submit job details and pay securely through PesaPal.
             </p>
           </div>
           <Link
