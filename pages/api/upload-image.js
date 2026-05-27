@@ -17,17 +17,23 @@ export default async function handler(req, res) {
     // Decode base64
     const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '')
     const buffer = Buffer.from(base64Data, 'base64')
+    if (buffer.length > 3 * 1024 * 1024) {
+      return res.status(413).json({ error: 'Image is too large. Please upload an image under 3MB.' })
+    }
 
     // Detect mime type
     const ext = fileName.split('.').pop().toLowerCase()
-    const mimeMap = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp', gif: 'image/gif' }
-    const contentType = mimeMap[ext] || 'image/jpeg'
+    const mimeMap = { jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp' }
+    if (!mimeMap[ext]) {
+      return res.status(400).json({ error: 'Unsupported image type' })
+    }
+    const contentType = mimeMap[ext]
 
     const uniqueName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
 
     const { data, error } = await supabaseAdmin.storage
       .from(bucket)
-      .upload(uniqueName, buffer, { contentType, upsert: true })
+      .upload(uniqueName, buffer, { contentType, upsert: true, cacheControl: '31536000' })
 
     if (error) return res.status(500).json({ error: error.message })
 

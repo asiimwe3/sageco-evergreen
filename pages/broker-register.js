@@ -2,6 +2,7 @@ import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import Head from "next/head"
+import { compressImage, fileToBase64 } from "../lib/imageCompression"
 
 const PLANS = [
   {
@@ -77,28 +78,25 @@ export default function BrokerRegister() {
     let photo_url = null
     if (photoFile) {
       try {
-        const reader = new FileReader()
+        const compressedPhoto = await compressImage(photoFile, { maxWidth: 900, maxHeight: 900, quality: 0.75 })
         photo_url = await new Promise((resolve) => {
           const timer = setTimeout(() => resolve(null), 8000) // 8s timeout
-          reader.onload = async (e) => {
+          fileToBase64(compressedPhoto, false).then(async (base64Data) => {
             clearTimeout(timer)
             try {
-              const base64Data = e.target.result.split(",")[1]
               const uploadRes = await fetch("/api/upload-photo", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   fileData: base64Data,
-                  fileName: photoFile.name,
-                  mimeType: photoFile.type
+                  fileName: compressedPhoto.name,
+                  mimeType: compressedPhoto.type
                 })
               })
               const d = await uploadRes.json()
               resolve(d.url || null)
             } catch { resolve(null) }
-          }
-          reader.onerror = () => { clearTimeout(timer); resolve(null) }
-          reader.readAsDataURL(photoFile)
+          }).catch(() => { clearTimeout(timer); resolve(null) })
         })
       } catch { photo_url = null }
     }

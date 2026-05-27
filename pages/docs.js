@@ -1,207 +1,208 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+import Head from "next/head"
+import Link from "next/link"
+import { useState } from "react"
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
 
 const SECTIONS = [
   {
-    id: "getting-started",
-    icon: "🚀",
-    title: "Getting Started",
+    id: "overview",
+    label: "Overview",
+    title: "Platform Overview",
     content: [
       {
         heading: "What is SAGECO EVERGREEN?",
-        body: "SAGECO EVERGREEN CO. LTD is a premier real estate platform based in Kyenjojo, Uganda. We connect property buyers, sellers, and renters with verified brokers and premium listings across Uganda.",
+        body: "SAGECO EVERGREEN is a Uganda real estate platform for property listings, verified brokers, viewing bookings, green projects, careers, and employer job posts.",
       },
       {
-        heading: "How do I browse properties?",
-        body: "Visit the Properties page from the main menu. You can filter by category (Residential, Commercial, Land), location, and price range. Click any listing to view full details including photos, size, and broker contact.",
+        heading: "Who can use the platform?",
+        body: "Buyers, renters, property owners, brokers, employers, job seekers, and project teams can use the platform. Public pages are open to visitors, while some actions require a form submission or payment.",
       },
       {
-        heading: "Do I need an account?",
-        body: "Browsing properties is free and open to everyone. To book a viewing, subscribe to a plan, or apply for a job, you will need to create a free account.",
+        heading: "Main public pages",
+        body: "Use Properties for listings, Brokers for broker profiles, Projects for environmental projects, Careers for job opportunities, Post a Job for employer listings, Plans for broker subscriptions, and Contact for support.",
       },
     ],
   },
   {
-    id: "booking",
-    icon: "📅",
-    title: "Booking a Viewing",
+    id: "properties",
+    label: "Properties",
+    title: "Property Listings",
     content: [
       {
-        heading: "How does booking work?",
-        body: "Click 'Book a Viewing' on any property page or from the main menu. Fill in your details and select a preferred date. A booking fee of UGX 30,000 is required to confirm your viewing.",
+        heading: "How do I browse properties?",
+        body: "Open the Properties page and review available listings by category, location, and price. Listings can include residential, commercial, land, plot, and green project property types.",
       },
       {
-        heading: "How is the booking fee split?",
-        body: "The UGX 30,000 booking fee is split as follows: UGX 10,000 goes to SAGECO EVERGREEN as a service fee, and UGX 20,000 goes directly to the assigned broker for their time.",
+        heading: "How do I list a property?",
+        body: "Use the Upload Property page to submit title, price, location, category, amenities, contact details, and property images. Submitted listings are stored as pending for review.",
       },
       {
-        heading: "What payment methods are accepted?",
-        body: "We accept Mobile Money (MTN & Airtel) and card payments via PesaPal. Payment is secure and you receive a confirmation reference immediately.",
+        heading: "How are images optimized?",
+        body: "Property images are compressed in the browser before upload, converted to a smaller web image format, limited by file size, and uploaded with long cache headers so public images load faster.",
+      },
+    ],
+  },
+  {
+    id: "bookings",
+    label: "Bookings",
+    title: "Bookings and Payments",
+    content: [
+      {
+        heading: "How does viewing booking work?",
+        body: "Visitors can use Book Viewing to submit their contact details and confirm interest in a property. The booking flow uses PesaPal for secure payment where payment is required.",
       },
       {
-        heading: "What happens after I pay?",
-        body: "Your broker will contact you within 24 hours to confirm the exact viewing time and location. You will also receive a payment confirmation to your email.",
+        heading: "Which payment methods are supported?",
+        body: "Payments are handled by PesaPal and can support mobile money and card payments depending on the active PesaPal configuration.",
+      },
+      {
+        heading: "What happens after payment?",
+        body: "The user returns to a confirmation page with a payment reference. The SAGECO team can then follow up through the admin and message records.",
       },
     ],
   },
   {
     id: "brokers",
-    icon: "🤝",
-    title: "Brokers",
+    label: "Brokers",
+    title: "Broker Registration and Plans",
     content: [
       {
-        heading: "How do I become a broker?",
-        body: "Go to the Broker Registration page and fill in your details including your name, phone, specialization, and location. Upload a clear profile photo. A registration fee applies, after which your profile is reviewed and activated.",
+        heading: "How does broker registration work?",
+        body: "A broker submits profile details and an optional compressed profile photo. After profile creation, the broker pays the registration fee through PesaPal.",
       },
       {
-        heading: "What plans are available for brokers?",
-        body: "We offer three plans: Basic, Pro, and Premium. Higher plans give you more listing visibility, priority placement, and access to more client bookings. See the Plans page for current pricing.",
+        heading: "What plans are available?",
+        body: "Broker plans include Basic, Pro, and Premium. Plans control listing limits and visibility. The Plans page shows current pricing and features.",
       },
       {
-        heading: "How do brokers get paid?",
-        body: "When a client books a viewing for your listing, UGX 20,000 from the booking fee is sent to your registered mobile money number. Payments are processed through PesaPal.",
+        heading: "How are broker photos handled?",
+        body: "Broker and officer photos are compressed before upload and stored in Supabase Storage with cache headers for faster repeat loading.",
       },
     ],
   },
   {
-    id: "subscriptions",
-    icon: "💳",
-    title: "Subscriptions & Plans",
+    id: "jobs",
+    label: "Jobs",
+    title: "Careers and Employer Job Posts",
     content: [
       {
-        heading: "What do subscription plans include?",
-        body: "Subscription plans unlock premium features including priority listing placement, access to broker contact details, and early access to new properties. Plans are designed for serious buyers and investors.",
+        heading: "How do job seekers apply?",
+        body: "Job seekers use the Careers page, choose an open role, and submit an application with contact details, experience, cover letter, and optional CV.",
       },
       {
-        heading: "How do I subscribe?",
-        body: "Go to the Plans page, choose your plan, and complete payment via Mobile Money or card. Your subscription activates immediately after payment confirmation.",
+        heading: "How do employers post jobs?",
+        body: "Employers use Post a Job to submit company details, contact details, job title, location, type, summary, deadline, and requirements.",
       },
       {
-        heading: "Can I cancel my subscription?",
-        body: "Subscriptions run for the period purchased. To cancel or enquire about a refund, contact us at sagecoevergreen@gmail.com or call 0750 414 366.",
-      },
-    ],
-  },
-  {
-    id: "listings",
-    icon: "🏡",
-    title: "Property Listings",
-    content: [
-      {
-        heading: "How do I list a property?",
-        body: "Brokers and admins can add properties via the Upload Property page. Each listing requires a title, description, price, location, category, and at least one photo.",
-      },
-      {
-        heading: "What categories are available?",
-        body: "Properties are categorised as Residential, Commercial, or Land. Each category has relevant fields such as bedrooms/bathrooms for residential or area in acres for land.",
-      },
-      {
-        heading: "How are property images handled?",
-        body: "Images are securely uploaded to Supabase Storage and served via CDN for fast loading. You can upload multiple images per listing. The first image is used as the cover photo.",
+        heading: "How much does a job post cost?",
+        body: "Each employer job listing costs UGX 5,000. After submitting the form, the employer is redirected to PesaPal to complete payment.",
       },
     ],
   },
   {
     id: "admin",
-    icon: "⚙️",
-    title: "Admin Panel",
+    label: "Admin",
+    title: "Admin Operations",
     content: [
       {
-        heading: "How do I access the admin panel?",
-        body: "Go to /admin and enter the admin password. The admin panel lets you manage properties, brokers, bookings, subscriptions, job applications, messages, and officers.",
+        heading: "What can admins manage?",
+        body: "The admin area supports properties, brokers, bookings, subscriptions, messages, job applications, and officers.",
       },
       {
-        heading: "How do I approve a broker?",
-        body: "In the admin panel, navigate to the Brokers section. You will see all registered brokers and their payment status. Once registration payment is confirmed, set their status to 'approved' to activate their profile.",
+        heading: "How are job posts tracked?",
+        body: "Employer job post intents are saved as contact message records with a job_post_pending status and a PesaPal reference for follow-up.",
       },
       {
-        heading: "How do I manage officers?",
-        body: "Go to /admin/officers to add, view, or remove company officers. Officers are internal staff members displayed on the company profile.",
+        heading: "What pages should not be indexed?",
+        body: "Admin pages, API routes, payment success pages, subscription success pages, and password reset pages are blocked through robots metadata or robots.txt.",
       },
     ],
   },
   {
-    id: "contact",
-    icon: "📞",
-    title: "Contact & Support",
+    id: "support",
+    label: "Support",
+    title: "Contact and Support",
     content: [
       {
-        heading: "How do I reach SAGECO EVERGREEN?",
-        body: "Phone: 0750 414 366 (WhatsApp), 0782 067 425, 0772 002 326\nEmail: sagecoevergreen@gmail.com\nLocation: Kyenjojo, Uganda\nYou can also use the Contact page on the website or chat with our assistant using the green chat button.",
+        heading: "How do I contact SAGECO EVERGREEN?",
+        body: "Use the Contact page, email sagecoevergreen@gmail.com, or call the listed company phone numbers. The website chat assistant is also available for quick questions.",
       },
       {
-        heading: "What are your working hours?",
-        body: "Our team is available Monday to Saturday, 8:00 AM to 6:00 PM EAT. The chatbot is available 24/7 for instant answers.",
+        heading: "What should I include in support messages?",
+        body: "Include your name, phone number, email, and any relevant reference number from a booking, job post, broker registration, or subscription payment.",
       },
     ],
   },
-];
+]
 
 export default function Docs() {
-  const [activeSection, setActiveSection] = useState("getting-started");
-
-  const current = SECTIONS.find((s) => s.id === activeSection);
+  const [activeSection, setActiveSection] = useState("overview")
+  const current = SECTIONS.find((section) => section.id === activeSection) || SECTIONS[0]
 
   return (
     <>
       <Head>
-        <title>Documentation | SAGECO EVERGREEN</title>
-        <meta name="description" content="Learn how to use SAGECO EVERGREEN — browse properties, book viewings, register as a broker, and more." />
+        <title>SAGECO EVERGREEN Documentation | Real Estate Platform Help</title>
+        <meta
+          name="description"
+          content="Current documentation for SAGECO EVERGREEN: property listings, broker registration, job posts, payments, uploads, admin tools, and support."
+        />
+        <link rel="canonical" href={`${SITE_URL}/docs`} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`${SITE_URL}/docs`} />
+        <meta property="og:title" content="SAGECO EVERGREEN Documentation" />
+        <meta property="og:description" content="Learn how to use SAGECO EVERGREEN for properties, brokers, bookings, careers, job posts, and payments." />
       </Head>
       <Navbar />
 
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-green-800 to-green-600 text-white py-16 px-4 text-center">
+      <section className="bg-primary text-white py-14 px-4 text-center">
         <h1 className="text-4xl font-bold mb-3">Documentation</h1>
-        <p className="text-green-100 text-lg max-w-xl mx-auto">Everything you need to know about using the SAGECO EVERGREEN platform.</p>
+        <p className="text-green-100 text-lg max-w-2xl mx-auto">
+          Current guidance for using and managing the SAGECO EVERGREEN platform.
+        </p>
       </section>
 
-      <div className="max-w-6xl mx-auto px-4 py-12 flex flex-col md:flex-row gap-8">
-        {/* Sidebar */}
+      <div className="max-w-6xl mx-auto px-4 py-10 flex flex-col md:flex-row gap-8">
         <aside className="md:w-64 shrink-0">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden sticky top-6">
-            {SECTIONS.map((s) => (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden sticky top-6">
+            {SECTIONS.map((section) => (
               <button
-                key={s.id}
-                onClick={() => setActiveSection(s.id)}
-                className={`w-full text-left px-5 py-3 text-sm font-medium flex items-center gap-3 transition border-l-4 ${
-                  activeSection === s.id
-                    ? "border-green-700 bg-green-50 text-green-800"
+                key={section.id}
+                onClick={() => setActiveSection(section.id)}
+                className={`w-full text-left px-5 py-3 text-sm font-medium transition border-l-4 ${
+                  activeSection === section.id
+                    ? "border-primary bg-green-50 text-primary"
                     : "border-transparent text-gray-600 hover:bg-gray-50"
                 }`}
               >
-                <span>{s.icon}</span>
-                {s.title}
+                {section.label}
               </button>
             ))}
           </div>
         </aside>
 
-        {/* Content */}
         <main className="flex-1">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <h2 className="text-2xl font-bold text-green-800 mb-6 flex items-center gap-3">
-              <span>{current.icon}</span> {current.title}
-            </h2>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
+            <h2 className="text-2xl font-bold text-primary mb-6">{current.title}</h2>
             <div className="space-y-8">
-              {current.content.map((item, i) => (
-                <div key={i}>
+              {current.content.map((item) => (
+                <section key={item.heading}>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">{item.heading}</h3>
-                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">{item.body}</p>
-                </div>
+                  <p className="text-gray-600 leading-relaxed">{item.body}</p>
+                </section>
               ))}
             </div>
           </div>
 
-          {/* Footer CTA */}
-          <div className="mt-6 bg-green-50 border border-green-100 rounded-2xl p-6 text-center">
-            <p className="text-gray-700 font-medium mb-3">Still have questions?</p>
+          <div className="mt-6 bg-green-50 border border-green-100 rounded-lg p-6 text-center">
+            <p className="text-gray-700 font-medium mb-3">Need more help?</p>
             <div className="flex gap-3 justify-center flex-wrap">
-              <Link href="/faq" className="bg-green-700 text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-800 transition">View FAQ</Link>
-              <Link href="/contact" className="border border-green-700 text-green-700 px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition">Contact Us</Link>
+              <Link href="/faq" className="bg-primary text-white px-6 py-2 rounded-full text-sm font-semibold hover:opacity-90 transition">View FAQ</Link>
+              <Link href="/contact" className="border border-primary text-primary px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition">Contact Us</Link>
+              <Link href="/post-job" className="border border-primary text-primary px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition">Post a Job</Link>
             </div>
           </div>
         </main>
@@ -209,5 +210,5 @@ export default function Docs() {
 
       <Footer />
     </>
-  );
+  )
 }

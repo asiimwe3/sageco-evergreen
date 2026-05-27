@@ -1,5 +1,6 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
+import { compressImage, fileToBase64 } from "../../lib/imageCompression"
 
 export default function AdminOfficers() {
   const [officers, setOfficers] = useState([])
@@ -36,16 +37,12 @@ export default function AdminOfficers() {
 
   async function uploadPhoto(file) {
     setPhotoUploading(true)
-    const base64 = await new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      reader.onload = () => resolve(reader.result.split(",")[1])
-      reader.onerror = reject
-      reader.readAsDataURL(file)
-    })
+    const compressed = await compressImage(file, { maxWidth: 900, maxHeight: 900, quality: 0.75 })
+    const base64 = await fileToBase64(compressed, false)
     const res = await fetch("/api/upload-photo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ fileData: base64, fileName: file.name, mimeType: file.type })
+      body: JSON.stringify({ fileData: base64, fileName: compressed.name, mimeType: compressed.type })
     })
     const data = await res.json()
     setPhotoUploading(false)

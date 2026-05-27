@@ -2,6 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /payment-success
 Disallow: /broker-payment-success
+Disallow: /job-post-success
+Disallow: /subscription-success
+Disallow: /reset-password
+Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://sageco-evergreen.vercel.app/api/sitemap.xml
+Sitemap: https://sageco-evergreen.vercel.app/sitemap.xml

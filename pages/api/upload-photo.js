@@ -15,6 +15,9 @@ export default async function handler(req, res) {
 
   try {
     const buffer = Buffer.from(fileData, "base64")
+    if (buffer.length > 1024 * 1024) {
+      return res.status(413).json({ error: "Photo is too large. Please upload a photo under 1MB." })
+    }
     const ext = (fileName || "photo.jpg").split(".").pop()
     const name = `broker-photo-${Date.now()}.${ext}`
 
@@ -22,7 +25,8 @@ export default async function handler(req, res) {
       .from("broker-photos")
       .upload(name, buffer, {
         contentType: mimeType || "image/jpeg",
-        upsert: true
+        upsert: true,
+        cacheControl: "31536000"
       })
 
     if (error) {

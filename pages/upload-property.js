@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Head from 'next/head'
+import { compressImage, fileToBase64 } from '../lib/imageCompression'
 
 const CATEGORIES = ['Residential', 'Commercial', 'Land', 'Plot', 'Green Project']
 
@@ -42,7 +43,7 @@ export default function UploadProperty() {
   }
 
   async function handleImageUpload(e) {
-    const files = Array.from(e.target.files)
+    const files = Array.from(e.target.files).slice(0, 8)
     if (!files.length) return
     setUploading(true)
     setError('')
@@ -53,21 +54,26 @@ export default function UploadProperty() {
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i]
-      setPreviews(prev => [...prev, URL.createObjectURL(file)])
+      if (!file.type.startsWith('image/')) {
+        setError('Please upload image files only.')
+        continue
+      }
+      if (file.size > 12 * 1024 * 1024) {
+        setError('Each image must be 12MB or smaller before compression.')
+        continue
+      }
+
+      const compressed = await compressImage(file, { maxWidth: 1600, maxHeight: 1200, quality: 0.78 })
+      setPreviews(prev => [...prev, URL.createObjectURL(compressed)])
       setUploadProgress(prev => { const a = [...prev]; a[i] = 25; return a })
 
-      const base64 = await new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = reject
-        reader.readAsDataURL(file)
-      })
+      const base64 = await fileToBase64(compressed)
       setUploadProgress(prev => { const a = [...prev]; a[i] = 55; return a })
 
       const res = await fetch('/api/upload-image', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: base64, fileName: file.name, bucket: 'property-images' })
+        body: JSON.stringify({ imageBase64: base64, fileName: compressed.name, bucket: 'property-images' })
       })
       const data = await res.json()
       setUploadProgress(prev => { const a = [...prev]; a[i] = 100; return a })
