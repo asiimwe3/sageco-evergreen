@@ -103,6 +103,25 @@ const SECTIONS = [
     ],
   },
   {
+    id: "green-projects",
+    label: "Green Projects",
+    title: "Green Projects",
+    content: [
+      {
+        heading: "What green projects are supported?",
+        body: "The Projects page highlights agro-forestry partnerships, eco lodge and nature stay sites, solar-ready property development, and community nursery bed opportunities.",
+      },
+      {
+        heading: "How can landowners participate?",
+        body: "Landowners can contact SAGECO EVERGREEN with land or property that may fit agro-forestry, eco tourism, renewable energy, or restoration projects.",
+      },
+      {
+        heading: "Can I list a green property?",
+        body: "Yes. Use Upload Property and choose Green Project as the category when the property is connected to sustainable development, eco tourism, restoration, or renewable energy.",
+      },
+    ],
+  },
+  {
     id: "admin",
     label: "Admin",
     title: "Admin Operations",
