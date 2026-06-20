@@ -1,8 +1,10 @@
-const BASE_URL = 'https://pay.pesapal.com/v3'
-const CONSUMER_KEY = 'NL6lp3bu17Oyp4ykldKhezVWakIGlF5w'
-const CONSUMER_SECRET = 'LqCRWimK9fH5HvuVwkzKsDS8Xbc='
-const IPN_ID = 'd1bf4b0e-ab62-4b3e-ad96-da622a516a9d'
-const SITE_URL = 'https://sageco-evergreen.vercel.app'
+const BASE_URL = process.env.PESAPAL_ENV === 'sandbox' 
+  ? 'https://cybqa.pesapal.com/v3' 
+  : 'https://pay.pesapal.com/v3'
+const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
+const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
+const IPN_ID = process.env.PESAPAL_IPN_ID
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen.vercel.app'
 
 async function getToken() {
   const res = await fetch(`${BASE_URL}/api/Auth/RequestToken`, {
@@ -19,6 +21,10 @@ async function getToken() {
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()
+
+  if (!CONSUMER_KEY || !CONSUMER_SECRET) {
+    return res.status(500).json({ error: 'PesaPal credentials not configured' })
+  }
 
   const {
     amount, currency = 'UGX', description, email, phone,
