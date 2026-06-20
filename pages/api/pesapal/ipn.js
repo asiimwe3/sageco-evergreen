@@ -1,12 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-const BASE_URL = 'https://pay.pesapal.com/v3'
-const CONSUMER_KEY = 'NL6lp3bu17Oyp4ykldKhezVWakIGlF5w'
-const CONSUMER_SECRET = 'LqCRWimK9fH5HvuVwkzKsDS8Xbc='
+const BASE_URL = process.env.PESAPAL_ENV === 'sandbox' 
+  ? 'https://cybqa.pesapal.com/v3' 
+  : 'https://pay.pesapal.com/v3'
+const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
+const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
 
 const supabaseAdmin = createClient(
-  'https://emldbjqegftrngxypeca.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
 async function getToken() {
