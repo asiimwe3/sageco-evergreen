@@ -19,14 +19,22 @@ export default async function handler(req, res) {
     if (!full_name || !email || !phone) return res.status(400).json({ error: "Missing required fields" })
     const sanitize = (str) => typeof str === "string" ? str.trim().slice(0, 500) : str
 
-    // Generate unique broker_id
+    // Generate unique broker_id — use .maybeSingle() instead of .single() to avoid error on no match
     let broker_id, attempts = 0
     do {
       broker_id = generateBrokerId()
-      const { data: existing } = await supabaseAdmin.from("brokers").select("id").eq("broker_id", broker_id).single()
+      const { data: existing } = await supabaseAdmin
+        .from("brokers")
+        .select("id")
+        .eq("broker_id", broker_id)
+        .maybeSingle()
       if (!existing) break
       attempts++
     } while (attempts < 10)
+
+    if (attempts >= 10) {
+      return res.status(500).json({ error: "Could not generate unique broker ID. Please try again." })
+    }
 
     const { data, error } = await supabaseAdmin.from("brokers").insert([{
       full_name: sanitize(full_name),
