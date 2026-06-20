@@ -29,8 +29,8 @@ export default async function handler(req, res) {
     }])
 
     if (error) {
-      // Table may not exist yet — still return success to user
       console.error("Contact insert error:", error.message)
+      return res.status(500).json({ error: "Could not save your message. Please try again or email us directly." })
     }
 
     return res.status(200).json({ success: true })
