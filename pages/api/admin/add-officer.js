@@ -5,10 +5,10 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
+const ADMIN_SECRET = process.env.ADMIN_SECRET
 
 export default async function handler(req, res) {
-  if (req.headers["x-admin-secret"] !== ADMIN_SECRET) {
+  if (!ADMIN_SECRET || req.headers["x-admin-secret"] !== ADMIN_SECRET) {
     return res.status(403).json({ error: "Unauthorized" })
   }
 
