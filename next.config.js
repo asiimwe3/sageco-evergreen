@@ -28,7 +28,7 @@ const nextConfig = {
               "style-src 'self' 'unsafe-inline'",
               "img-src 'self' data: blob: https://images.unsplash.com https://emldbjqegftrngxypeca.supabase.co",
               "font-src 'self'",
-              "connect-src 'self' https://*.supabase.co https://pay.pesapal.com https://cybqa.pesapal.com",
+              "connect-src 'self' https://*.supabase.co https://pay.pesapal.com https://cybqa.pesapal.com https://api.openai.com",
               "frame-src https://pay.pesapal.com https://cybqa.pesapal.com"
             ].join("; ")
           }
