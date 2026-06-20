@@ -5,6 +5,8 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
@@ -54,7 +56,7 @@ Name: SAGECO EVERGREEN CO. LTD
 Location: Kyenjojo, Uganda
 Phone: 0750 414 366 (WhatsApp), 0782 067 425, 0772 002 326 (WhatsApp)
 Email: sagecoevergreen@gmail.com
-Website: https://sageco-evergreen-rho.vercel.app
+Website: ${SITE_URL}
 About: We are a premier real estate platform connecting property buyers, sellers, and renters with verified brokers across Uganda. We specialize in residential homes, commercial spaces, land, and eco-friendly green developments.
 
 == HOW BOOKING WORKS ==
