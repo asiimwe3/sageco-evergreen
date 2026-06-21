@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     reference, property_id, property_title,
     broker_id, broker_name,
     customer_name, customer_email, customer_phone,
-    preferred_date, message,
+    preferred_date, time_slot, booking_type, message, whatsapp_updates,
     total_amount, business_share, broker_share,
     payment_type, status
   } = req.body
@@ -28,7 +28,10 @@ export default async function handler(req, res) {
       customer_email,
       customer_phone,
       preferred_date,
+      time_slot: time_slot || null,
+      booking_type: booking_type || "viewing",
       message: message || null,
+      whatsapp_updates: whatsapp_updates !== false,
       total_amount,
       business_share,
       broker_share,
@@ -40,6 +43,21 @@ export default async function handler(req, res) {
       console.error("Booking save error:", error)
       return res.status(500).json({ error: error.message })
     }
+
+    // Also try to send confirmation email if email service is available
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || ""}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: customer_name,
+          email: customer_email,
+          message: `Booking confirmation: ${reference} for ${property_title || booking_type} on ${preferred_date} (${time_slot || "TBD"})`,
+          internal: true
+        })
+      })
+    } catch {}
+
     return res.status(200).json({ booking: data })
   } catch (err) {
     console.error("Save booking error:", err.message)
