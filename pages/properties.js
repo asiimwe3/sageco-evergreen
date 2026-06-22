@@ -1,51 +1,118 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import Head from 'next/head'
 import Link from 'next/link'
 
+const CATEGORIES = ['All', 'Residential', 'Commercial', 'Land', 'Plot', 'Green Project']
+
 export default function Properties() {
   const [properties, setProperties] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('All')
-  const categories = ['All', 'Residential', 'Commercial', 'Land', 'Green Project']
+  const [search, setSearch] = useState('')
+  const [searchInput, setSearchInput] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
+  const [priceRange, setPriceRange] = useState({ min: '', max: '' })
 
-  useEffect(() => {
-    fetchProperties()
-  }, [])
-
-  async function fetchProperties() {
+  const fetchProperties = useCallback(async () => {
     setLoading(true)
     try {
-      const res = await fetch('/api/get-properties')
+      const params = new URLSearchParams({ limit: '200' })
+      if (filter !== 'All') params.set('category', filter)
+      if (search) params.set('search', search)
+      const res = await fetch(`/api/get-properties?${params}`)
       const data = await res.json()
       setProperties(Array.isArray(data) ? data : [])
     } catch (e) {
       setProperties([])
     }
     setLoading(false)
-  }
+  }, [filter, search])
 
-  const filtered = filter === 'All' ? properties : properties.filter(p => p.category === filter)
+  useEffect(() => { fetchProperties() }, [fetchProperties])
+
+  // Client-side sort + price filter
+  const filtered = properties
+    .filter(p => {
+      if (priceRange.min && Number(p.price) < Number(priceRange.min)) return false
+      if (priceRange.max && Number(p.price) > Number(priceRange.max)) return false
+      return true
+    })
+    .sort((a, b) => {
+      if (sortBy === 'price_asc') return a.price - b.price
+      if (sortBy === 'price_desc') return b.price - a.price
+      if (sortBy === 'oldest') return new Date(a.created_at) - new Date(b.created_at)
+      return new Date(b.created_at) - new Date(a.created_at)
+    })
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    setSearch(searchInput)
+  }
 
   return (
     <>
-      <Head><title>Properties | SAGECO EVERGREEN</title></Head>
+      <Head>
+        <title>Properties for Sale & Rent in Uganda | SAGECO EVERGREEN</title>
+        <meta name="description" content="Browse residential homes, commercial spaces, land, and green projects across Uganda. Verified listings with direct broker contact." />
+      </Head>
       <Navbar />
+
+      {/* Hero */}
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Our Properties</h1>
-        <p className="text-green-100">Browse available properties across Uganda</p>
+        <p className="text-green-100">Browse {properties.length > 0 ? `${properties.length}+` : ""} verified listings across Uganda</p>
       </section>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Filter */}
-        <div className="flex gap-3 flex-wrap justify-center mb-8">
-          {categories.map(c => (
-            <button key={c} onClick={() => setFilter(c)}
-              className={`px-5 py-2 rounded-full font-medium border transition ${filter === c ? 'bg-primary text-white border-primary' : 'border-gray-300 text-gray-600 hover:border-primary'}`}>
-              {c}
-            </button>
-          ))}
+        {/* Search bar */}
+        <form onSubmit={handleSearch} className="flex gap-2 mb-6">
+          <input
+            value={searchInput}
+            onChange={e => setSearchInput(e.target.value)}
+            placeholder="Search by title, location, or description..."
+            className="flex-1 border rounded-full px-5 py-2.5 focus:ring-2 focus:ring-primary outline-none text-sm"
+          />
+          <button type="submit" className="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm hover:opacity-90">Search</button>
+          {search && (
+            <button type="button" onClick={() => { setSearch(''); setSearchInput('') }}
+              className="text-gray-400 hover:text-gray-600 px-3 text-sm">Clear</button>
+          )}
+        </form>
+
+        {/* Filter + Sort */}
+        <div className="flex flex-wrap gap-3 items-center justify-between mb-6">
+          <div className="flex gap-2 flex-wrap">
+            {CATEGORIES.map(c => (
+              <button key={c} onClick={() => setFilter(c)}
+                className={`px-4 py-1.5 rounded-full font-medium border text-sm transition ${filter === c ? 'bg-primary text-white border-primary' : 'border-gray-300 text-gray-600 hover:border-primary'}`}>
+                {c}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-2 items-center">
+            <select value={sortBy} onChange={e => setSortBy(e.target.value)}
+              className="border rounded-full px-3 py-1.5 text-sm text-gray-600 outline-none focus:ring-1 focus:ring-primary">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="price_asc">Price: Low → High</option>
+              <option value="price_desc">Price: High → Low</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Price range filter */}
+        <div className="flex gap-3 items-center mb-6 flex-wrap">
+          <span className="text-sm text-gray-500 font-medium">Price (UGX):</span>
+          <input type="number" placeholder="Min" value={priceRange.min} onChange={e => setPriceRange(p => ({ ...p, min: e.target.value }))}
+            className="border rounded-lg px-3 py-1.5 text-sm w-32 outline-none focus:ring-1 focus:ring-primary" />
+          <span className="text-gray-400">–</span>
+          <input type="number" placeholder="Max" value={priceRange.max} onChange={e => setPriceRange(p => ({ ...p, max: e.target.value }))}
+            className="border rounded-lg px-3 py-1.5 text-sm w-32 outline-none focus:ring-1 focus:ring-primary" />
+          {(priceRange.min || priceRange.max) && (
+            <button onClick={() => setPriceRange({ min: '', max: '' })} className="text-xs text-gray-400 hover:text-primary">Clear</button>
+          )}
         </div>
 
         {/* Upload CTA */}
@@ -57,42 +124,56 @@ export default function Properties() {
           <Link href="/upload-property" className="bg-primary text-white px-6 py-2 rounded-full font-bold hover:opacity-90">List Property</Link>
         </div>
 
+        {/* Results count */}
+        {!loading && <p className="text-sm text-gray-400 mb-4">{filtered.length} propert{filtered.length === 1 ? 'y' : 'ies'} found{search ? ` for "${search}"` : ''}</p>}
+
         {loading ? (
-          <div className="text-center py-20 text-gray-400">Loading properties...</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1,2,3,4,5,6].map(i => <div key={i} className="bg-gray-100 rounded-xl h-64 animate-pulse" />)}
+          </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-5xl mb-4">🏡</div>
-            <p className="text-gray-500 text-lg">No properties found in this category yet.</p>
-            <Link href="/upload-property" className="mt-4 inline-block bg-primary text-white px-6 py-2 rounded-full font-bold">Be the first to list</Link>
+            <p className="text-gray-500 text-lg">No properties found{search ? ` matching "${search}"` : ' in this category'}.</p>
+            <button onClick={() => { setFilter('All'); setSearch(''); setSearchInput('') }}
+              className="mt-4 text-primary font-bold hover:underline">Clear filters</button>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map(p => (
-              <Link key={p.id} href={`/property/${p.id}`} className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition hover:-translate-y-1 duration-200">
+              <Link key={p.id} href={`/property/${p.id}`}
+                className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition hover:-translate-y-1 duration-200">
                 <div className="relative">
                   {p.images?.[0] ? (
-                    <img src={p.images[0]} alt={p.title} className="w-full h-48 object-cover" />
+                    <img src={p.images[0]} alt={p.title} className="w-full h-48 object-cover" loading="lazy" />
                   ) : (
                     <div className="w-full h-48 bg-green-100 flex items-center justify-center text-5xl">🏡</div>
                   )}
+                  {p.featured && (
+                    <div className="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs font-bold px-2 py-0.5 rounded-full">⭐ Featured</div>
+                  )}
                   {p.images?.length > 1 && (
                     <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded-full">
-                      📷 {p.images.length} photos
+                      📷 {p.images.length}
                     </div>
                   )}
                 </div>
                 <div className="p-5">
-                  <span className="text-xs bg-green-100 text-primary px-2 py-1 rounded-full font-medium">{p.category}</span>
-                  <h3 className="text-lg font-bold text-gray-800 mt-2">{p.title}</h3>
-                  <p className="text-gray-500 text-sm mt-1">📍 {p.location}</p>
-                  {p.description && <p className="text-gray-400 text-sm mt-2 line-clamp-2">{p.description}</p>}
-                  <div className="flex items-center justify-between mt-4">
-                    {p.price > 0 ? (
-                      <span className="text-primary font-bold text-lg">UGX {Number(p.price).toLocaleString()}</span>
-                    ) : (
-                      <span className="text-primary font-bold">Contact for Price</span>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs bg-green-100 text-primary px-2 py-0.5 rounded-full font-medium">{p.category}</span>
+                    {p.is_negotiable && <span className="text-xs text-green-600 font-medium">Negotiable</span>}
+                  </div>
+                  <h3 className="font-bold text-gray-800 text-sm line-clamp-2 min-h-[40px]">{p.title}</h3>
+                  <p className="text-gray-400 text-xs mt-1 mb-2">📍 {p.location}</p>
+                  <div className="flex items-center justify-between mt-3">
+                    <p className="text-primary font-bold text-base">
+                      {p.price > 0 ? `UGX ${Number(p.price).toLocaleString()}` : 'Contact for Price'}
+                    </p>
+                    {(p.bedrooms || p.bathrooms) && (
+                      <p className="text-gray-400 text-xs">
+                        {p.bedrooms ? `${p.bedrooms}🛏` : ''} {p.bathrooms ? `${p.bathrooms}🚿` : ''}
+                      </p>
                     )}
-                    <span className="bg-primary text-white text-sm px-4 py-2 rounded-full">View Details</span>
                   </div>
                 </div>
               </Link>

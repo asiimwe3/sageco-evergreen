@@ -1,119 +1,151 @@
-import { useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import Head from "next/head"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+import { useState } from "react"
+import Link from "next/link"
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" })
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" })
   const [status, setStatus] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setStatus("sending")
+    setLoading(true)
+    setStatus("")
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: `${form.subject ? `[${form.subject}] ` : ""}${form.message}${form.phone ? `\nPhone: ${form.phone}` : ""}`
+        })
       })
-      if (res.ok) {
-        setStatus("sent")
-        setForm({ name: "", email: "", message: "" })
+      const d = await res.json()
+      if (d.success) {
+        setStatus("success")
+        setForm({ name: "", email: "", phone: "", subject: "", message: "" })
       } else {
-        setStatus("error")
+        setStatus("error:" + (d.error || "Please try again."))
       }
     } catch {
-      setStatus("error")
+      setStatus("error:Something went wrong. Please try again.")
     }
+    setLoading(false)
   }
 
   return (
     <>
       <Head>
         <title>Contact Us | SAGECO EVERGREEN</title>
-        <meta name="description" content="Contact SAGECO EVERGREEN CO.LTD in Kyenjojo, Uganda. Call +256 750 414 366, email sagecoevergreen@gmail.com or visit us for real estate services." />
-        <link rel="canonical" href={`${SITE_URL}/contact`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`${SITE_URL}/contact`} />
-        <meta property="og:title" content="Contact Us | SAGECO EVERGREEN" />
-        <meta property="og:description" content="Contact SAGECO EVERGREEN CO.LTD in Kyenjojo, Uganda for real estate services." />
-        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
+        <meta name="description" content="Get in touch with SAGECO EVERGREEN. Contact us about property listings, broker registration, or any enquiry." />
       </Head>
       <Navbar />
+
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Contact Us</h1>
-        <p className="text-green-100">Get in touch with our team</p>
+        <p className="text-green-100">We're here to help — Mon to Sat, 8 AM – 6 PM EAT</p>
       </section>
-      <div className="max-w-3xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <address className="bg-gray-50 rounded-xl p-6 space-y-5 not-italic">
-            <div>
-              <span className="text-2xl">📍</span>
-              <p className="font-bold mt-1">Location</p>
-              <p className="text-gray-600">Kyenjojo, Uganda</p>
-              <a
-                href="https://maps.google.com/?q=Kyenjojo,Uganda"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary text-sm hover:underline"
-              >View on Google Maps →</a>
-            </div>
-            <div>
-              <span className="text-2xl">📧</span>
-              <p className="font-bold mt-1">Email</p>
-              <a href="mailto:sagecoevergreen@gmail.com" className="text-gray-600 hover:text-primary">sagecoevergreen@gmail.com</a>
-            </div>
-            <div>
-              <span className="text-2xl">📞</span>
-              <p className="font-bold mt-1">Phone</p>
-              <div className="flex items-center gap-3 mt-1">
-                <a href="tel:+256750414366" className="text-gray-600 hover:text-primary">+256 750 414 366</a>
-                <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer"
-                  className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-600">WhatsApp</a>
+
+      <div className="max-w-5xl mx-auto px-4 py-14 grid grid-cols-1 md:grid-cols-2 gap-10">
+        {/* Contact Info */}
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Get In Touch</h2>
+          <div className="space-y-5">
+            {[
+              { icon: "📍", label: "Address", value: "Kyenjojo, Western Uganda" },
+              { icon: "📞", label: "Phone / WhatsApp", value: "0750 414 366 · 0782 067 425 · 0772 002 326", href: "tel:+256750414366" },
+              { icon: "📧", label: "Email", value: "sagecoevergreen@gmail.com", href: "mailto:sagecoevergreen@gmail.com" },
+              { icon: "🕐", label: "Working Hours", value: "Monday – Saturday, 8:00 AM – 6:00 PM EAT" },
+            ].map(c => (
+              <div key={c.label} className="flex gap-4">
+                <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-xl flex-shrink-0">{c.icon}</div>
+                <div>
+                  <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">{c.label}</p>
+                  {c.href ? (
+                    <a href={c.href} className="text-gray-800 font-medium hover:text-primary transition text-sm">{c.value}</a>
+                  ) : (
+                    <p className="text-gray-800 font-medium text-sm">{c.value}</p>
+                  )}
+                </div>
               </div>
-              <a href="tel:+256782067425" className="block text-gray-600 hover:text-primary mt-1">+256 782 067 425</a>
-              <div className="flex items-center gap-3 mt-1">
-                <a href="tel:+256772002326" className="text-gray-600 hover:text-primary">+256 772 002 326</a>
-                <a href="https://wa.me/256772002326" target="_blank" rel="noopener noreferrer"
-                  className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-600">WhatsApp</a>
-              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 p-5 bg-green-50 border border-green-200 rounded-xl">
+            <h3 className="font-bold text-primary mb-2">🚀 Quick Actions</h3>
+            <div className="flex flex-col gap-2">
+              <Link href="/book" className="flex items-center gap-2 text-sm text-primary font-medium hover:underline">📅 Book a Property Viewing</Link>
+              <Link href="/broker-register" className="flex items-center gap-2 text-sm text-primary font-medium hover:underline">🤝 Register as a Broker</Link>
+              <a href="https://wa.me/256750414366" target="_blank" rel="noopener" className="flex items-center gap-2 text-sm text-green-600 font-medium hover:underline">💬 WhatsApp Us Now</a>
+              <Link href="/faq" className="flex items-center gap-2 text-sm text-primary font-medium hover:underline">❓ View FAQ</Link>
             </div>
-            <div>
-              <span className="text-2xl">🐦</span>
-              <p className="font-bold mt-1">Social</p>
-              <a href="https://twitter.com/PropertyMasterUg" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@PropertyMasterUg</a>
-            </div>
-          </address>
-          <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-xl p-6 space-y-4">
-            {status === "sent" && <div className="bg-green-50 text-green-700 p-3 rounded-lg">✅ Message sent! We will be in touch.</div>}
-            {status === "error" && <div className="bg-red-50 text-red-600 p-3 rounded-lg">Failed to send. Please try again.</div>}
-            <input required placeholder="Your Name" value={form.name} onChange={e => setForm({...form, name: e.target.value})}
-              className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-primary" />
-            <input required type="email" placeholder="Email" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
-              className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-primary" />
-            <textarea required rows={4} placeholder="Message" value={form.message} onChange={e => setForm({...form, message: e.target.value})}
-              className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-primary" />
-            <button disabled={status === "sending"}
-              className="w-full bg-primary text-white py-2 rounded-lg hover:opacity-90 font-bold disabled:opacity-50">
-              {status === "sending" ? "Sending..." : "Send Message"}
-            </button>
-          </form>
+          </div>
         </div>
 
-        {/* Google Maps Embed */}
-        <div className="mt-10 rounded-xl overflow-hidden shadow-md">
-          <iframe
-            title="SAGECO EVERGREEN Location — Kyenjojo, Uganda"
-            src="https://maps.google.com/maps?q=Kyenjojo,Uganda&output=embed"
-            width="100%"
-            height="300"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
+        {/* Contact Form */}
+        <div className="bg-white rounded-2xl shadow-md p-8">
+          <h2 className="text-xl font-bold text-gray-800 mb-5">Send Us a Message</h2>
+
+          {status === "success" ? (
+            <div className="text-center py-10">
+              <div className="text-5xl mb-4">✅</div>
+              <h3 className="text-xl font-bold text-primary mb-2">Message Sent!</h3>
+              <p className="text-gray-500 mb-6">We'll get back to you within 24 hours.</p>
+              <button onClick={() => setStatus("")} className="text-primary font-bold hover:underline">Send another message</button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {status.startsWith("error:") && (
+                <div className="bg-red-50 text-red-600 rounded-lg p-3 text-sm">{status.slice(6)}</div>
+              )}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Your Name *</label>
+                  <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })}
+                    placeholder="John Doe"
+                    className="w-full border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary outline-none" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Phone</label>
+                  <input type="tel" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
+                    placeholder="0750 414 366"
+                    className="w-full border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary outline-none" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Email *</label>
+                <input required type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })}
+                  placeholder="your@email.com"
+                  className="w-full border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Subject</label>
+                <select value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })}
+                  className="w-full border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary outline-none">
+                  <option value="">Select a subject</option>
+                  <option>Property Inquiry</option>
+                  <option>Broker Registration</option>
+                  <option>Booking Support</option>
+                  <option>Payment Issue</option>
+                  <option>Career / Jobs</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Message *</label>
+                <textarea required rows={5} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })}
+                  placeholder="How can we help you?"
+                  className="w-full border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary outline-none resize-none" />
+              </div>
+              <button type="submit" disabled={loading}
+                className="w-full bg-primary text-white py-3 rounded-full font-bold text-base hover:opacity-90 disabled:opacity-50 transition">
+                {loading ? "Sending..." : "Send Message"}
+              </button>
+            </form>
+          )}
         </div>
       </div>
       <Footer />

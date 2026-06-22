@@ -1,197 +1,119 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import Head from "next/head";
-import Link from "next/link";
-import { useState } from "react";
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+import Head from "next/head"
+import Link from "next/link"
+import { useState } from "react"
 
 const FAQS = [
   {
-    category: "General",
+    category: "Booking & Payments",
     items: [
-      {
-        q: "What is SAGECO EVERGREEN?",
-        a: "SAGECO EVERGREEN CO. LTD is a real estate company based in Kyenjojo, Uganda. We help people find, buy, rent, and invest in properties across Uganda through a network of verified brokers.",
-      },
-      {
-        q: "Is this platform free to use?",
-        a: "Browsing properties and contacting us is completely free. Booking a viewing costs UGX 30,000. Broker registration and subscription plans have their own fees — see our Plans page for details.",
-      },
-      {
-        q: "Where is SAGECO EVERGREEN located?",
-        a: "Our offices are in Kyenjojo, Uganda. You can reach us on 0750 414 366 (WhatsApp), 0782 067 425, or 0772 002 326.",
-      },
-    ],
+      { q: "How much does it cost to book a property viewing?", a: "A property viewing costs UGX 30,000. This covers the booking fee — UGX 10,000 to SAGECO EVERGREEN and UGX 20,000 goes to the assigned broker. A consultation costs UGX 15,000." },
+      { q: "What payment methods are accepted?", a: "We accept MTN Mobile Money, Airtel Money, and bank cards through PesaPal — Uganda's trusted payment gateway." },
+      { q: "What happens after I pay?", a: "Your booking is confirmed automatically. Our team will contact you within 24 hours to confirm the exact time and location of your viewing." },
+      { q: "Can I get a refund if I cancel?", a: "Bookings are non-refundable once the broker has been notified. If you need to reschedule, contact us on WhatsApp at 0750 414 366 within 24 hours of booking." },
+      { q: "My payment went through but I haven't heard back — what do I do?", a: "Please WhatsApp us on 0750 414 366 with your booking reference number. We'll confirm your booking status immediately." },
+    ]
   },
   {
     category: "Properties",
     items: [
-      {
-        q: "How do I find a property?",
-        a: "Go to the Properties page and browse all available listings. You can filter by type (Residential, Commercial, Land), location, and price range.",
-      },
-      {
-        q: "Are all listings verified?",
-        a: "Yes. All properties on SAGECO EVERGREEN are submitted by approved brokers or our admin team and reviewed before going live.",
-      },
-      {
-        q: "Can I save properties I like?",
-        a: "This feature is coming soon. For now, note the property title and contact our team or the assigned broker to express interest.",
-      },
-      {
-        q: "What does 'available' status mean?",
-        a: "A property marked 'available' is ready for viewing and has not yet been sold or rented. Status updates as soon as a deal is closed.",
-      },
-    ],
+      { q: "How do I list a property?", a: "Click 'List Property' on the Properties page or go to /upload-property. Fill in the details, upload photos, and submit. Our team will review and publish your listing within 24 hours." },
+      { q: "Are all listings verified?", a: "Yes. Every property is reviewed by our team before going live. We verify ownership documents and ensure listing accuracy." },
+      { q: "Can I negotiate the listed price?", a: "Properties marked 'Negotiable' allow price discussion. Contact the broker directly or book a consultation for price negotiations." },
+      { q: "How do I know if a property is still available?", a: "All listed properties on our site have 'Available' status. Once sold or rented, they are removed automatically." },
+    ]
   },
   {
-    category: "Bookings",
+    category: "Broker Registration",
     items: [
-      {
-        q: "How much does a viewing cost?",
-        a: "A viewing costs UGX 30,000. This covers the service fee (UGX 10,000 to SAGECO) and broker fee (UGX 20,000 to your assigned broker).",
-      },
-      {
-        q: "What payment methods are supported?",
-        a: "We accept MTN Mobile Money, Airtel Money, and card payments through PesaPal. All transactions are secure.",
-      },
-      {
-        q: "How long after paying will I hear from my broker?",
-        a: "Your broker will reach out within 24 hours of confirmed payment to schedule the exact viewing time.",
-      },
-      {
-        q: "Can I cancel a booking?",
-        a: "To cancel or reschedule, contact us immediately at sagecoevergreen@gmail.com or call 0750 414 366. Refund eligibility depends on timing.",
-      },
-    ],
+      { q: "How do I become a SAGECO EVERGREEN broker?", a: "Visit /broker-register, fill in your details and upload a profile photo. Pay the registration fee via PesaPal. Your account will be reviewed and activated within 48 hours." },
+      { q: "What are the broker fees?", a: "Registration fee: UGX 32,000 (one-time). Dashboard activation: UGX 45,000 (monthly subscription). You earn UGX 20,000 per confirmed booking." },
+      { q: "What are the subscription plan limits?", a: "Free: 3 listings. Basic (UGX 15,000/mo): 10 listings. Pro (UGX 25,000/mo): 50 listings. Premium (UGX 30,000/mo): Unlimited listings." },
+      { q: "How do I get paid for bookings?", a: "Broker earnings (UGX 20,000 per confirmed viewing) are paid out weekly via Mobile Money. Ensure your phone number is registered in your broker profile." },
+    ]
   },
   {
-    category: "Brokers",
+    category: "Account & Support",
     items: [
-      {
-        q: "How do I register as a broker?",
-        a: "Visit the Broker Registration page, fill in your profile details, upload a photo, and complete the registration payment. Once reviewed, your profile goes live on the platform.",
-      },
-      {
-        q: "How do I get clients as a broker?",
-        a: "Clients browse your profile and listings, then pay UGX 30,000 to book a viewing with you. You receive UGX 20,000 per confirmed booking directly to your mobile money.",
-      },
-      {
-        q: "Can I upgrade my broker plan?",
-        a: "Yes. Go to the Plans page while logged in and select a higher plan. Upgrading improves your listing visibility and priority in search results.",
-      },
-      {
-        q: "What happens if my registration is rejected?",
-        a: "Our team will contact you by email or phone to explain the reason and guide you on resubmitting. Common issues include unclear photos or incomplete information.",
-      },
-    ],
-  },
-  {
-    category: "Account & Login",
-    items: [
-      {
-        q: "How do I create an account?",
-        a: "Click 'Sign Up' from the top menu. Enter your email and password, or use 'Continue with Google' for instant access.",
-      },
-      {
-        q: "I forgot my password. What do I do?",
-        a: "On the login page, click 'Forgot password?' and enter your email. You will receive a reset link within a few minutes. Check your spam folder if you don't see it.",
-      },
-      {
-        q: "Is my data secure?",
-        a: "Yes. All data is stored securely in Supabase with row-level security. Passwords are never stored in plain text. Payments are handled by PesaPal.",
-      },
-    ],
-  },
-  {
-    category: "Careers",
-    items: [
-      {
-        q: "How do I apply for a job?",
-        a: "Visit the Careers page to see current openings. Click on a position and complete the application form. You can attach your CV. Applications are reviewed within 7 working days.",
-      },
-      {
-        q: "Where are your job notifications sent?",
-        a: "Application confirmations are sent to your email. Our recruitment team is notified immediately and will contact shortlisted candidates.",
-      },
-    ],
-  },
-];
+      { q: "How do I reset my password?", a: "Go to /login and click 'Forgot Password'. Enter your email and we'll send you a reset link." },
+      { q: "Can I sign in with Google?", a: "Yes! Both the login and signup pages support Google Sign-In for quick access." },
+      { q: "How do I contact SAGECO EVERGREEN?", a: "Call or WhatsApp us: 0750 414 366 / 0782 067 425 / 0772 002 326. Email: sagecoevergreen@gmail.com. We operate Mon–Sat, 8 AM – 6 PM EAT." },
+      { q: "Where is SAGECO EVERGREEN located?", a: "We are based in Kyenjojo, Western Uganda, and serve clients across the entire country." },
+    ]
+  }
+]
 
 function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-gray-100 last:border-0">
-      <button
-        className="w-full text-left py-4 flex justify-between items-start gap-4"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="text-gray-800 font-medium text-sm leading-relaxed">{q}</span>
-        <span className={`text-green-700 text-xl shrink-0 transition-transform ${open ? "rotate-45" : ""}`}>+</span>
+    <div className={`border rounded-xl overflow-hidden transition ${open ? 'border-primary' : 'border-gray-200'}`}>
+      <button onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition">
+        <span className={`font-semibold text-sm ${open ? 'text-primary' : 'text-gray-800'}`}>{q}</span>
+        <span className={`text-xl font-bold ml-4 flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-45 text-primary' : 'text-gray-400'}`}>+</span>
       </button>
       {open && (
-        <div className="pb-4 text-gray-600 text-sm leading-relaxed">{a}</div>
+        <div className="px-5 pb-4 text-sm text-gray-600 leading-relaxed border-t border-gray-100 bg-green-50/30">
+          {a}
+        </div>
       )}
     </div>
-  );
+  )
 }
 
 export default function FAQ() {
-  const [activeCategory, setActiveCategory] = useState("General");
-  const categories = FAQS.map((f) => f.category);
-  const current = FAQS.find((f) => f.category === activeCategory);
+  const [activeCategory, setActiveCategory] = useState("All")
+  const categories = ["All", ...FAQS.map(f => f.category)]
+
+  const filtered = activeCategory === "All" ? FAQS : FAQS.filter(f => f.category === activeCategory)
 
   return (
     <>
       <Head>
         <title>FAQ | SAGECO EVERGREEN</title>
-        <meta name="description" content="Frequently asked questions about SAGECO EVERGREEN — properties, bookings, brokers, subscriptions, and more." />
+        <meta name="description" content="Frequently asked questions about SAGECO EVERGREEN — bookings, payments, property listings, broker registration, and more." />
       </Head>
       <Navbar />
 
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-green-800 to-green-600 text-white py-16 px-4 text-center">
-        <h1 className="text-4xl font-bold mb-3">Frequently Asked Questions</h1>
-        <p className="text-green-100 text-lg max-w-xl mx-auto">Quick answers to the most common questions about our platform.</p>
+      <section className="bg-primary text-white py-16 px-4 text-center">
+        <h1 className="text-4xl font-bold mb-2">Frequently Asked Questions</h1>
+        <p className="text-green-100">Everything you need to know about SAGECO EVERGREEN</p>
       </section>
 
-      <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="max-w-3xl mx-auto px-4 py-14">
         {/* Category tabs */}
-        <div className="flex gap-2 flex-wrap mb-8">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2 rounded-full text-sm font-semibold transition ${
-                activeCategory === cat
-                  ? "bg-green-700 text-white"
-                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-              }`}
-            >
-              {cat}
+        <div className="flex flex-wrap gap-2 justify-center mb-10">
+          {categories.map(c => (
+            <button key={c} onClick={() => setActiveCategory(c)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium border transition ${activeCategory === c ? 'bg-primary text-white border-primary' : 'border-gray-300 text-gray-600 hover:border-primary'}`}>
+              {c}
             </button>
           ))}
         </div>
 
-        {/* Questions */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 px-8 py-2 mb-8">
-          {current.items.map((item, i) => (
-            <FAQItem key={i} q={item.q} a={item.a} />
+        <div className="space-y-8">
+          {filtered.map(section => (
+            <div key={section.category}>
+              <h2 className="text-lg font-bold text-gray-800 mb-4 border-b border-gray-100 pb-2">{section.category}</h2>
+              <div className="space-y-3">
+                {section.items.map(item => <FAQItem key={item.q} q={item.q} a={item.a} />)}
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Still need help */}
-        <div className="bg-green-50 border border-green-100 rounded-2xl p-8 text-center">
-          <h3 className="text-xl font-bold text-green-800 mb-2">Still need help?</h3>
-          <p className="text-gray-600 mb-5">Our team is available Monday–Saturday, 8am–6pm EAT.</p>
-          <div className="flex gap-3 justify-center flex-wrap">
-            <Link href="/contact" className="bg-green-700 text-white px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-800 transition">Contact Us</Link>
-            <a href="https://wa.me/256750414366" target="_blank" rel="noreferrer" className="border border-green-700 text-green-700 px-6 py-2 rounded-full text-sm font-semibold hover:bg-green-50 transition">WhatsApp Us</a>
-            <Link href="/docs" className="border border-gray-300 text-gray-600 px-6 py-2 rounded-full text-sm font-semibold hover:bg-gray-50 transition">Read Docs</Link>
+        <div className="mt-12 text-center bg-green-50 border border-green-200 rounded-xl p-8">
+          <h3 className="font-bold text-primary text-xl mb-2">Still have questions?</h3>
+          <p className="text-gray-500 mb-5 text-sm">Our team is available Mon–Sat, 8 AM – 6 PM EAT</p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <a href="https://wa.me/256750414366" target="_blank" rel="noopener"
+              className="bg-green-500 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:opacity-90">💬 WhatsApp Us</a>
+            <Link href="/contact" className="bg-primary text-white px-6 py-2.5 rounded-full font-bold text-sm hover:opacity-90">Send a Message</Link>
           </div>
         </div>
       </div>
-
       <Footer />
     </>
-  );
+  )
 }

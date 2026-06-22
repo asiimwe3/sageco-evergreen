@@ -1,127 +1,66 @@
-import Head from "next/head"
-import Link from "next/link"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import { useState } from "react"
+import Head from "next/head"
+import Link from "next/link"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
-
-export default function AndroidComingSoon() {
-  const [email, setEmail] = useState("")
-  const [submitted, setSubmitted] = useState(false)
-
-  const handleNotify = (e) => {
-    e.preventDefault()
-    if (!email) return
-    // TODO: wire to Supabase notify list
-    setSubmitted(true)
-    setEmail("")
-  }
-
+export default function AndroidPage() {
   return (
     <>
       <Head>
-        <title>Android App Coming Soon | SAGECO EVERGREEN</title>
-        <meta name="description" content="The SAGECO EVERGREEN Android app is coming soon. Browse properties, book viewings, and connect with brokers — all from your phone." />
-        <meta property="og:title" content="SAGECO EVERGREEN Android App — Coming Soon" />
-        <meta property="og:description" content="Uganda's premier real estate platform, now on Android. Coming soon." />
-        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
-        <link rel="canonical" href={`${SITE_URL}/android`} />
+        <title>Download Android App | SAGECO EVERGREEN</title>
+        <meta name="description" content="Download the SAGECO EVERGREEN Android app and browse properties, book viewings, and connect with brokers on the go." />
       </Head>
-
       <Navbar />
 
-      <main className="min-h-[85vh] bg-gradient-to-br from-primary to-green-900 text-white flex items-center justify-center px-4 py-20">
-        <div className="max-w-2xl w-full text-center">
+      <section className="bg-gradient-to-br from-primary to-green-800 text-white py-24 px-4 text-center">
+        <div className="text-6xl mb-4">📱</div>
+        <h1 className="text-4xl font-bold mb-3">SAGECO EVERGREEN App</h1>
+        <p className="text-green-100 text-lg mb-8 max-w-xl mx-auto">Browse properties, book viewings, and connect with brokers — all from your Android phone.</p>
+        <a
+          href="https://github.com/asiimwe3/sageco-evergreen-app/actions"
+          target="_blank"
+          rel="noopener"
+          className="inline-block bg-white text-primary font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition shadow-lg">
+          ⬇️ Download APK
+        </a>
+        <p className="text-green-200 text-sm mt-4">Android 5.0+ required · Free to download</p>
+      </section>
 
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-secondary font-semibold text-xs px-4 py-1.5 rounded-full mb-8 uppercase tracking-widest">
-            🤖 Android App — Coming Soon
-          </div>
-
-          {/* Android icon */}
-          <div className="flex justify-center mb-6">
-            <div className="w-28 h-28 bg-white/10 border-2 border-white/20 rounded-3xl flex items-center justify-center text-6xl shadow-xl">
-              📱
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-10">App Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {[
+            { icon: "🏡", title: "Browse Properties", desc: "View all listings with photos, prices, and full details" },
+            { icon: "📅", title: "Book Viewings", desc: "Book a property viewing with secure PesaPal payment" },
+            { icon: "🤝", title: "Connect with Brokers", desc: "Chat directly with verified SAGECO brokers" },
+            { icon: "💬", title: "AI Assistant", desc: "Get instant answers about any property 24/7" },
+            { icon: "🔔", title: "WhatsApp Updates", desc: "Receive booking confirmations on WhatsApp" },
+            { icon: "🌿", title: "Green Projects", desc: "Explore eco-friendly property developments" },
+          ].map(f => (
+            <div key={f.title} className="bg-white rounded-xl shadow-sm border p-6 text-center">
+              <div className="text-3xl mb-3">{f.icon}</div>
+              <h3 className="font-bold text-gray-800 mb-1">{f.title}</h3>
+              <p className="text-gray-500 text-sm">{f.desc}</p>
             </div>
-          </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            SAGECO EVERGREEN<br />
-            <span className="text-secondary">on Android</span>
-          </h1>
-
-          <p className="text-green-100 text-lg mb-4 max-w-lg mx-auto">
-            We're building the ultimate real estate app for Uganda — find properties, book viewings, and connect with top brokers, all from your phone.
-          </p>
-
-          {/* Features preview */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-10 text-sm">
-            {[
-              { icon: "🏠", label: "Browse Listings", desc: "Search properties by location, type & price" },
-              { icon: "📅", label: "Book Viewings", desc: "Schedule visits directly from your phone" },
-              { icon: "🤝", label: "Find Brokers", desc: "Connect with verified brokers near you" },
-            ].map(({ icon, label, desc }) => (
-              <div key={label} className="bg-white/10 border border-white/15 rounded-2xl p-4">
-                <div className="text-3xl mb-2">{icon}</div>
-                <div className="font-bold text-white">{label}</div>
-                <div className="text-green-200 text-xs mt-1">{desc}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Notify form */}
-          {!submitted ? (
-            <form onSubmit={handleNotify} className="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                className="flex-1 px-5 py-3 rounded-full text-dark text-sm outline-none focus:ring-2 focus:ring-secondary"
-              />
-              <button
-                type="submit"
-                className="bg-secondary text-dark font-bold px-6 py-3 rounded-full hover:opacity-90 text-sm whitespace-nowrap"
-              >
-                Notify Me 🔔
-              </button>
-            </form>
-          ) : (
-            <div className="bg-white/10 border border-secondary/40 text-secondary font-semibold px-6 py-3 rounded-full inline-block text-sm">
-              ✅ You're on the list! We'll let you know when it launches.
-            </div>
-          )}
-
-          <p className="text-green-300 text-xs mt-4">No spam. Just one email when the app goes live.</p>
-
-          {/* CTA */}
-          <div className="flex flex-wrap gap-4 justify-center mt-10">
-            <Link
-              href="/"
-              className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary transition text-sm"
-            >
-              ← Back to Home
-            </Link>
-            <Link
-              href="/properties"
-              className="bg-secondary text-dark font-bold px-8 py-3 rounded-full hover:opacity-90 text-sm"
-            >
-              Browse Properties
-            </Link>
-          </div>
-
-          {/* Dots */}
-          <div className="mt-14 flex gap-2 justify-center opacity-20">
-            {[...Array(7)].map((_, i) => (
-              <div key={i} className={`rounded-full bg-white ${i === 3 ? "w-4 h-2" : "w-2 h-2"}`} />
-            ))}
-          </div>
+          ))}
         </div>
-      </main>
 
+        {/* Install instructions */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
+          <h3 className="font-bold text-yellow-800 mb-3">📋 How to Install</h3>
+          <ol className="space-y-2 text-sm text-yellow-800">
+            <li className="flex gap-2"><span className="font-bold">1.</span> Download the APK file from the link above</li>
+            <li className="flex gap-2"><span className="font-bold">2.</span> Open your phone Settings → Security → Enable "Unknown Sources"</li>
+            <li className="flex gap-2"><span className="font-bold">3.</span> Open the downloaded APK file and tap Install</li>
+            <li className="flex gap-2"><span className="font-bold">4.</span> Once installed, open "SAGECO EVERGREEN" from your app drawer</li>
+          </ol>
+        </div>
+
+        <div className="text-center">
+          <p className="text-gray-500 text-sm mb-4">Prefer to use the web version?</p>
+          <Link href="/properties" className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">Browse Properties Online</Link>
+        </div>
+      </div>
       <Footer />
     </>
   )

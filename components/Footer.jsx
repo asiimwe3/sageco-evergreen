@@ -1,50 +1,70 @@
 import Link from "next/link"
-import Image from "next/image"
 
 export default function Footer() {
+  const year = new Date().getFullYear()
   return (
-    <footer className="bg-primary text-white mt-16 py-12 px-4">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-gray-900 text-gray-300 pt-14 pb-6 mt-16">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10">
+        {/* Brand */}
         <div>
-          <div className="flex items-center gap-3 mb-3">
-            <Image src="/logo.jpg" alt="SAGECO EVERGREEN Logo" width={56} height={56} className="rounded-full object-contain bg-white p-0.5" />
-            <h3 className="text-xl font-bold">SAGECO EVERGREEN</h3>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-2xl">🌿</span>
+            <span className="font-extrabold text-white text-lg">SAGECO EVERGREEN</span>
           </div>
-          <p className="text-green-200 text-sm">Premium real estate with a green conscience. Building Uganda's future, one property at a time.</p>
-          <p className="text-green-300 text-sm mt-3">📍 Kyenjojo, Uganda</p>
-          <a
-            href="https://twitter.com/PropertyMasterUg"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-secondary text-sm hover:underline mt-1 inline-block"
-          >@PropertyMasterUg</a>
+          <p className="text-sm text-gray-400 leading-relaxed">Premier real estate platform in Uganda — homes, commercial spaces, and eco-friendly land.</p>
+          <div className="mt-4 space-y-1 text-sm">
+            <p>📍 Kyenjojo, Uganda</p>
+            <p>📞 <a href="tel:+256750414366" className="hover:text-white">0750 414 366</a></p>
+            <p>📧 <a href="mailto:sagecoevergreen@gmail.com" className="hover:text-white">sagecoevergreen@gmail.com</a></p>
+          </div>
+          <div className="flex gap-3 mt-4">
+            <a href="https://wa.me/256750414366" target="_blank" rel="noopener"
+              className="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded-full text-xs font-bold transition">WhatsApp</a>
+          </div>
         </div>
+
+        {/* Quick Links */}
         <div>
-          <h4 className="font-bold mb-3">Quick Links</h4>
-          <div className="space-y-2">
-            {[["/" , "Home"], ["/properties", "Properties"], ["/brokers", "Brokers"], ["/contact", "Contact"]].map(([href, label]) => (
-              <Link key={href} href={href} className="block text-green-200 hover:text-white text-sm">{label}</Link>
+          <h4 className="font-bold text-white mb-3">Quick Links</h4>
+          <ul className="space-y-2 text-sm">
+            {[["Properties","/properties"],["Brokers","/brokers"],["Book a Viewing","/book"],["Plans","/plans"],["Projects","/projects"]].map(([l,h]) => (
+              <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
             ))}
-          </div>
+          </ul>
         </div>
+
+        {/* For Brokers */}
         <div>
-          <h4 className="font-bold mb-3">Contact</h4>
-          <a href="mailto:sagecoevergreen@gmail.com" className="block text-green-200 hover:text-white text-sm">📧 sagecoevergreen@gmail.com</a>
-          <div className="flex items-center gap-2 mt-1">
-            <a href="tel:+256750414366" className="text-green-200 hover:text-white text-sm">📞 +256 750 414 366</a>
-            <a href="https://wa.me/256750414366" target="_blank" rel="noopener noreferrer"
-              className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-400">WA</a>
-          </div>
-          <a href="tel:+256782067425" className="block text-green-200 hover:text-white text-sm mt-1">📞 +256 782 067 425</a>
-          <div className="flex items-center gap-2 mt-1">
-            <a href="tel:+256772002326" className="text-green-200 hover:text-white text-sm">📞 +256 772 002 326</a>
-            <a href="https://wa.me/256772002326" target="_blank" rel="noopener noreferrer"
-              className="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full hover:bg-green-400">WA</a>
+          <h4 className="font-bold text-white mb-3">For Brokers</h4>
+          <ul className="space-y-2 text-sm">
+            {[["Become a Broker","/broker-register"],["Broker Plans","/plans"],["Broker Login","/login"],["Upload Property","/upload-property"],["FAQ","/faq"]].map(([l,h]) => (
+              <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Company */}
+        <div>
+          <h4 className="font-bold text-white mb-3">Company</h4>
+          <ul className="space-y-2 text-sm">
+            {[["About Us","/projects"],["Careers","/careers"],["Contact","/contact"],["FAQ","/faq"],["Android App","/android"]].map(([l,h]) => (
+              <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
+            ))}
+          </ul>
+          <div className="mt-4">
+            <p className="text-xs text-gray-500 mb-2">Mon–Sat · 8 AM – 6 PM EAT</p>
+            <Link href="/book" className="inline-block bg-primary text-white px-4 py-2 rounded-full text-xs font-bold hover:opacity-90">Book a Viewing →</Link>
           </div>
         </div>
       </div>
-      <div className="text-center text-green-300 text-sm mt-8 border-t border-green-700 pt-6">
-        © {new Date().getFullYear()} SAGECO EVERGREEN CO.LTD. All rights reserved.
+
+      <div className="max-w-7xl mx-auto px-4 border-t border-gray-800 mt-10 pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+        <p>© {year} SAGECO EVERGREEN CO. LTD — All rights reserved.</p>
+        <div className="flex gap-4">
+          <Link href="/faq" className="hover:text-gray-300">FAQ</Link>
+          <Link href="/contact" className="hover:text-gray-300">Contact</Link>
+          <Link href="/docs" className="hover:text-gray-300">Docs</Link>
+        </div>
       </div>
     </footer>
   )

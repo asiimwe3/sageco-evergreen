@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js"
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
+const ADMIN_SECRET = process.env.ADMIN_SECRET || process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
+
 export default async function handler(req, res) {
   if (req.headers["x-admin-secret"] !== ADMIN_SECRET) return res.status(403).end()
   const { data, error } = await supabase.from("contact_messages").select("*").order("created_at", { ascending: false })
