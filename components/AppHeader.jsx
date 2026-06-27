@@ -47,7 +47,7 @@ export default function AppHeader({ title, showBack = true, showSearch = true, s
 
         {/* Logo */}
         <Link href={aHref('/')} style={{ textDecoration: 'none', flex: 1, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-          <span style={{ fontSize: 20 }}>🌿</span>
+          <img src="/logo.jpg" alt="Sageco Evergreen" style={{ width: 34, height: 34, borderRadius: '50%', objectFit: 'contain' }} />
           <div style={{ lineHeight: 1.1, textAlign: 'left' }}>
             <div style={{ color: '#fff', fontWeight: 900, fontSize: 15, letterSpacing: '0.05em' }}>SAGECO</div>
             <div style={{ color: '#86efac', fontWeight: 600, fontSize: 9, letterSpacing: '0.2em' }}>EVERGREEN</div>
