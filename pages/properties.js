@@ -21,8 +21,7 @@ export default function Properties() {
   const [sortBy, setSortBy] = useState('newest')
   const [priceRange, setPriceRange] = useState({ min: '', max: '' })
 
-  const fetchProperties = useCallback(async (reset = true) => {
-    const currentOffset = reset ? 0 : offset
+  const fetchProperties = useCallback(async (reset = true, currentOffset = 0) => {
     if (reset) setLoading(true)
     else setLoadingMore(true)
 
@@ -38,6 +37,7 @@ export default function Properties() {
       if (priceRange.max)   params.set('max_price', priceRange.max)
 
       const res  = await fetch(`/api/get-properties?${params}`)
+      if (!res.ok) throw new Error(`API error ${res.status}`)
       const data = await res.json()
 
       const list = data.properties || []
@@ -50,16 +50,17 @@ export default function Properties() {
       }
       setTotal(data.total || 0)
       setHasMore(data.hasMore || false)
-    } catch {
+    } catch (err) {
+      console.error('[Properties] fetch error:', err)
       if (reset) setProperties([])
     }
 
     if (reset) setLoading(false)
     else setLoadingMore(false)
-  }, [filter, search, sortBy, priceRange, offset])
+  }, [filter, search, sortBy, priceRange])
 
   // Re-fetch on filter/sort/search change (always reset)
-  useEffect(() => { fetchProperties(true) }, [filter, search, sortBy, priceRange])
+  useEffect(() => { fetchProperties(true, 0) }, [filter, search, sortBy, priceRange])
 
   const handleSearch = e => {
     e.preventDefault()
@@ -243,7 +244,7 @@ export default function Properties() {
             {hasMore && (
               <div className="text-center mt-10">
                 <button
-                  onClick={() => fetchProperties(false)}
+                  onClick={() => fetchProperties(false, offset)}
                   disabled={loadingMore}
                   className="bg-primary text-white px-10 py-3 rounded-full font-bold hover:opacity-90 disabled:opacity-50 transition">
                   {loadingMore ? 'Loading...' : `Load More (${total - properties.length} remaining)`}
