@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 import Head from 'next/head'
 import { compressImage, fileToBase64 } from '../lib/imageCompression'
 
