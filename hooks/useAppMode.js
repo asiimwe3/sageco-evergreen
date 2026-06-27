@@ -7,14 +7,19 @@ export function useAppMode() {
   const [appMode, setAppMode] = useState(false)
 
   useEffect(() => {
-    const detected = detectAppModeClient()
-    if (detected) {
-      sessionStorage.setItem(SESSION_KEY, '1')
-      setAppMode(true)
-      return
+    try {
+      const detected = detectAppModeClient()
+      if (detected) {
+        sessionStorage.setItem(SESSION_KEY, '1')
+        setAppMode(true)
+        return
+      }
+      const persisted = sessionStorage.getItem(SESSION_KEY) === '1'
+      setAppMode(persisted)
+    } catch {
+      // sessionStorage may be unavailable in some WebView configs
+      setAppMode(detectAppModeClient())
     }
-    const persisted = sessionStorage.getItem(SESSION_KEY) === '1'
-    setAppMode(persisted)
   }, [])
 
   return appMode
