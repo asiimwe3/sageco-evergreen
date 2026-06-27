@@ -11,12 +11,23 @@ export default function Brokers() {
 
   useEffect(() => {
     async function fetchBrokers() {
-      const { data, error } = await supabase
-        .from("brokers").select("*")
-        .in("registration_status", ["registered", "active"])
-        .order("created_at", { ascending: false })
-      if (!error) setBrokers(data || [])
-      setLoading(false)
+      try {
+        const { data, error } = await supabase
+          .from("brokers").select("*")
+          .in("registration_status", ["registered", "active"])
+          .order("created_at", { ascending: false })
+        if (error) {
+          console.error('[Brokers] Supabase error:', error)
+          setBrokers([])
+        } else {
+          setBrokers(data || [])
+        }
+      } catch (err) {
+        console.error('[Brokers] fetch failed:', err)
+        setBrokers([])
+      } finally {
+        setLoading(false)
+      }
     }
     fetchBrokers()
   }, [])
