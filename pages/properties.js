@@ -1,6 +1,4 @@
 import { useEffect, useState, useCallback } from 'react'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
 import Head from 'next/head'
 import Link from 'next/link'
 
