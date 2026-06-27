@@ -1,9 +1,10 @@
 import pkg from "pg"
 const { Client } = pkg
 
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
+const ADMIN_SECRET = process.env.ADMIN_SECRET
 
 export default async function handler(req, res) {
+  if (process.env.NODE_ENV === 'production' && !process.env.ENABLE_MIGRATIONS) return res.status(403).json({ error: "Disabled in production" })
   if (req.headers["x-admin-secret"] !== ADMIN_SECRET) return res.status(403).end()
   
   const projectRef = "emldbjqegftrngxypeca"
