@@ -23,9 +23,13 @@ export default function Home() {
   const [loadingFeatured, setLoadingFeatured] = useState(true)
 
   useEffect(() => {
-    fetch('/api/get-properties?featured=true')
+    fetch('/api/get-properties?featured=true&limit=6')
       .then(r => r.json())
-      .then(d => { setFeatured((Array.isArray(d) ? d : []).filter(p => p.featured).slice(0, 6)); setLoadingFeatured(false) })
+      .then(d => {
+        const list = d.properties || (Array.isArray(d) ? d : [])
+        setFeatured(list.slice(0, 6))
+        setLoadingFeatured(false)
+      })
       .catch(() => setLoadingFeatured(false))
   }, [])
 
