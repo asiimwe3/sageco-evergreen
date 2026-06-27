@@ -27,10 +27,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl">🌿</span>
-          <span className="font-extrabold text-primary text-lg leading-tight">
-            SAGECO<br className="hidden sm:block" />
-            <span className="text-green-600 text-xs font-semibold tracking-widest hidden sm:block">EVERGREEN</span>
+          <img src="/logo.jpg" alt="Sageco Evergreen Ltd" className="h-12 w-12 object-contain rounded-full" />
+          <span className="font-extrabold text-primary text-lg leading-tight hidden sm:block">
+            SAGECO<br />
+            <span className="text-green-600 text-xs font-semibold tracking-widest">EVERGREEN</span>
           </span>
         </Link>
 
