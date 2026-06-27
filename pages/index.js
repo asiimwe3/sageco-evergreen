@@ -1,8 +1,7 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useAppMode } from "../hooks/useAppMode"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
 
@@ -19,6 +18,7 @@ const jsonLd = {
 }
 
 export default function Home() {
+  const appMode = useAppMode()
   const [featured, setFeatured] = useState([])
   const [loadingFeatured, setLoadingFeatured] = useState(true)
 
@@ -47,10 +47,9 @@ export default function Home() {
         <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </Head>
-      <Navbar />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary to-green-800 text-white py-24 px-4 text-center">
+      <section className={`bg-gradient-to-br from-primary to-green-800 text-white ${appMode ? "py-10" : "py-24"} px-4 text-center`}>
         <p className="text-green-200 text-sm uppercase tracking-widest mb-3 font-medium">Uganda&apos;s Trusted Property Platform</p>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Find Your Dream Property</h1>
         <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">Premium real estate in Uganda — homes, commercial spaces, and land with a green future in mind.</p>
@@ -179,7 +178,6 @@ export default function Home() {
         <Link href="/properties" className="bg-secondary text-dark font-bold px-10 py-4 rounded-full text-lg hover:opacity-90">View All Properties</Link>
       </section>
 
-      <Footer />
     </>
   )
 }

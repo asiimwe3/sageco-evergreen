@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 
@@ -87,7 +85,6 @@ export default function Plans() {
         <meta property="og:url" content={`${SITE_URL}/plans`} />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
       </Head>
-      <Navbar />
 
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-3">Broker Subscription Plans</h1>
@@ -184,7 +181,6 @@ export default function Plans() {
           </Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

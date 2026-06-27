@@ -130,7 +130,6 @@ export default function UploadProperty() {
 
   if (success) return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white p-10 rounded-2xl shadow text-center max-w-md">
           <div className="text-6xl mb-4">🎉</div>
@@ -142,7 +141,6 @@ export default function UploadProperty() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   )
 
@@ -155,7 +153,6 @@ export default function UploadProperty() {
   return (
     <>
       <Head><title>List a Property | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <section className="bg-primary text-white py-12 px-4 text-center">
         <h1 className="text-3xl font-bold">List Your Property</h1>
         <p className="text-green-100 mt-2">Reach thousands of buyers and renters across Uganda</p>
@@ -385,7 +382,6 @@ export default function UploadProperty() {
           </form>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

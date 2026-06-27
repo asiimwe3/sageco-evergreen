@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 
@@ -10,7 +8,6 @@ export default function AndroidPage() {
         <title>Download Android App | SAGECO EVERGREEN</title>
         <meta name="description" content="Download the SAGECO EVERGREEN Android app and browse properties, book viewings, and connect with brokers on the go." />
       </Head>
-      <Navbar />
 
       <section className="bg-gradient-to-br from-primary to-green-800 text-white py-24 px-4 text-center">
         <div className="text-6xl mb-4">📱</div>
@@ -61,7 +58,6 @@ export default function AndroidPage() {
           <Link href="/properties" className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">Browse Properties Online</Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

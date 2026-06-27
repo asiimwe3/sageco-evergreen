@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
@@ -79,8 +77,7 @@ export default function Apply() {
     return (
       <>
         <Head><title>Application Submitted | SAGECO EVERGREEN</title></Head>
-        <Navbar />
-        <div className="max-w-xl mx-auto px-4 py-20 text-center">
+          <div className="max-w-xl mx-auto px-4 py-20 text-center">
           <div className="text-6xl mb-4">🎉</div>
           <h1 className="text-3xl font-bold text-primary mb-2">Application Submitted!</h1>
           <p className="text-gray-600 mb-2">Thank you for applying for <strong>{jobTitle}</strong>.</p>
@@ -90,8 +87,7 @@ export default function Apply() {
             <Link href="/" className="border-2 border-primary text-primary px-6 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition">Go Home</Link>
           </div>
         </div>
-        <Footer />
-      </>
+        </>
     )
   }
 
@@ -101,7 +97,6 @@ export default function Apply() {
         <title>Apply — {jobTitle} | SAGECO EVERGREEN</title>
         <meta name="robots" content="noindex" />
       </Head>
-      <Navbar />
       <section className="bg-primary text-white py-10 px-4 text-center">
         <p className="text-green-200 text-sm mb-1">Applying for</p>
         <h1 className="text-3xl font-bold">{jobTitle}</h1>
@@ -170,7 +165,6 @@ export default function Apply() {
           Questions? Email us at sagecoevergreen@gmail.com
         </p>
       </div>
-      <Footer />
     </>
   )
 }

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 
 export default function BrokerPaymentSuccess() {
@@ -34,7 +32,6 @@ export default function BrokerPaymentSuccess() {
         <title>Payment Confirmed | SAGECO EVERGREEN</title>
         <meta name="robots" content="noindex" />
       </Head>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-2xl shadow p-10 text-center max-w-md">
           <div className="text-6xl mb-4">{done ? "🎉" : error ? "❌" : "⏳"}</div>
@@ -54,7 +51,6 @@ export default function BrokerPaymentSuccess() {
           {error && <p className="text-gray-500">Please contact <a href="mailto:info@sagecoevergreen.com" className="text-primary hover:underline">info@sagecoevergreen.com</a> for assistance.</p>}
         </div>
       </div>
-      <Footer />
     </>
   )
 }

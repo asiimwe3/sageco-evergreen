@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
@@ -88,7 +86,6 @@ export default function Careers() {
         <meta property="og:description" content="Join the SAGECO EVERGREEN team. Explore real estate career opportunities in Uganda." />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
       </Head>
-      <Navbar />
 
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Careers at SAGECO EVERGREEN</h1>
@@ -166,7 +163,6 @@ export default function Careers() {
           </Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

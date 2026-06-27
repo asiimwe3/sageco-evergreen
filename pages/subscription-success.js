@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -39,7 +37,6 @@ export default function SubscriptionSuccess() {
   return (
     <>
       <Head><title>Subscription {status === "success" ? "Activated" : "Processing"} | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-2xl shadow-md p-10 max-w-md w-full text-center">
           {status === "verifying" && (
@@ -79,7 +76,6 @@ export default function SubscriptionSuccess() {
           )}
         </div>
       </div>
-      <Footer />
     </>
   )
 }

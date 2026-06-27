@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
@@ -175,7 +173,6 @@ export default function Docs() {
         <meta property="og:title" content="SAGECO EVERGREEN Documentation" />
         <meta property="og:description" content="Learn how to use SAGECO EVERGREEN for properties, brokers, bookings, careers, job posts, and payments." />
       </Head>
-      <Navbar />
 
       <section className="bg-primary text-white py-14 px-4 text-center">
         <h1 className="text-4xl font-bold mb-3">Documentation</h1>
@@ -227,7 +224,6 @@ export default function Docs() {
         </main>
       </div>
 
-      <Footer />
     </>
   )
 }

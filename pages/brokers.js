@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { supabase } from "../lib/supabase"
@@ -36,7 +34,6 @@ export default function Brokers() {
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <Navbar />
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Our Brokers</h1>
         <p className="text-green-100">Connect with verified real estate professionals</p>
@@ -107,7 +104,6 @@ export default function Brokers() {
           </div>
         )}
       </div>
-      <Footer />
     </>
   )
 }

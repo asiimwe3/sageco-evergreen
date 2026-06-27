@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
@@ -86,7 +84,6 @@ export default function Subscribe() {
         <title>Subscribe — {config.name} Plan | SAGECO EVERGREEN</title>
         <meta name="robots" content="noindex" />
       </Head>
-      <Navbar />
       <div className="max-w-lg mx-auto px-4 py-12">
         <div className={`inline-block px-4 py-1 rounded-full text-sm font-bold mb-4 ${badgeColor}`}>
           {config.name} Plan
@@ -164,7 +161,6 @@ export default function Subscribe() {
           </p>
         </form>
       </div>
-      <Footer />
     </>
   )
 }

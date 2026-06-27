@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
@@ -25,7 +23,6 @@ export default function ResetPassword() {
 
   if (sent) return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-2xl shadow p-10 max-w-md w-full text-center">
           <div className="text-5xl mb-4">📬</div>
@@ -34,14 +31,12 @@ export default function ResetPassword() {
           <Link href="/login" className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">Back to Login</Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 
   return (
     <>
       <Head><title>Reset Password | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-800 text-center mb-2">Reset Password</h1>
@@ -64,7 +59,6 @@ export default function ResetPassword() {
           </p>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

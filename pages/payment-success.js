@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -37,14 +35,12 @@ export default function PaymentSuccess() {
 
   if (verifying) return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-500">Verifying your payment...</p>
         </div>
       </div>
-      <Footer />
     </>
   )
 
@@ -56,7 +52,6 @@ export default function PaymentSuccess() {
         <title>{success ? "Payment Successful" : "Payment Pending"} | SAGECO EVERGREEN</title>
         <meta name="robots" content="noindex" />
       </Head>
-      <Navbar />
       <div className="max-w-xl mx-auto px-4 py-20 text-center">
         <div className="text-7xl mb-4">{success ? "✅" : "⏳"}</div>
         <h1 className="text-3xl font-bold text-primary mb-2">
@@ -99,7 +94,6 @@ export default function PaymentSuccess() {
           <Link href="/" className="border-2 border-primary text-primary px-6 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition">Home</Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

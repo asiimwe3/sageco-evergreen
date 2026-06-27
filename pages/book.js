@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
@@ -120,8 +118,7 @@ export default function Book() {
           <title>Booking Confirmed | SAGECO EVERGREEN</title>
           <meta name="description" content="Your property viewing has been booked." />
         </Head>
-        <Navbar />
-        <div className="max-w-xl mx-auto px-4 py-20 text-center">
+          <div className="max-w-xl mx-auto px-4 py-20 text-center">
           <div className="text-6xl mb-4">✅</div>
           <h1 className="text-3xl font-bold text-primary mb-2">Booking Confirmed!</h1>
           <p className="text-gray-600 mb-4">We've received your booking request. Our team will contact you within 24 hours to confirm.</p>
@@ -143,8 +140,7 @@ export default function Book() {
             </a>
           </div>
         </div>
-        <Footer />
-      </>
+        </>
     )
   }
 
@@ -160,7 +156,6 @@ export default function Book() {
         <meta property="og:description" content="Book a property viewing with SAGECO EVERGREEN. Secure payment via PesaPal." />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
       </Head>
-      <Navbar />
       <div className="max-w-2xl mx-auto px-4 py-12">
         <h1 className="text-3xl font-bold text-primary mb-2">Book a Viewing</h1>
         <p className="text-gray-500 mb-6">Secure your slot with a viewing fee via PesaPal</p>
@@ -329,7 +324,6 @@ export default function Book() {
           )}
         </form>
       </div>
-      <Footer />
     </>
   )
 }

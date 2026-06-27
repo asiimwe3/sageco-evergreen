@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 
@@ -80,7 +78,6 @@ export default function Projects() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </Head>
-      <Navbar />
 
       <section className="bg-primary text-white py-16 px-4">
         <div className="max-w-6xl mx-auto grid gap-10 md:grid-cols-[1.25fr_0.75fr] md:items-center">
@@ -185,7 +182,6 @@ export default function Projects() {
         </section>
       </main>
 
-      <Footer />
     </>
   )
 }

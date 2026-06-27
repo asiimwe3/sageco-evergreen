@@ -1,6 +1,4 @@
 import Head from "next/head"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import { useState } from "react"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
@@ -89,7 +87,6 @@ export default function PostJob() {
         />
         <link rel="canonical" href={`${SITE_URL}/post-job`} />
       </Head>
-      <Navbar />
 
       <main className="bg-gray-50">
         <section className="bg-primary text-white px-4 py-14">
@@ -229,7 +226,6 @@ export default function PostJob() {
         </section>
       </main>
 
-      <Footer />
     </>
   )
 }

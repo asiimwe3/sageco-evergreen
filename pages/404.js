@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 
@@ -7,7 +5,6 @@ export default function NotFound() {
   return (
     <>
       <Head><title>Page Not Found | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-20 text-center">
         <div className="text-8xl mb-6">🏡</div>
         <h1 className="text-5xl font-bold text-primary mb-3">404</h1>
@@ -19,7 +16,6 @@ export default function NotFound() {
           <Link href="/contact" className="border-2 border-gray-300 text-gray-600 px-8 py-3 rounded-full font-bold hover:border-primary transition">Contact Us</Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

@@ -80,7 +80,6 @@ export default function Properties() {
         <title>Properties for Sale & Rent in Uganda | SAGECO EVERGREEN</title>
         <meta name="description" content="Browse residential homes, commercial spaces, land, plots, and green projects across Uganda. Verified listings with direct broker contact." />
       </Head>
-      <Navbar />
 
       {/* Hero */}
       <section className="bg-primary text-white py-16 px-4 text-center">
@@ -254,7 +253,6 @@ export default function Properties() {
           </>
         )}
       </div>
-      <Footer />
     </>
   )
 }

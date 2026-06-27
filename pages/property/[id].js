@@ -78,7 +78,6 @@ export default function PropertyDetail({ property, similar }) {
         {images?.[0] && <meta property="og:image" content={images[0]} />}
         <meta property="og:type" content="website" />
       </Head>
-      <Navbar />
 
       {/* Lightbox */}
       {lightbox && images && (
@@ -351,7 +350,6 @@ export default function PropertyDetail({ property, similar }) {
           </div>
         )}
       </div>
-      <Footer />
     </>
   )
 }

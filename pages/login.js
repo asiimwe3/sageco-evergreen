@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -44,7 +42,6 @@ export default function Login() {
   return (
     <>
       <Head><title>Sign In | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
@@ -104,7 +101,6 @@ export default function Login() {
           </p>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

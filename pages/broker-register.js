@@ -1,6 +1,4 @@
 import { useState } from "react"
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import { compressImage, fileToBase64 } from "../lib/imageCompression"
 
@@ -193,7 +191,6 @@ export default function BrokerRegister() {
         <title>Broker Registration | SAGECO EVERGREEN</title>
         <meta name="description" content="Register as a verified broker on SAGECO EVERGREEN. List properties, reach clients, and grow your real estate business in Uganda." />
       </Head>
-      <Navbar />
       <section className="bg-primary text-white py-12 px-4 text-center">
         <h1 className="text-3xl font-bold">Broker Registration</h1>
         <p className="text-green-100 mt-2">Join SAGECO EVERGREEN as a verified real estate broker</p>
@@ -333,7 +330,6 @@ export default function BrokerRegister() {
           </div>
         )}
       </div>
-      <Footer />
     </>
   )
 }

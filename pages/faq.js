@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
@@ -74,7 +72,6 @@ export default function FAQ() {
         <title>FAQ | SAGECO EVERGREEN</title>
         <meta name="description" content="Frequently asked questions about SAGECO EVERGREEN — bookings, payments, property listings, broker registration, and more." />
       </Head>
-      <Navbar />
 
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Frequently Asked Questions</h1>
@@ -113,7 +110,6 @@ export default function FAQ() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

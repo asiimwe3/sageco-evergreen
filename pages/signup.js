@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
@@ -38,7 +36,6 @@ export default function Signup() {
 
   if (success) return (
     <>
-      <Navbar />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-2xl shadow p-10 max-w-md w-full text-center">
           <div className="text-5xl mb-4">📧</div>
@@ -49,14 +46,12 @@ export default function Signup() {
           <Link href="/login" className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">Go to Login</Link>
         </div>
       </div>
-      <Footer />
     </>
   )
 
   return (
     <>
       <Head><title>Create Account | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
@@ -127,7 +122,6 @@ export default function Signup() {
           </p>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 
@@ -7,7 +5,6 @@ export default function ServerError() {
   return (
     <>
       <Head><title>Server Error | SAGECO EVERGREEN</title></Head>
-      <Navbar />
       <div className="min-h-screen flex flex-col items-center justify-center px-4 py-20 text-center">
         <div className="text-7xl mb-6">⚠️</div>
         <h1 className="text-5xl font-bold text-primary mb-3">500</h1>
@@ -19,7 +16,6 @@ export default function ServerError() {
             className="bg-green-500 text-white px-8 py-3 rounded-full font-bold hover:opacity-90">WhatsApp Support</a>
         </div>
       </div>
-      <Footer />
     </>
   )
 }

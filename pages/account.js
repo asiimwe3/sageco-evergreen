@@ -1,5 +1,3 @@
-import Navbar from "../components/Navbar"
-import Footer from "../components/Footer"
 import Head from "next/head"
 import Link from "next/link"
 import { useEffect, useState } from "react"
@@ -69,7 +67,6 @@ export default function Account() {
   return (
     <>
       <Head><title>My Account | SAGECO EVERGREEN</title><meta name="robots" content="noindex" /></Head>
-      <Navbar />
 
       {/* Header */}
       <section className="bg-primary text-white py-10 px-4">
@@ -199,7 +196,6 @@ export default function Account() {
           ))}
         </div>
       </div>
-      <Footer />
     </>
   )
 }
