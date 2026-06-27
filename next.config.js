@@ -1,6 +1,16 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "sageco-evergreen.vercel.app" }],
+        destination: "https://sageco-evergreen-co.vercel.app/:path*",
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
