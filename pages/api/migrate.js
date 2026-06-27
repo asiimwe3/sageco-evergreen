@@ -5,7 +5,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
-const MIGRATION_SECRET = process.env.MIGRATION_SECRET || "sageco-migrate-2026"
+const MIGRATION_SECRET = process.env.MIGRATION_SECRET
 
 const SQL_STATEMENTS = [
   // Officers table
@@ -83,6 +83,10 @@ const SQL_STATEMENTS = [
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end()
+  // Block entirely in production unless explicitly enabled
+  if (process.env.NODE_ENV === 'production' && !process.env.ENABLE_MIGRATIONS) {
+    return res.status(403).json({ error: "Migration routes are disabled in production" })
+  }
   if (req.headers["x-migration-secret"] !== MIGRATION_SECRET) {
     return res.status(403).json({ error: "Forbidden" })
   }
