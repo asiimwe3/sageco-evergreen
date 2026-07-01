@@ -25,7 +25,7 @@ export default async function handler(req, res) {
 
   let query = supabaseAdmin
     .from('properties')
-    .select('id, title, location, price, category, images, featured, is_negotiable, bedrooms, bathrooms, land_acres, area_sqft, status, views, created_at', { count: 'exact' })
+    .select('id, title, location, price, category, images, featured, is_negotiable, bedrooms, bathrooms, land_acres, area_sqft, status, created_at', { count: 'exact' })
     .eq('status', 'available')
     .range(Number(offset), Number(offset) + Number(limit) - 1)
 
