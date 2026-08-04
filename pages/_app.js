@@ -25,6 +25,18 @@ function AppShell({ Component, pageProps }) {
           }
         />
         {appMode && <meta name="apple-mobile-web-app-capable" content="yes" />}
+        {/* Global SEO meta tags */}
+        <meta name="theme-color" content="#0f766e" />
+        <meta name="author" content="SAGECO EVERGREEN Company Ltd" />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+        <meta name="geo.region" content="UG" />
+        <meta name="geo.placename" content="Kyenjojo, Uganda" />
+        <meta name="geo.position" content="0.6426;30.6286" />
+        <meta name="ICBM" content="0.6426, 30.6286" />
+        <meta name="format-detection" content="telephone=yes" />
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="alternate" hrefLang="en-UG" href="https://sageco-evergreen-co.vercel.app" />
       </Head>
 
       {/* Inject app-mode performance CSS */}
