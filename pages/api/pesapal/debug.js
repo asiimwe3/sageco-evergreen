@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
   const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
   const IPN_ID = process.env.PESAPAL_IPN_ID
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen.vercel.app'
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen-co.vercel.app'
 
   if (!CONSUMER_KEY || !CONSUMER_SECRET) {
     return res.status(200).json({ step: 'config', error: 'PesaPal credentials not set in env vars' })

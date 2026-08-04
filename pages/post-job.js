@@ -1,7 +1,7 @@
 import Head from "next/head"
 import { useState } from "react"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 const LISTING_FEE = 5000
 
 const initialForm = {

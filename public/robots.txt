@@ -1,5 +1,15 @@
 User-agent: *
 Allow: /
+Allow: /properties
+Allow: /property/
+Allow: /brokers
+Allow: /book
+Allow: /plans
+Allow: /projects
+Allow: /careers
+Allow: /contact
+Allow: /faq
+Allow: /docs
 Disallow: /payment-success
 Disallow: /broker-payment-success
 Disallow: /job-post-success
@@ -7,5 +17,15 @@ Disallow: /subscription-success
 Disallow: /reset-password
 Disallow: /admin
 Disallow: /api/
+Disallow: /account
+Disallow: /login
+Disallow: /signup
+Disallow: /upload-property
+Disallow: /broker-register
+Disallow: /apply
+Disallow: /subscribe
+Disallow: /post-job
+Disallow: /broker-payment-success
+Disallow: /job-post-success
 
-Sitemap: https://sageco-evergreen.vercel.app/sitemap.xml
+Sitemap: https://sageco-evergreen-co.vercel.app/sitemap.xml

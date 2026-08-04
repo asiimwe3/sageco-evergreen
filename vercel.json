@@ -7,5 +7,8 @@
     "sageco-evergreen-co.vercel.app",
     "sageco-evergreen.vercel.app"
   ],
-  "_lastPublish": "2026-07-02T18:17:31.549570"
+  "_lastPublish": "2026-07-02T18:17:31.549570",
+  "env": {
+    "NEXT_PUBLIC_SITE_URL": "https://sageco-evergreen-co.vercel.app"
+  }
 }

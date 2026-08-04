@@ -4,7 +4,7 @@ const BASE_URL = process.env.PESAPAL_ENV === 'sandbox'
 const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
 const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
 const IPN_ID = process.env.PESAPAL_IPN_ID
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen-co.vercel.app'
 
 async function getToken() {
   const res = await fetch(`${BASE_URL}/api/Auth/RequestToken`, {

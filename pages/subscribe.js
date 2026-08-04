@@ -2,7 +2,7 @@ import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 const PLAN_CONFIG = {
   basic:   { name: "Basic",   price: 15000, features: "10 listings · Standard profile · 1 month" },

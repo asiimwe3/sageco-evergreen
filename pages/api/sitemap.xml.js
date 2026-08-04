@@ -1,5 +1,5 @@
 export default function handler(req, res) {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
   const pages = [
     { url: "/", priority: "1.0", changefreq: "weekly" },
     { url: "/properties", priority: "0.9", changefreq: "daily" },

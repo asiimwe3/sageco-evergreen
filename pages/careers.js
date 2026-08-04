@@ -2,7 +2,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 const JOBS = [
   {

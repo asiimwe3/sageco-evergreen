@@ -3,18 +3,86 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useAppMode } from "../hooks/useAppMode"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   "name": "SAGECO EVERGREEN",
-  "description": "Premier real estate platform in Uganda — premium homes, commercial spaces, land, and eco-friendly developments.",
+  "description": "Premier real estate company in Uganda offering land for sale, residential homes, commercial properties, and eco-friendly developments. Based in Kyenjojo, serving all of Uganda.",
   "url": SITE_URL,
   "logo": `${SITE_URL}/og-image.png`,
+  "image": `${SITE_URL}/og-image.png`,
   "telephone": "+256750414366",
-  "address": { "@type": "PostalAddress", "addressLocality": "Kyenjojo", "addressCountry": "UG" },
-  "areaServed": { "@type": "Country", "name": "Uganda" }
+  "email": "sagecoevergreen@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Kyenjojo",
+    "addressRegion": "Western Region",
+    "addressCountry": "UG"
+  },
+  "areaServed": { "@type": "Country", "name": "Uganda" },
+  "priceRange": "UGX 500,000 - UGX 500,000,000",
+  "openingHours": "Mo-Sa 08:00-18:00",
+  "sameAs": [
+    "https://sageco-evergreen-co.vercel.app",
+  ],
+  "knowsAbout": [
+    "Real Estate Uganda",
+    "Land for Sale Uganda",
+    "Property for Sale in Uganda",
+    "Commercial Property Uganda",
+    "Residential Property Uganda",
+    "Real Estate Brokers Uganda",
+    "Property Investment Uganda",
+    "Land in Kyenjojo",
+    "Eco-friendly Developments Uganda"
+  ],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Residential Properties" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Commercial Properties" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Land for Sale" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Green/Eco-Friendly Projects" } }
+  ]
+}
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How do I buy land in Uganda through SAGECO EVERGREEN?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Browse our properties page, select a listing, pay UGX 30,000 to book a viewing, and our verified broker will contact you within 24 hours to arrange a site visit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What types of properties does SAGECO EVERGREEN sell?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We offer residential homes (villas, apartments, family homes), commercial spaces (offices, retail units, warehouses), and eco-friendly land developments across Uganda."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is SAGECO EVERGREEN located?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We are based in Kyenjojo, Uganda, and serve clients across the entire country. Contact us at 0750 414 366."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does it cost to book a property viewing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Booking a viewing or site visit costs UGX 30,000, payable via MTN MoMo, Airtel Money, or card through PesaPal."
+      }
+    }
+  ]
 }
 
 export default function Home() {
@@ -37,19 +105,20 @@ export default function Home() {
     <>
       <Head>
         <title>SAGECO EVERGREEN | Premium Real Estate Uganda</title>
-        <meta name="description" content="Find your dream property in Uganda. SAGECO EVERGREEN connects you with premium homes, commercial spaces, and land across Kampala and beyond." />
-        <meta name="keywords" content="real estate Uganda, properties Kampala, buy house Uganda, commercial property Uganda, land for sale Uganda, SAGECO EVERGREEN" />
+        <meta name="description" content="Buy land and property in Uganda with SAGECO EVERGREEN. Land for sale, residential homes, commercial spaces, and eco-friendly developments in Kyenjojo, Kampala, and across Uganda. Book a viewing today — 0750 414 366." />
+        <meta name="keywords" content="land for sale Uganda, buy land Uganda, real estate Uganda, property for sale Uganda, land in Kyenjojo, plots for sale Uganda, commercial property Uganda, residential homes Uganda, houses for sale Uganda, SAGECO EVERGREEN, real estate company Uganda, property brokers Uganda" />
         <link rel="canonical" href={SITE_URL} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
-        <meta property="og:description" content="Find your dream property in Uganda. Premium homes, commercial spaces, and eco-friendly land developments." />
+        <meta property="og:description" content="Buy land and property in Uganda. Land for sale, homes, commercial spaces, and eco-friendly developments. Book a viewing today!" />
         <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
         <meta property="og:locale" content="en_UG" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
         <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </Head>
 
       {/* Hero */}

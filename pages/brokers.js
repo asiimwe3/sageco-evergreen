@@ -3,7 +3,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { supabase } from "../lib/supabase"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 export default function Brokers() {
   const [brokers, setBrokers] = useState([])
