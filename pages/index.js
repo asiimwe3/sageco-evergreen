@@ -85,6 +85,43 @@ const faqJsonLd = {
   ]
 }
 
+const founderJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Asiimwe Derick",
+  "alternateName": ["Derick Asiimwe", "TraderDerick"],
+  "givenName": "Derick",
+  "familyName": "Asiimwe",
+  "jobTitle": "Founder & CEO — SAGECO EVERGREEN Company Limited | CEO — DeryCode Technologies",
+  "description": "Asiimwe Derick is the Founder & CEO of SAGECO EVERGREEN Company Limited, a real estate and property technology company in Uganda. He is also the CEO of DeryCode Technologies, Uganda's leading software and blockchain company.",
+  "url": `${SITE_URL}#founder`,
+  "image": {
+    "@type": "ImageObject",
+    "url": `${SITE_URL}/asiimwe-derick.webp`,
+    "contentUrl": `${SITE_URL}/asiimwe-derick.webp`,
+    "width": 800,
+    "height": 800,
+    "caption": "Asiimwe Derick, Founder & CEO of SAGECO EVERGREEN"
+  },
+  "worksFor": { "@type": "Organization", "name": "SAGECO EVERGREEN" },
+  "affiliation": [
+    { "@type": "Organization", "name": "SAGECO EVERGREEN Company Limited", "url": `${SITE_URL}` },
+    { "@type": "Organization", "name": "DeryCode Technologies", "url": "https://derycode.publicvm.com" }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Kyenjojo",
+    "addressRegion": "Western Region",
+    "addressCountry": "UG"
+  },
+  "sameAs": [
+    "https://github.com/asiimwe3",
+    "https://ug.linkedin.com/in/asiimwe-derick-501755313",
+    "https://www.facebook.com/p/Dery-Code-61590735268937/",
+    "https://derycode.publicvm.com/authors/asiimwe-derick.html"
+  ]
+}
+
 export default function Home() {
   const appMode = useAppMode()
   const [featured, setFeatured] = useState([])
@@ -118,6 +155,7 @@ export default function Home() {
         <meta name="twitter:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
         <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </Head>
 
@@ -241,6 +279,33 @@ export default function Home() {
         <div className="flex gap-4 justify-center flex-wrap">
           <Link href="/brokers" className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">Meet Our Brokers</Link>
           <Link href="/broker-register" className="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition">Become a Broker</Link>
+        </div>
+      </section>
+
+
+      {/* Founder Section */}
+      <section className="py-16 px-4 bg-gray-50" id="founder">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 items-center">
+          <img
+            src="/asiimwe-derick.webp"
+            alt="Asiimwe Derick, Founder & CEO of SAGECO EVERGREEN"
+            width={200}
+            height={200}
+            className="rounded-full shadow-lg"
+            loading="lazy"
+          />
+          <div className="text-center md:text-left">
+            <h2 className="text-3xl font-bold text-primary mb-2">Meet the Founder</h2>
+            <p className="text-lg font-semibold text-gray-700 mb-3">Asiimwe Derick</p>
+            <p className="text-gray-500 leading-relaxed max-w-xl">
+              Asiimwe Derick is the Founder & CEO of SAGECO EVERGREEN Company Limited, a real estate and property technology company based in Kyenjojo, Uganda. He is also the CEO of DeryCode Technologies, Uganda's leading software and blockchain development company. Under his leadership, SAGECO EVERGREEN has built a platform that connects verified brokers with property buyers across Uganda.
+            </p>
+            <div className="flex gap-4 justify-center md:justify-start mt-4 flex-wrap">
+              <a href="https://wa.me/256772002326" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">WhatsApp</a>
+              <a href="https://ug.linkedin.com/in/asiimwe-derick-501755313" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">LinkedIn</a>
+              <a href="https://derycode.publicvm.com" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">DeryCode</a>
+            </div>
+          </div>
         </div>
       </section>
 
