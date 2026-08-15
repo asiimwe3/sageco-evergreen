@@ -1,3 +1,4 @@
+import { supabaseAdmin } from '../lib/supabaseAdmin.js'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 const staticPages = [
@@ -18,11 +19,7 @@ const staticPages = [
 
 async function getPropertyUrls() {
   try {
-    const { createClient } = require("@supabase/supabase-js")
-    const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    )
+    const supabase = supabaseAdmin
     const { data, error } = await supabase
       .from("properties")
       .select("id, title, updated_at")

@@ -259,8 +259,7 @@ export default function Properties({ initialProperties, initialTotal }) {
 
 // ISR: Pre-render first page of properties at build time
 export async function getStaticProps() {
-  const SUPA_URL = 'https://emldbjqegftrngxypeca.supabase.co'
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
+  const { SUPA_URL, SUPA_KEY } = await import('../lib/supabaseAdmin.js')
 
   try {
     const res = await fetch(`${SUPA_URL}/rest/v1/properties?select=id,title,description,location,price,category,images,featured,bedrooms,bathrooms,area_sqft,status&status=eq.available&limit=12&order=featured.desc&order=created_at.desc`, {

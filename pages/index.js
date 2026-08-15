@@ -312,8 +312,7 @@ export default function Home({ featuredProperties }) {
 
 // ISR: Pre-render featured properties at build time, revalidate every 60s
 export async function getStaticProps() {
-  const SUPA_URL = 'https://emldbjqegftrngxypeca.supabase.co'
-  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
+  const { SUPA_URL, SUPA_KEY } = await import('../lib/supabaseAdmin.js')
 
   try {
     const res = await fetch(`${SUPA_URL}/rest/v1/properties?select=id,title,location,price,category,images,featured,bedrooms,bathrooms,status&status=eq.available&featured=eq.true&limit=6&order=created_at.desc`, {

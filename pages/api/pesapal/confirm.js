@@ -1,16 +1,10 @@
 // Called by payment-success page to confirm status of any PesaPal order
-import { createClient } from '@supabase/supabase-js'
-
+import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin.js'
 const BASE_URL = process.env.PESAPAL_ENV === 'sandbox'
   ? 'https://cybqa.pesapal.com/v3'
   : 'https://pay.pesapal.com/v3'
 const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
 const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
-
-const supabase = createClient(
-  "https://emldbjqegftrngxypeca.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk"
-)
 
 async function getToken() {
   const res = await fetch(`${BASE_URL}/api/Auth/RequestToken`, {

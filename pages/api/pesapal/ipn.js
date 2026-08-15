@@ -1,15 +1,10 @@
 // SageCo Evergreen — PesaPal IPN (direct PesaPal + Supabase, no Base44 proxy)
-import { createClient } from '@supabase/supabase-js'
-
+import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
 const BASE_URL = process.env.PESAPAL_ENV === 'sandbox'
   ? 'https://cybqa.pesapal.com/v3'
   : 'https://pay.pesapal.com/v3'
 const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
 const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
-
-const supabaseUrl = 'https://emldbjqegftrngxypeca.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
-const supabaseAdmin = createClient(supabaseUrl, supabaseKey)
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')

@@ -1,11 +1,5 @@
 // SageCo Evergreen — Contact API (direct Supabase, no Base44 proxy)
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = 'https://emldbjqegftrngxypeca.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
-
-const supabaseAdmin = createClient(supabaseUrl, supabaseKey)
-
+import { supabaseAdmin } from '../../lib/supabaseAdmin.js'
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 

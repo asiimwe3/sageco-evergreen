@@ -1,5 +1,5 @@
+import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../lib/supabaseAdmin.js'
 import { useState } from 'react'
-import { createClient } from '@supabase/supabase-js'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import Head from 'next/head'
@@ -7,10 +7,7 @@ import Link from 'next/link'
 
 // ── Server-side data fetch (fixes blank page on first load + SEO) ────────────
 export async function getServerSideProps({ params }) {
-  const supabase = createClient(
-    'https://emldbjqegftrngxypeca.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
-  )
+  const supabase = supabaseAdmin
 
   const { data: property, error } = await supabase
     .from('properties')
