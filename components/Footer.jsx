@@ -27,7 +27,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-white mb-3">Quick Links</h4>
           <ul className="space-y-2 text-sm">
-            {[[["Become an Agent","/agents"],["Become a Broker","/broker-register"]Properties","/properties"],["Brokers","/brokers"],["Book a Viewing","/book"],["Plans","/plans"],["Projects","/projects"]].map(([l,h]) => (
+            {[["Properties","/properties"],["Brokers","/brokers"],["Book a Viewing","/book"],["Plans","/plans"],["Projects","/projects"]].map(([l,h]) => (
               <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
             ))}
           </ul>
@@ -37,7 +37,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-white mb-3">For Brokers</h4>
           <ul className="space-y-2 text-sm">
-            {[[["Become an Agent","/agents"],["Become a Broker","/broker-register"]Become a Broker","/broker-register"],["Broker Plans","/plans"],["Broker Login","/login"],["Upload Property","/upload-property"],["FAQ","/faq"]].map(([l,h]) => (
+            {[["Become an Agent","/agents"],["Become a Broker","/broker-register"],["Broker Plans","/plans"],["Broker Login","/login"],["Upload Property","/upload-property"],["FAQ","/faq"]].map(([l,h]) => (
               <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
             ))}
           </ul>
@@ -47,7 +47,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-white mb-3">Company</h4>
           <ul className="space-y-2 text-sm">
-            {[[["Become an Agent","/agents"],["Become a Broker","/broker-register"]About Us","/projects"],["Careers","/careers"],["Contact","/contact"],["FAQ","/faq"],["Android App","/android"]].map(([l,h]) => (
+            {[["About Us","/projects"],["Careers","/careers"],["Contact","/contact"],["FAQ","/faq"],["Android App","/android"]].map(([l,h]) => (
               <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
             ))}
           </ul>
