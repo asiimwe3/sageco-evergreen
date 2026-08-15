@@ -1,6 +1,6 @@
 import Head from "next/head"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useAppMode } from "../hooks/useAppMode"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
@@ -122,21 +122,10 @@ const founderJsonLd = {
   ]
 }
 
-export default function Home() {
+export default function Home({ featuredProperties }) {
   const appMode = useAppMode()
-  const [featured, setFeatured] = useState([])
-  const [loadingFeatured, setLoadingFeatured] = useState(true)
-
-  useEffect(() => {
-    fetch('/api/get-properties?featured=true&limit=6')
-      .then(r => r.json())
-      .then(d => {
-        const list = d.properties || (Array.isArray(d) ? d : [])
-        setFeatured(list.slice(0, 6))
-        setLoadingFeatured(false)
-      })
-      .catch(() => setLoadingFeatured(false))
-  }, [])
+  const featured = featuredProperties || []
+  const loadingFeatured = false
 
   return (
     <>
@@ -318,4 +307,27 @@ export default function Home() {
 
     </>
   )
+}
+
+
+// ISR: Pre-render featured properties at build time, revalidate every 60s
+export async function getStaticProps() {
+  const SUPA_URL = 'https://eiyexnuhqdscomilwpqg.supabase.co'
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWV4bnVocWRzY29taWx3cHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDA5NDI3MywiZXhwIjoyMDk1NjcwMjczfQ.d8hxdHNZxpF9tCZaI-jb_69CfbqGYgdZLRdkTMPD4kc'
+
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/properties?select=id,title,location,price,category,images,featured,bedrooms,bathrooms,status&status=eq.available&featured=eq.true&limit=6&order=created_at.desc`, {
+      headers: {
+        'apikey': SUPA_KEY,
+        'Authorization': `Bearer ${SUPA_KEY}`,
+      },
+    })
+    const data = await res.json()
+    return {
+      props: { featuredProperties: data || [] },
+      revalidate: 60,
+    }
+  } catch {
+    return { props: { featuredProperties: [] }, revalidate: 60 }
+  }
 }

@@ -5,10 +5,10 @@ import Link from 'next/link'
 const CATEGORIES = ['All', 'Residential', 'Commercial', 'Land', 'Plot', 'Green Project']
 const PAGE_SIZE = 12
 
-export default function Properties() {
-  const [properties, setProperties] = useState([])
-  const [total, setTotal] = useState(0)
-  const [loading, setLoading] = useState(true)
+export default function Properties({ initialProperties, initialTotal }) {
+  const [properties, setProperties] = useState(initialProperties || [])
+  const [total, setTotal] = useState(initialTotal || 0)
+  const [loading, setLoading] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(false)
@@ -254,4 +254,24 @@ export default function Properties() {
       </div>
     </>
   )
+}
+
+
+// ISR: Pre-render first page of properties at build time
+export async function getStaticProps() {
+  const SUPA_URL = 'https://eiyexnuhqdscomilwpqg.supabase.co'
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWV4bnVocWRzY29taWx3cHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDA5NDI3MywiZXhwIjoyMDk1NjcwMjczfQ.d8hxdHNZxpF9tCZaI-jb_69CfbqGYgdZLRdkTMPD4kc'
+
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/properties?select=id,title,description,location,price,category,images,featured,bedrooms,bathrooms,area_sqft,status&status=eq.available&limit=12&order=featured.desc&order=created_at.desc`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` },
+    })
+    const data = await res.json()
+    return {
+      props: { initialProperties: data || [], initialTotal: data?.length || 0 },
+      revalidate: 60,
+    }
+  } catch {
+    return { props: { initialProperties: [], initialTotal: 0 }, revalidate: 60 }
+  }
 }
