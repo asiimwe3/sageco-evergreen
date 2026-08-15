@@ -1,25 +1,42 @@
-// SageCo Evergreen — Register Broker (proxied to Base44 backend)
-const BASE44 = 'https://derick-ai-775511bf.base44.app/functions/sagecoRegisterBroker'
+// SageCo Evergreen — Register Broker (direct Supabase, no Base44 proxy)
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://eiyexnuhqdscomilwpqg.supabase.co'
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWV4bnVocWRzY29taWx3cHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDA5NDI3MywiZXhwIjoyMDk1NjcwMjczfQ.d8hxdHNZxpF9tCZaI-jb_69CfbqGYgdZLRdkTMPD4kc'
+
+const supabaseAdmin = createClient(supabaseUrl, supabaseKey)
 
 export default async function handler(req, res) {
-  if (req.method === 'OPTIONS') {
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-    return res.status(200).end()
-  }
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   try {
-    const r = await fetch(BASE44, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(req.body)
-    })
-    const data = await r.json()
-    return res.status(r.status).json(data)
+    const { full_name, email, phone, location, specialization, bio, photo_url } = req.body
+    if (!full_name || !email || !phone) return res.status(400).json({ error: 'Missing required fields' })
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) return res.status(400).json({ error: 'Invalid email' })
+
+    const sanitize = (str) => typeof str === 'string' ? str.trim().slice(0, 500) : str
+
+    const { data, error } = await supabaseAdmin.from('brokers').insert([{
+      full_name: sanitize(full_name),
+      email: sanitize(email),
+      phone: sanitize(phone),
+      location: sanitize(location),
+      specialization: sanitize(specialization),
+      bio: sanitize(bio),
+      photo_url: photo_url ? sanitize(photo_url) : null,
+      registration_status: 'pending',
+    }]).select().single()
+
+    if (error) {
+      if (error.code === '23505') return res.status(409).json({ error: 'Email already registered' })
+      return res.status(500).json({ error: error.message })
+    }
+
+    return res.status(201).json({ success: true, broker: data })
   } catch (err) {
-    console.error('[register-broker] Base44 proxy error:', err.message)
+    console.error('[register-broker]', err.message)
     return res.status(500).json({ error: 'Registration failed' })
   }
 }
