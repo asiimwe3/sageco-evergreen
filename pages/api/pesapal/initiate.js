@@ -9,8 +9,8 @@ const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
 const IPN_ID = process.env.PESAPAL_IPN_ID
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen.vercel.app'
 
-const supabaseUrl = 'https://eiyexnuhqdscomilwpqg.supabase.co'
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpeWV4bnVocWRzY29taWx3cHFnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDA5NDI3MywiZXhwIjoyMDk1NjcwMjczfQ.d8hxdHNZxpF9tCZaI-jb_69CfbqGYgdZLRdkTMPD4kc'
+const supabaseUrl = 'https://emldbjqegftrngxypeca.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk'
 const supabaseAdmin = createClient(supabaseUrl, supabaseKey)
 
 export default async function handler(req, res) {
