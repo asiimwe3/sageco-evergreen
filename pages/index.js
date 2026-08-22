@@ -120,135 +120,220 @@ export default function Home({ featuredProperties, stats }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </Head>
 
-      {/* Hero — single, clean, no duplicate CTA below */}
-      <section className={"bg-gradient-to-br from-primary to-green-800 text-white " + (appMode ? "py-10" : "py-24") + " px-4 text-center"}>
-        <p className="text-green-200 text-sm uppercase tracking-widest mb-3 font-medium">Uganda&apos;s Trusted Property Platform</p>
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">Find Your Dream Property</h1>
-        <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">Premium real estate in Uganda — homes, commercial spaces, and land with a green future in mind.</p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <Link href="/properties" className="bg-secondary text-dark font-bold px-8 py-3 rounded-full hover:opacity-90 text-lg">Browse Properties</Link>
-          <Link href="/ai-broker" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Chat with AI Broker</Link>
-        </div>
-        <div className="mt-6 text-green-200 text-sm">
-          {"📞 "} <a href="tel:+256750414366" className="hover:text-white">0750 414 366</a>
-          {"  ·  "}
-          {"💬 "} <a href="https://wa.me/256750414366" target="_blank" rel="noopener" className="hover:text-white">WhatsApp Us</a>
+      {/* Hero — BIGGER, local people focused */}
+      <section className={"bg-gradient-to-br from-primary via-green-700 to-green-900 text-white " + (appMode ? "py-12" : "py-32") + " px-4 text-center relative overflow-hidden"}>
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10" style={{backgroundImage: "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 4V0H4v4H0v2h4v4h2V6h4V4H6zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"}}></div>
+
+        <div className="relative max-w-4xl mx-auto">
+          <p className="text-green-200 text-base uppercase tracking-widest mb-4 font-bold">🇺🇬 Uganda&apos;s Trusted Property Platform</p>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">Find Your Dream Property in Uganda</h1>
+          <p className="text-2xl text-green-100 mb-10 max-w-3xl mx-auto leading-relaxed">
+            Premium land, homes, and commercial spaces — verified, secure, and built for Ugandans by Ugandans.
+          </p>
+          <div className="flex gap-5 justify-center flex-wrap">
+            <Link href="/properties" className="bg-secondary text-dark font-bold px-10 py-4 rounded-full hover:opacity-90 text-xl shadow-lg transition">Browse Properties</Link>
+            <Link href="/ai-broker" className="border-2 border-white text-white font-bold px-10 py-4 rounded-full hover:bg-white hover:text-primary text-xl transition">Chat with AI Broker</Link>
+          </div>
+
+          {/* Quick contact bar — BIGGER, more prominent */}
+          <div className="mt-10 flex flex-wrap gap-6 justify-center items-center text-lg">
+            <a href="tel:+256750414366" className="flex items-center gap-2 bg-white/10 backdrop-blur px-6 py-3 rounded-full hover:bg-white/20 transition">
+              📞 <span className="font-bold">0750 414 366</span>
+            </a>
+            <a href="https://wa.me/256750414366" target="_blank" rel="noopener" className="flex items-center gap-2 bg-green-500 px-6 py-3 rounded-full hover:bg-green-400 transition pulse-whatsapp">
+              💬 <span className="font-bold">WhatsApp Us</span>
+            </a>
+          </div>
+
+          {/* Payment methods badge */}
+          <div className="mt-8 flex flex-wrap gap-3 justify-center">
+            <span className="bg-yellow-400 text-black px-4 py-2 rounded-lg text-sm font-bold">MTN MoMo</span>
+            <span className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-bold">Airtel Money</span>
+            <span className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold">Visa Card</span>
+            <span className="bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-bold">PesaPal Secure</span>
+          </div>
         </div>
       </section>
 
-      {/* Stats — Dynamic from Supabase */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center items-stretch">
+      {/* Trust bar — local community signals */}
+      <section className="bg-green-50 py-6 border-b border-green-100">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-6 text-base text-gray-700 font-semibold items-center">
+          <span className="flex items-center gap-2">✅ Verified Listings</span>
+          <span className="flex items-center gap-2">🔒 Secure Escrow</span>
+          <span className="flex items-center gap-2">📍 GPS Boundaries</span>
+          <span className="flex items-center gap-2">🌿 Eco-Friendly</span>
+          <span className="flex items-center gap-2">🤝 Trusted by Ugandans</span>
+        </div>
+      </section>
+
+      {/* Stats — BIGGER cards, more visual */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center items-stretch">
           {statItems.map(function(s) { return (
-            <div key={s[1]} className="bg-white rounded-xl p-6 shadow-sm flex flex-col justify-center min-h-[120px]">
-              <div className="text-3xl font-bold text-primary">{s[0]}</div>
-              <div className="text-gray-500 text-sm mt-1">{s[1]}</div>
+            <div key={s[1]} className="bg-white rounded-2xl p-8 shadow-md flex flex-col justify-center min-h-[160px] card-hover border border-gray-100">
+              <div className="text-5xl font-bold text-primary mb-2">{s[0]}</div>
+              <div className="text-gray-600 text-base font-medium">{s[1]}</div>
             </div>
           ) })}
         </div>
       </section>
 
-      {/* v3.0 Smart Real Estate Features */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-green-600 text-sm font-bold uppercase tracking-widest mb-2">v3.0 Platform</p>
-            <h2 className="text-3xl font-bold text-primary">Smart Real Estate Technology</h2>
-            <p className="text-gray-500 mt-2 max-w-2xl mx-auto">AI-powered tools for property verification, investment, and management — built for Uganda&apos;s real estate market.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {v3Features.map(function(f) { return (
-              <Link key={f.slug} href={f.slug} className="block bg-gray-50 rounded-xl p-5 hover:bg-green-50 hover:shadow-md transition group">
-                <div className="text-3xl mb-3">{f.icon}</div>
-                <h3 className="font-bold text-sm text-gray-800 mb-1 group-hover:text-primary">{f.title}</h3>
-                <p className="text-xs text-gray-500">{f.desc}</p>
-              </Link>
-            ) })}
+      {/* How It Works — local people focused */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-4 text-gray-900">How SAGECO Works</h2>
+          <p className="text-xl text-gray-600 text-center mb-12 max-w-2xl mx-auto">Simple, secure, and built for every Ugandan — whether you're buying, selling, or investing.</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center p-8 rounded-2xl bg-green-50 border border-green-100">
+              <div className="text-5xl mb-4">🔍</div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-900">Browse &amp; Verify</h3>
+              <p className="text-lg text-gray-600 leading-relaxed">Explore verified properties across Uganda with GPS boundaries, drone imagery, and ownership history.</p>
+            </div>
+            <div className="text-center p-8 rounded-2xl bg-yellow-50 border border-yellow-100">
+              <div className="text-5xl mb-4">📞</div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-900">Book &amp; Pay</h3>
+              <p className="text-lg text-gray-600 leading-relaxed">Book a viewing for UGX 30,000 via MTN MoMo, Airtel Money, or card. Our broker contacts you within 24 hours.</p>
+            </div>
+            <div className="text-center p-8 rounded-2xl bg-blue-50 border border-blue-100">
+              <div className="text-5xl mb-4">🤝</div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-900">Own &amp; Invest</h3>
+              <p className="text-lg text-gray-600 leading-relaxed">Secure your property with escrow protection, digital land passports, and eco-smart development support.</p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Properties */}
-      <section className="py-16 px-4 max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-3">
-          <div>
-            <h2 className="text-3xl font-bold text-primary">Featured Properties</h2>
-            <p className="text-gray-500">Handpicked top listings for you</p>
+      {/* v3.0 Smart Real Estate Features — BIGGER cards */}
+      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold mb-4 text-gray-900">Smart Real Estate Features</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Technology built for Uganda's property market — from drone verification to AI-powered matching.</p>
           </div>
-          <Link href="/properties" className="text-primary font-bold hover:underline">View all →</Link>
-        </div>
-        {loadingFeatured ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1,2,3].map(function(i) { return <div key={i} className="bg-gray-100 rounded-xl h-56 animate-pulse" /> })}
-          </div>
-        ) : featured.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map(function(p) { return (
-              <Link key={p.id} href={"/property/" + p.id} className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition hover:-translate-y-1 duration-200">
-                {p.images && p.images[0] ? (
-                  <img src={p.images[0]} alt={p.title} className="w-full h-48 object-cover" />
-                ) : (
-                  <div className="w-full h-48 bg-green-100 flex items-center justify-center text-5xl">🏡</div>
-                )}
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">{p.category}</span>
-                    {p.verification_status === "verified" && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">✓ Verified</span>}
-                    {p.is_tokenized && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">📊 Tokenized</span>}
-                  </div>
-                  <h3 className="font-bold text-gray-800 mb-1 truncate">{p.title}</h3>
-                  <p className="text-gray-500 text-sm mb-2">{"📍 " + p.location}</p>
-                  <p className="text-lg font-bold text-primary">{"UGX " + Number(p.price).toLocaleString()}</p>
-                  {(p.bedrooms || p.bathrooms || p.area_sqft || p.land_acres) && (
-                    <div className="flex gap-3 mt-2 text-xs text-gray-400">
-                      {p.bedrooms && <span>{"🛏 " + p.bedrooms + " bed"}</span>}
-                      {p.bathrooms && <span>{"🚿 " + p.bathrooms + " bath"}</span>}
-                      {p.area_sqft && <span>{"📐 " + p.area_sqft + " sqft"}</span>}
-                      {p.land_acres && <span>{"🗺 " + p.land_acres + " acres"}</span>}
-                    </div>
-                  )}
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {v3Features.map(f => (
+              <Link key={f.slug} href={f.slug} className="block bg-white rounded-2xl p-8 shadow-md hover:shadow-xl card-hover border border-gray-100 group">
+                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{f.icon}</div>
+                <h3 className="text-xl font-bold mb-2 text-gray-900">{f.title}</h3>
+                <p className="text-base text-gray-600 leading-relaxed">{f.desc}</p>
+                <span className="text-primary font-semibold text-base mt-4 inline-block">Learn more →</span>
               </Link>
-            ) })}
+            ))}
           </div>
-        ) : (
-          <div className="text-center py-12 text-gray-400">
-            <p className="text-lg">No featured properties yet.</p>
-            <Link href="/properties" className="text-primary font-bold hover:underline mt-2 inline-block">Browse all properties →</Link>
+        </div>
+      </section>
+
+      {/* Featured Properties — BIGGER cards */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-10">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900">Featured Properties</h2>
+              <p className="text-lg text-gray-600 mt-2">Hand-picked listings from across Uganda</p>
+            </div>
+            <Link href="/properties" className="text-primary font-bold text-lg hover:underline hidden sm:block">View All →</Link>
           </div>
-        )}
+          {loadingFeatured ? (
+            <div className="text-center py-12 text-gray-400 text-lg">Loading properties…</div>
+          ) : featured.length === 0 ? (
+            <div className="text-center py-12 bg-green-50 rounded-2xl border border-green-100">
+              <p className="text-xl text-gray-600 mb-4">No featured properties yet.</p>
+              <Link href="/properties" className="inline-block bg-primary text-white px-8 py-3 rounded-full font-bold text-lg hover:opacity-90">Browse All Properties</Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {featured.slice(0, 6).map(p => {
+                const price = Number(p.price || 0)
+                const formatted = price >= 1_000_000 ? `${(price / 1_000_000).toFixed(price % 1_000_000 === 0 ? 0 : 1)}M` : price >= 1_000 ? `${(price / 1_000).toFixed(0)}K` : String(price)
+                return (
+                  <Link key={p.id} href={`/property/${p.id}`} className="block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl card-hover border border-gray-100">
+                    <div className="relative h-56 bg-gray-200">
+                      {p.images && p.images[0] ? (
+                        <img src={p.images[0]} alt={p.title || "Property"} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-6xl text-gray-300">🏠</div>
+                      )}
+                      {p.featured && <span className="absolute top-3 left-3 bg-secondary text-dark px-3 py-1.5 rounded-full text-sm font-bold">Featured</span>}
+                      {p.category && <span className="absolute top-3 right-3 bg-primary text-white px-3 py-1.5 rounded-full text-sm font-bold">{p.category}</span>}
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{p.title || "Untitled Property"}</h3>
+                      <p className="text-base text-gray-600 mb-3 line-clamp-2">{p.description || "No description available."}</p>
+                      <div className="flex items-center gap-3 text-base text-gray-500 mb-4">
+                        <span>📍 {p.location || "Uganda"}</span>
+                        {p.size_acres && <span>· {p.size_acres} acres</span>}
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-2xl font-bold text-primary">UGX {formatted}</span>
+                        <span className="text-base font-semibold text-primary">View Details →</span>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
+          <div className="text-center mt-10">
+            <Link href="/properties" className="inline-block bg-primary text-white px-10 py-4 rounded-full font-bold text-lg hover:opacity-90 shadow-md transition">Browse All Properties</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Founder section — local Ugandan entrepreneur */}
+      <section className="py-20 px-4 bg-gray-50">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="inline-block rounded-full overflow-hidden mb-6 border-4 border-primary shadow-lg">
+            <img src="/asiimwe-derick.webp" alt="Asiimwe Derick — Founder & CEO" className="w-40 h-40 object-cover" onError={(e) => { e.target.style.display = 'none' }} />
+          </div>
+          <h2 id="founder" className="text-3xl font-bold text-gray-900 mb-3">Asiimwe Derick</h2>
+          <p className="text-xl text-primary font-semibold mb-4">Founder &amp; CEO — SAGECO EVERGREEN Company Limited</p>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
+            &quot;We built SAGECO EVERGREEN to make property ownership in Uganda simple, transparent, and secure.
+            From Kyenjojo to Kampala, every Ugandan deserves access to verified land and quality housing.&quot;
+          </p>
+          <div className="flex justify-center gap-4">
+            <Link href="/contact" className="bg-primary text-white px-8 py-3 rounded-full font-bold text-lg hover:opacity-90 transition">Get in Touch</Link>
+            <Link href="/book" className="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold text-lg hover:bg-primary hover:text-white transition">Book a Viewing</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA — BIGGER, local focus */}
+      <section className="py-20 px-4 bg-gradient-to-r from-primary to-green-700 text-white text-center">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Find Your Land?</h2>
+          <p className="text-2xl text-green-100 mb-10 leading-relaxed">Join fellow Ugandans building their future with verified, secure property investments.</p>
+          <div className="flex gap-5 justify-center flex-wrap">
+            <Link href="/properties" className="bg-secondary text-dark font-bold px-10 py-4 rounded-full text-xl hover:opacity-90 shadow-lg transition">Browse Properties</Link>
+            <a href="https://wa.me/256750414366" target="_blank" rel="noopener" className="bg-green-500 text-white font-bold px-10 py-4 rounded-full text-xl hover:bg-green-400 shadow-lg transition pulse-whatsapp">💬 WhatsApp Us</a>
+          </div>
+          <p className="mt-8 text-green-200 text-lg">Or call us directly: <a href="tel:+256750414366" className="font-bold underline">0750 414 366</a></p>
+        </div>
       </section>
     </>
   )
 }
 
 export async function getServerSideProps() {
-  const { supabaseAdmin } = await import("../lib/supabaseAdmin.js")
-
-  var featuredRes, propsCount, brokersCount, bookingsCount
+  let stats = null
+  let featuredProperties = []
   try {
-    var results = await Promise.all([
-      supabaseAdmin.from("properties").select("*").eq("status", "available").eq("featured", true).limit(6),
-      supabaseAdmin.from("properties").select("id", { count: "exact", head: true }),
-      supabaseAdmin.from("brokers").select("id", { count: "exact", head: true }).in("registration_status", ["registered", "active"]),
-      supabaseAdmin.from("bookings").select("id", { count: "exact", head: true }),
-    ])
-    featuredRes = results[0]
-    propsCount = results[1]
-    brokersCount = results[2]
-    bookingsCount = results[3]
-  } catch(e) {
-    return { props: { featuredProperties: [], stats: {} } }
+    const baseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "https://emldbjqegftrngxypeca.supabase.co"
+    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    if (baseUrl && anonKey) {
+      const headers = { apikey: anonKey, Authorization: `Bearer ${anonKey}` }
+      const statsRes = await fetch(`${baseUrl}/rest/v1/rpc/get_site_stats`, { headers: { ...headers, "Content-Type": "application/json" }, method: "POST", body: "{}" }).catch(() => null)
+      if (statsRes && statsRes.ok) {
+        stats = await statsRes.json().catch(() => null)
+      }
+      const propsRes = await fetch(`${baseUrl}/rest/v1/properties?select=id,title,price,location,category,description,images,featured,size_acres&featured=eq.true&limit=6&order=created_date.desc`, { headers }).catch(() => null)
+      if (propsRes && propsRes.ok) {
+        featuredProperties = await propsRes.json().catch(() => [])
+      }
+    }
+  } catch (e) {
+    // silently fail — page still renders
   }
-
-  return {
-    props: {
-      featuredProperties: (featuredRes && featuredRes.data) || [],
-      stats: {
-        properties: (propsCount && propsCount.count) || 0,
-        brokers: (brokersCount && brokersCount.count) || 0,
-        bookings: (bookingsCount && bookingsCount.count) || 0,
-      },
-    },
-  }
+  return { props: { featuredProperties, stats } }
 }
