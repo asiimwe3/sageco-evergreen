@@ -147,5 +147,6 @@ export default function AdminApplications() {
         )}
       </div>
     </AdminGate>
+    </>
   )
 }

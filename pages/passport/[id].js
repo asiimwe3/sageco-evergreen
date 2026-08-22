@@ -1,5 +1,5 @@
 import Link from "next/link"
-import SEO from '../components/SEO'
+import SEO from '../../components/SEO'
 
 export default function Passport({ passport, property }) {
   if (!passport) return (

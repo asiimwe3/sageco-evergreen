@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import Head from 'next/head'
 import Link from 'next/link'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
@@ -158,7 +157,7 @@ export default function AgentsPage() {
   if (view === 'register') {
     return (
       <>
-        <Head><title>Agent Registration | SAGECO EVERGREEN</title></Head>
+        
         <Navbar />
         <div className="min-h-screen bg-gray-50 py-12 px-4">
           <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
@@ -227,7 +226,7 @@ export default function AgentsPage() {
     const { agent, sponsor, group, downline, commissions, stats } = agentData
     return (
       <>
-        <Head><title>Agent Dashboard | SAGECO EVERGREEN</title></Head>
+        
         <Navbar />
         <div className="min-h-screen bg-gray-50 py-8 px-4">
           <div className="max-w-5xl mx-auto">

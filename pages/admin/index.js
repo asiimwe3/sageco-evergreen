@@ -1,4 +1,3 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
@@ -134,5 +133,6 @@ export default function AdminDashboard() {
         </div>
       </div>
     </AdminGate>
+    </>
   )
 }

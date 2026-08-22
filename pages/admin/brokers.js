@@ -174,6 +174,7 @@ export default function AdminBrokers() {
         )}
       </div>
     </AdminGate>
+    </>
   )
 }
 

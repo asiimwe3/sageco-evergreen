@@ -5,7 +5,7 @@ import Footer from '../../components/Footer'
 import Link from 'next/link'
 import MapPicker from '../../components/MapPicker'
 import PricePredictor from '../../components/PricePredictor'
-import SEO from '../components/SEO'
+import SEO from '../../components/SEO'
 
 // ── Server-side data fetch (fixes blank page on first load + SEO) ────────────
 export async function getServerSideProps({ params }) {
