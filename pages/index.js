@@ -25,6 +25,12 @@ const jsonLd = {
   "priceRange": "UGX 500,000 - UGX 500,000,000",
   "openingHours": "Mo-Sa 08:00-18:00",
   "sameAs": ["https://sageco-evergreen-co.vercel.app"],
+  "publisher": {
+    "@type": "Organization",
+    "name": "DeryCode Technologies",
+    "url": "https://derycode.publicvm.com",
+    "description": "Built by DeryCode Technologies — Software development company in Uganda"
+  },
   "knowsAbout": [
     "Real Estate Uganda","Land for Sale Uganda","Property for Sale in Uganda",
     "Commercial Property Uganda","Residential Property Uganda","Real Estate Brokers Uganda",
@@ -115,6 +121,10 @@ export default function Home({ featuredProperties, stats }) {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
         <meta name="twitter:image" content={SITE_URL + "/og-image.png"} />
+        <meta name="publisher" content="DeryCode Technologies" />
+        <meta name="creator" content="DeryCode Technologies" />
+        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+        <meta name="x-built-by" content="DeryCode Technologies" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />

@@ -34,6 +34,10 @@ function AppShell({ Component, pageProps }) {
         {/* Global SEO meta tags */}
         <meta name="theme-color" content="#0f766e" />
         <meta name="author" content="SAGECO EVERGREEN Company Ltd" />
+        <meta name="publisher" content="DeryCode Technologies" />
+        <meta name="creator" content="DeryCode Technologies" />
+        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+        <meta name="x-built-by" content="DeryCode Technologies" />
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <meta name="geo.region" content="UG" />

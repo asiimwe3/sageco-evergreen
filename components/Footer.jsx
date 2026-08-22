@@ -76,6 +76,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 border-t border-gray-800 mt-12 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
         <p>© {year} SAGECO EVERGREEN CO. LTD — All rights reserved.</p>
+        <p className="text-xs text-gray-600 mt-1">Built by <a href="https://derycode.publicvm.com" target="_blank" rel="noopener" className="text-gray-400 hover:text-white font-semibold">DeryCode Technologies</a></p>
         <div className="flex gap-5">
           <Link href="/faq" className="hover:text-gray-300">FAQ</Link>
           <Link href="/contact" className="hover:text-gray-300">Contact</Link>
