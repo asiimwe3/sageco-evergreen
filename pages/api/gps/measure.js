@@ -32,6 +32,7 @@ export default async function handler(req, res) {
       .from('land_passports')
       .insert([{
         property_id: property_id || null,
+        passport_uid: `LP-${Date.now().toString(36).toUpperCase()}`,
         gps_coordinates: { type: 'Point', coordinates: [coordinates[0].lng, coordinates[0].lat], all_points: coordinates },
         boundary_coordinates: boundary_geojson || {
           type: 'Polygon',
