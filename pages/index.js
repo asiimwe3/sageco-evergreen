@@ -11,8 +11,8 @@ const jsonLd = {
   "name": "SAGECO EVERGREEN",
   "description": "Premier real estate company in Uganda offering land for sale, residential homes, commercial properties, and eco-friendly developments. Based in Kyenjojo, serving all of Uganda.",
   "url": SITE_URL,
-  "logo": `${SITE_URL}/og-image.png`,
-  "image": `${SITE_URL}/og-image.png`,
+  "logo": SITE_URL + "/og-image.png",
+  "image": SITE_URL + "/og-image.png",
   "telephone": "+256750414366",
   "email": "sagecoevergreen@gmail.com",
   "address": {
@@ -24,19 +24,11 @@ const jsonLd = {
   "areaServed": { "@type": "Country", "name": "Uganda" },
   "priceRange": "UGX 500,000 - UGX 500,000,000",
   "openingHours": "Mo-Sa 08:00-18:00",
-  "sameAs": [
-    "https://sageco-evergreen-co.vercel.app",
-  ],
+  "sameAs": ["https://sageco-evergreen-co.vercel.app"],
   "knowsAbout": [
-    "Real Estate Uganda",
-    "Land for Sale Uganda",
-    "Property for Sale in Uganda",
-    "Commercial Property Uganda",
-    "Residential Property Uganda",
-    "Real Estate Brokers Uganda",
-    "Property Investment Uganda",
-    "Land in Kyenjojo",
-    "Eco-friendly Developments Uganda"
+    "Real Estate Uganda","Land for Sale Uganda","Property for Sale in Uganda",
+    "Commercial Property Uganda","Residential Property Uganda","Real Estate Brokers Uganda",
+    "Property Investment Uganda","Land in Kyenjojo","Eco-friendly Developments Uganda"
   ],
   "makesOffer": [
     { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Residential Properties" } },
@@ -50,38 +42,10 @@ const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How do I buy land in Uganda through SAGECO EVERGREEN?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Browse our properties page, select a listing, pay UGX 30,000 to book a viewing, and our verified broker will contact you within 24 hours to arrange a site visit."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What types of properties does SAGECO EVERGREEN sell?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We offer residential homes (villas, apartments, family homes), commercial spaces (offices, retail units, warehouses), and eco-friendly land developments across Uganda."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Where is SAGECO EVERGREEN located?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "We are based in Kyenjojo, Uganda, and serve clients across the entire country. Contact us at 0750 414 366."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How much does it cost to book a property viewing?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Booking a viewing or site visit costs UGX 30,000, payable via MTN MoMo, Airtel Money, or card through PesaPal."
-      }
-    }
+    { "@type": "Question", "name": "How do I buy land in Uganda through SAGECO EVERGREEN?", "acceptedAnswer": { "@type": "Answer", "text": "Browse our properties page, select a listing, pay UGX 30,000 to book a viewing, and our verified broker will contact you within 24 hours to arrange a site visit." } },
+    { "@type": "Question", "name": "What types of properties does SAGECO EVERGREEN sell?", "acceptedAnswer": { "@type": "Answer", "text": "We offer residential homes, commercial spaces, and eco-friendly land developments across Uganda." } },
+    { "@type": "Question", "name": "Where is SAGECO EVERGREEN located?", "acceptedAnswer": { "@type": "Answer", "text": "We are based in Kyenjojo, Uganda, and serve clients across the entire country. Contact us at 0750 414 366." } },
+    { "@type": "Question", "name": "How much does it cost to book a property viewing?", "acceptedAnswer": { "@type": "Answer", "text": "Booking a viewing or site visit costs UGX 30,000, payable via MTN MoMo, Airtel Money, or card through PesaPal." } }
   ]
 }
 
@@ -93,27 +57,15 @@ const founderJsonLd = {
   "givenName": "Derick",
   "familyName": "Asiimwe",
   "jobTitle": "Founder & CEO — SAGECO EVERGREEN Company Limited | CEO — DeryCode Technologies",
-  "description": "Asiimwe Derick is the Founder & CEO of SAGECO EVERGREEN Company Limited, a real estate and property technology company in Uganda. He is also the CEO of DeryCode Technologies, Uganda's leading software and blockchain company.",
-  "url": `${SITE_URL}#founder`,
-  "image": {
-    "@type": "ImageObject",
-    "url": `${SITE_URL}/asiimwe-derick.webp`,
-    "contentUrl": `${SITE_URL}/asiimwe-derick.webp`,
-    "width": 800,
-    "height": 800,
-    "caption": "Asiimwe Derick, Founder & CEO of SAGECO EVERGREEN"
-  },
+  "description": "Asiimwe Derick is the Founder & CEO of SAGECO EVERGREEN Company Limited, a real estate and property technology company in Uganda.",
+  "url": SITE_URL + "#founder",
+  "image": { "@type": "ImageObject", "url": SITE_URL + "/asiimwe-derick.webp", "contentUrl": SITE_URL + "/asiimwe-derick.webp", "width": 800, "height": 800, "caption": "Asiimwe Derick, Founder & CEO of SAGECO EVERGREEN" },
   "worksFor": { "@type": "Organization", "name": "SAGECO EVERGREEN" },
   "affiliation": [
-    { "@type": "Organization", "name": "SAGECO EVERGREEN Company Limited", "url": `${SITE_URL}` },
+    { "@type": "Organization", "name": "SAGECO EVERGREEN Company Limited", "url": SITE_URL },
     { "@type": "Organization", "name": "DeryCode Technologies", "url": "https://derycode.publicvm.com" }
   ],
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Kyenjojo",
-    "addressRegion": "Western Region",
-    "addressCountry": "UG"
-  },
+  "address": { "@type": "PostalAddress", "addressLocality": "Kyenjojo", "addressRegion": "Western Region", "addressCountry": "UG" },
   "sameAs": [
     "https://github.com/asiimwe3",
     "https://ug.linkedin.com/in/asiimwe-derick-501755313",
@@ -122,10 +74,30 @@ const founderJsonLd = {
   ]
 }
 
-export default function Home({ featuredProperties }) {
+const v3Features = [
+  { icon: "🛸", title: "Drone Verification", desc: "LiDAR scans, 3D twins & GPS-verified boundaries", slug: "/verification" },
+  { icon: "🛡️", title: "AI Fraud Detection", desc: "Duplicate listings, boundary conflicts & pricing checks", slug: "/admin/fraud" },
+  { icon: "🌿", title: "Eco-Land Intelligence", desc: "Carbon scoring, reforestation & renewable energy analysis", slug: "/eco" },
+  { icon: "🔒", title: "Programmable Escrow", desc: "Milestone-based fund release with GPS-verified visits", slug: "/escrow" },
+  { icon: "📜", title: "Digital Land Passports", desc: "Verifiable passport per property with GPS & ownership history", slug: "/passports" },
+  { icon: "📊", title: "Fractional Investment", desc: "Buy tokenized shares of land with ROI projections", slug: "/invest" },
+  { icon: "🛰️", title: "Remote Site-Visits", desc: "Physical, virtual & drone visits with GPS check-in", slug: "/site-visits" },
+  { icon: "🎯", title: "Smart Property Matching", desc: "AI scores properties against your budget & goals", slug: "/matching" },
+  { icon: "📈", title: "Predictive Valuation", desc: "AI + comparable analysis with crop & soil data", slug: "/valuation" },
+  { icon: "🤖", title: "AI Broker", desc: "24/7 natural-language property search on WhatsApp & Web", slug: "/ai-broker" },
+]
+
+export default function Home({ featuredProperties, stats }) {
   const appMode = useAppMode()
   const featured = featuredProperties || []
   const loadingFeatured = false
+
+  const statItems = [
+    [stats && stats.properties != null ? String(stats.properties) : "—", "Verified Listings"],
+    [stats && stats.brokers != null ? String(stats.brokers) : "—", "Verified Brokers"],
+    [stats && stats.bookings != null ? String(stats.bookings) : "—", "Bookings Made"],
+    ["2026", "Established"],
+  ]
 
   return (
     <>
@@ -138,18 +110,18 @@ export default function Home({ featuredProperties }) {
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
         <meta property="og:description" content="Buy land and property in Uganda. Land for sale, homes, commercial spaces, and eco-friendly developments. Book a viewing today!" />
-        <meta property="og:image" content={`${SITE_URL}/og-image.png`} />
+        <meta property="og:image" content={SITE_URL + "/og-image.png"} />
         <meta property="og:locale" content="en_UG" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
-        <meta name="twitter:image" content={`${SITE_URL}/og-image.png`} />
+        <meta name="twitter:image" content={SITE_URL + "/og-image.png"} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </Head>
 
       {/* Hero */}
-      <section className={`bg-gradient-to-br from-primary to-green-800 text-white ${appMode ? "py-10" : "py-24"} px-4 text-center`}>
+      <section className={"bg-gradient-to-br from-primary to-green-800 text-white " + (appMode ? "py-10" : "py-24") + " px-4 text-center"}>
         <p className="text-green-200 text-sm uppercase tracking-widest mb-3 font-medium">Uganda&apos;s Trusted Property Platform</p>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Find Your Dream Property</h1>
         <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">Premium real estate in Uganda — homes, commercial spaces, and land with a green future in mind.</p>
@@ -158,21 +130,41 @@ export default function Home({ featuredProperties }) {
           <Link href="/book" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Book a Viewing</Link>
         </div>
         <div className="mt-6 text-green-200 text-sm">
-          📞 <a href="tel:+256750414366" className="hover:text-white">0750 414 366</a>
-          &nbsp;&nbsp;·&nbsp;&nbsp;
-          💬 <a href="https://wa.me/256750414366" target="_blank" rel="noopener" className="hover:text-white">WhatsApp Us</a>
+          {"📞 "} <a href="tel:+256750414366" className="hover:text-white">0750 414 366</a>
+          {"  ·  "}
+          {"💬 "} <a href="https://wa.me/256750414366" target="_blank" rel="noopener" className="hover:text-white">WhatsApp Us</a>
         </div>
       </section>
 
-      {/* Stats */}
+      {/* Stats — Dynamic from Supabase */}
       <section className="py-12 bg-gray-50">
         <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[["500+","Properties Listed"],["200+","Happy Clients"],["15+","Expert Brokers"],["10+","Years Experience"]].map(([n,l]) => (
-            <div key={l} className="bg-white rounded-xl p-6 shadow-sm">
-              <div className="text-3xl font-bold text-primary">{n}</div>
-              <div className="text-gray-500 text-sm mt-1">{l}</div>
+          {statItems.map(function(s) { return (
+            <div key={s[1]} className="bg-white rounded-xl p-6 shadow-sm">
+              <div className="text-3xl font-bold text-primary">{s[0]}</div>
+              <div className="text-gray-500 text-sm mt-1">{s[1]}</div>
             </div>
-          ))}
+          ) })}
+        </div>
+      </section>
+
+      {/* v3.0 Smart Real Estate Features */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-green-600 text-sm font-bold uppercase tracking-widest mb-2">v3.0 Platform</p>
+            <h2 className="text-3xl font-bold text-primary">Smart Real Estate Technology</h2>
+            <p className="text-gray-500 mt-2 max-w-2xl mx-auto">AI-powered tools for property verification, investment, and management — built for Uganda&apos;s real estate market.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            {v3Features.map(function(f) { return (
+              <Link key={f.slug} href={f.slug} className="block bg-gray-50 rounded-xl p-5 hover:bg-green-50 hover:shadow-md transition group">
+                <div className="text-3xl mb-3">{f.icon}</div>
+                <h3 className="font-bold text-sm text-gray-800 mb-1 group-hover:text-primary">{f.title}</h3>
+                <p className="text-xs text-gray-500">{f.desc}</p>
+              </Link>
+            ) })}
+          </div>
         </div>
       </section>
 
@@ -187,146 +179,107 @@ export default function Home({ featuredProperties }) {
         </div>
         {loadingFeatured ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1,2,3].map(i => <div key={i} className="bg-gray-100 rounded-xl h-56 animate-pulse" />)}
+            {[1,2,3].map(function(i) { return <div key={i} className="bg-gray-100 rounded-xl h-56 animate-pulse" /> })}
           </div>
         ) : featured.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featured.map(p => (
-              <Link key={p.id} href={`/property/${p.id}`}
-                className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition hover:-translate-y-1 duration-200">
-                {p.images?.[0] ? (
+            {featured.map(function(p) { return (
+              <Link key={p.id} href={"/property/" + p.id} className="block bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition hover:-translate-y-1 duration-200">
+                {p.images && p.images[0] ? (
                   <img src={p.images[0]} alt={p.title} className="w-full h-48 object-cover" />
                 ) : (
                   <div className="w-full h-48 bg-green-100 flex items-center justify-center text-5xl">🏡</div>
                 )}
                 <div className="p-4">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs bg-green-100 text-primary px-2 py-0.5 rounded-full font-medium">{p.category}</span>
-                    <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-medium">⭐ Featured</span>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full font-medium">{p.category}</span>
+                    {p.verification_status === "verified" && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">✓ Verified</span>}
+                    {p.is_tokenized && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded-full font-medium">📊 Tokenized</span>}
                   </div>
-                  <h3 className="font-bold text-gray-800 mt-2 text-sm line-clamp-2">{p.title}</h3>
-                  <p className="text-gray-400 text-xs mt-1">📍 {p.location}</p>
-                  <p className="text-primary font-bold mt-2">UGX {Number(p.price).toLocaleString()}</p>
+                  <h3 className="font-bold text-gray-800 mb-1 truncate">{p.title}</h3>
+                  <p className="text-gray-500 text-sm mb-2">{"📍 " + p.location}</p>
+                  <p className="text-lg font-bold text-primary">{"UGX " + Number(p.price).toLocaleString()}</p>
+                  {(p.bedrooms || p.bathrooms || p.area_sqft || p.land_acres) && (
+                    <div className="flex gap-3 mt-2 text-xs text-gray-400">
+                      {p.bedrooms && <span>{"🛏 " + p.bedrooms + " bed"}</span>}
+                      {p.bathrooms && <span>{"🚿 " + p.bathrooms + " bath"}</span>}
+                      {p.area_sqft && <span>{"📐 " + p.area_sqft + " sqft"}</span>}
+                      {p.land_acres && <span>{"🗺 " + p.land_acres + " acres"}</span>}
+                    </div>
+                  )}
                 </div>
               </Link>
-            ))}
+            ) })}
           </div>
         ) : (
-          <div className="text-center py-12 bg-green-50 rounded-xl">
-            <p className="text-gray-500 mb-3">No featured listings yet.</p>
-            <Link href="/properties" className="text-primary font-bold hover:underline">Browse all properties</Link>
+          <div className="text-center py-12 text-gray-400">
+            <p className="text-lg">No featured properties yet.</p>
+            <Link href="/properties" className="text-primary font-bold hover:underline mt-2 inline-block">Browse all properties →</Link>
           </div>
         )}
       </section>
 
-      {/* Services */}
-      <section className="py-16 px-4 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-primary text-center mb-2">What We Offer</h2>
-        <p className="text-gray-500 text-center mb-10">Everything you need in one place</p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { icon: "🏡", title: "Residential", desc: "Villas, apartments, and family homes across Uganda's finest neighborhoods.", href: "/properties" },
-            { icon: "🏢", title: "Commercial", desc: "Office spaces, retail units, and warehouses for your business needs.", href: "/properties" },
-            { icon: "🌿", title: "Green Projects", desc: "Eco-friendly developments that protect Uganda's natural environment.", href: "/projects" },
-          ].map(s => (
-            <Link key={s.title} href={s.href} className="bg-white rounded-xl shadow-md p-8 text-center hover:shadow-lg transition hover:-translate-y-1 duration-200 block">
-              <div className="text-5xl mb-4">{s.icon}</div>
-              <h3 className="text-xl font-bold text-primary mb-2">{s.title}</h3>
-              <p className="text-gray-500">{s.desc}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* How It Works */}
+      {/* Why Choose Us */}
       <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-primary text-center mb-2">How It Works</h2>
-          <p className="text-gray-500 text-center mb-12">Simple steps to your new property</p>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-3xl font-bold text-primary mb-8">Why Choose SAGECO EVERGREEN?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { step: "1", icon: "🔍", title: "Browse", desc: "Search properties by category, location, and price" },
-              { step: "2", icon: "📅", title: "Book", desc: "Pay UGX 30,000 to book a viewing or site visit" },
-              { step: "3", icon: "🤝", title: "Meet", desc: "Our broker contacts you within 24 hours to confirm" },
-              { step: "4", icon: "🏡", title: "Move In", desc: "Finalise the deal and take ownership" },
-            ].map(s => (
-              <div key={s.step} className="bg-white rounded-xl p-6 shadow-sm relative">
-                <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm mx-auto mb-3">{s.step}</div>
-                <div className="text-3xl mb-2">{s.icon}</div>
-                <h3 className="font-bold text-gray-800 mb-1">{s.title}</h3>
-                <p className="text-gray-500 text-sm">{s.desc}</p>
+              { icon: "✅", title: "Verified Properties", desc: "Every listing is reviewed by our team and verified with drone technology before going live." },
+              { icon: "💳", title: "Secure Payments", desc: "Pay via MTN MoMo, Airtel Money, or card through PesaPal. Bookings from UGX 30,000." },
+              { icon: "🌿", title: "Green Future", desc: "We specialize in eco-friendly developments with carbon scoring and sustainability analysis." }
+            ].map(function(item, i) { return (
+              <div key={i} className="bg-white rounded-xl p-8 shadow-sm">
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="font-bold text-lg text-gray-800 mb-2">{item.title}</h3>
+                <p className="text-gray-500 text-sm">{item.desc}</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Brokers teaser */}
-      <section className="py-16 px-4 max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl font-bold text-primary mb-2">Work With Verified Brokers</h2>
-        <p className="text-gray-500 mb-8 max-w-xl mx-auto">Every property on SAGECO EVERGREEN is backed by a verified, licensed real estate professional.</p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <Link href="/brokers" className="bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">Meet Our Brokers</Link>
-          <Link href="/broker-register" className="border-2 border-primary text-primary px-8 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition">Become a Broker</Link>
-        </div>
-      </section>
-
-
-      {/* Founder Section */}
-      <section className="py-16 px-4 bg-gray-50" id="founder">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 items-center">
-          <img
-            src="/asiimwe-derick.webp"
-            alt="Asiimwe Derick, Founder & CEO of SAGECO EVERGREEN"
-            width={200}
-            height={200}
-            className="rounded-full shadow-lg"
-            loading="lazy"
-          />
-          <div className="text-center md:text-left">
-            <h2 className="text-3xl font-bold text-primary mb-2">Meet the Founder</h2>
-            <p className="text-lg font-semibold text-gray-700 mb-3">Asiimwe Derick</p>
-            <p className="text-gray-500 leading-relaxed max-w-xl">
-              Asiimwe Derick is the Founder & CEO of SAGECO EVERGREEN Company Limited, a real estate and property technology company based in Kyenjojo, Uganda. He is also the CEO of DeryCode Technologies, Uganda's leading software and blockchain development company. Under his leadership, SAGECO EVERGREEN has built a platform that connects verified brokers with property buyers across Uganda.
-            </p>
-            <div className="flex gap-4 justify-center md:justify-start mt-4 flex-wrap">
-              <a href="https://wa.me/256772002326" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">WhatsApp</a>
-              <a href="https://ug.linkedin.com/in/asiimwe-derick-501755313" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">LinkedIn</a>
-              <a href="https://derycode.publicvm.com" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">DeryCode</a>
-            </div>
+            ) })}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="bg-primary text-white py-16 px-4 text-center">
+      <section className="py-16 px-4 bg-gradient-to-br from-primary to-green-800 text-white text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Find Your Property?</h2>
-        <p className="text-green-100 mb-8 max-w-xl mx-auto">Browse our listings and book a viewing today. Secure payment via PesaPal — MTN, Airtel, or card.</p>
-        <Link href="/properties" className="bg-secondary text-dark font-bold px-10 py-4 rounded-full text-lg hover:opacity-90">View All Properties</Link>
+        <p className="text-green-100 mb-8 max-w-xl mx-auto">Browse our verified listings or let our AI Broker find the perfect match for you.</p>
+        <div className="flex gap-4 justify-center flex-wrap">
+          <Link href="/properties" className="bg-secondary text-dark font-bold px-8 py-3 rounded-full hover:opacity-90 text-lg">Browse Properties</Link>
+          <Link href="/matching" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Get AI Matched</Link>
+          <Link href="/ai-broker" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Chat with AI Broker</Link>
+        </div>
       </section>
-
     </>
   )
 }
 
+export async function getServerSideProps() {
+  const { supabaseAdmin } = await import("../lib/supabaseAdmin.js")
 
-// ISR: Pre-render featured properties at build time, revalidate every 60s
-export async function getStaticProps() {
-  const { SUPA_URL, SUPA_KEY } = await import('../lib/supabaseAdmin.js')
-
+  var featuredRes, propsCount, brokersCount, bookingsCount
   try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/properties?select=id,title,location,price,category,images,featured,bedrooms,bathrooms,status&status=eq.available&featured=eq.true&limit=6&order=created_at.desc`, {
-      headers: {
-        'apikey': SUPA_KEY,
-        'Authorization': `Bearer ${SUPA_KEY}`,
+    var results = await Promise.all([
+      supabaseAdmin.from("properties").select("*").eq("status", "available").eq("featured", true).limit(6),
+      supabaseAdmin.from("properties").select("id", { count: "exact", head: true }),
+      supabaseAdmin.from("brokers").select("id", { count: "exact", head: true }).in("registration_status", ["registered", "active"]),
+      supabaseAdmin.from("bookings").select("id", { count: "exact", head: true }),
+    ])
+    featuredRes = results[0]
+    propsCount = results[1]
+    brokersCount = results[2]
+    bookingsCount = results[3]
+  } catch(e) {
+    return { props: { featuredProperties: [], stats: {} } }
+  }
+
+  return {
+    props: {
+      featuredProperties: (featuredRes && featuredRes.data) || [],
+      stats: {
+        properties: (propsCount && propsCount.count) || 0,
+        brokers: (brokersCount && brokersCount.count) || 0,
+        bookings: (bookingsCount && bookingsCount.count) || 0,
       },
-    })
-    const data = await res.json()
-    return {
-      props: { featuredProperties: data || [] },
-      revalidate: 60,
-    }
-  } catch {
-    return { props: { featuredProperties: [] }, revalidate: 60 }
+    },
   }
 }

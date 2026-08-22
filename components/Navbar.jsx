@@ -7,6 +7,8 @@ const NAV_LINKS = [
   { href: "/properties", label: "Properties" },
   { href: "/brokers",    label: "Brokers" },
   { href: "/agents",     label: "Agents" },
+  { href: "/ai-broker",  label: "AI Broker" },
+  { href: "/invest",      label: "Invest" },
   { href: "/plans",      label: "Plans" },
   { href: "/projects",   label: "Projects" },
   { href: "/careers",    label: "Careers" },
