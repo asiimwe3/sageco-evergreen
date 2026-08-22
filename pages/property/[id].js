@@ -4,6 +4,8 @@ import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import Head from 'next/head'
 import Link from 'next/link'
+import MapPicker from '../../components/MapPicker'
+import PricePredictor from '../../components/PricePredictor'
 
 // ── Server-side data fetch (fixes blank page on first load + SEO) ────────────
 export async function getServerSideProps({ params }) {
@@ -48,6 +50,11 @@ export default function PropertyDetail({ property, similar }) {
   const [activeImg, setActiveImg] = useState(0)
   const [lightbox, setLightbox] = useState(false)
   const [copied, setCopied] = useState(false)
+  const [showMap, setShowMap] = useState(false)
+
+  // GPS coordinates from property data
+  const hasGps = property.gps_lat && property.gps_lng
+  const gpsCoords = hasGps ? { lat: property.gps_lat, lng: property.gps_lng } : null
 
   const images = property.images && property.images.length > 0 ? property.images : null
 
@@ -297,21 +304,51 @@ export default function PropertyDetail({ property, similar }) {
           </div>
         )}
 
-        {/* Google Maps embed */}
-        <div className="mt-10">
-          <h2 className="text-xl font-bold text-gray-800 mb-4">📍 Location</h2>
-          <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-            <iframe
-              title="Property Location"
-              width="100%"
-              height="300"
-              style={{ border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
-            />
+        {/* GPS Map & AI Price Assessment */}
+        {hasGps ? (
+          <div className="mt-10">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">📍 GPS Location (Verified)</h2>
+            <div className="rounded-2xl overflow-hidden border-2 border-gray-200">
+              <MapPicker lat={gpsCoords.lat} lng={gpsCoords.lng} height={280} />
+            </div>
+            <p className="text-gray-400 text-xs mt-2 text-center">📍 {property.location} — GPS: {gpsCoords.lat.toFixed(6)}, {gpsCoords.lng.toFixed(6)}</p>
           </div>
-          <p className="text-gray-400 text-xs mt-2 text-center">📍 {property.location}</p>
+        ) : (
+          <div className="mt-10">
+            <h2 className="text-xl font-bold text-gray-800 mb-4">📍 Location</h2>
+            <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
+              <iframe
+                title="Property Location"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                src={`https://maps.google.com/maps?q=${mapQuery}&output=embed`}
+              />
+            </div>
+            <p className="text-gray-400 text-xs mt-2 text-center">📍 {property.location}</p>
+          </div>
+        )}
+
+        {/* AI Price Prediction */}
+        <div className="mt-6">
+          <PricePredictor
+            lat={property.gps_lat}
+            lng={property.gps_lng}
+            location={property.location}
+            category={property.category}
+            sub_type={property.sub_type}
+            land_acres={property.land_acres}
+            area_sqft={property.area_sqft}
+            plot_feet={property.plot_feet}
+            price={property.price}
+            water_available={property.water_available}
+            electricity_available={property.electricity_available}
+            road_distance_km={property.road_distance_km}
+            fence={property.fence}
+            title_deed={property.title_deed}
+          />
         </div>
 
         {/* Similar properties */}
