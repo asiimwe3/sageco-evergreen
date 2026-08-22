@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../../lib/supabaseAdmin.js'
+import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
 
 const COMPANY = {
   name: "SAGECO EVERGREEN CO. LTD",

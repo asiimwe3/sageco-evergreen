@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '../../lib/supabaseAdmin.js'
+import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
 
 export default async function handler(req, res) {
   const { investor_email } = req.query
