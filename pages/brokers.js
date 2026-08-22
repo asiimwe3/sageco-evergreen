@@ -19,7 +19,7 @@ export default function Brokers() {
         const data = await res.json()
         setBrokers(data.brokers || [])
       } catch (err) {
-        console.error('[Brokers] fetch failed:', err)
+        
         setBrokers([])
       } finally {
         setLoading(false)

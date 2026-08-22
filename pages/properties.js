@@ -49,7 +49,7 @@ export default function Properties({ initialProperties, initialTotal }) {
       setTotal(data.total || 0)
       setHasMore(data.hasMore || false)
     } catch (err) {
-      console.error('[Properties] fetch error:', err)
+      
       if (reset) setProperties([])
     }
 

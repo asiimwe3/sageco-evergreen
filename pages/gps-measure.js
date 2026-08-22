@@ -241,7 +241,7 @@ export default function GPSMeasurePage() {
         setSaved(true)
       }
     } catch (err) {
-      console.error('Save error:', err)
+      
     }
     setSaving(false)
   }
