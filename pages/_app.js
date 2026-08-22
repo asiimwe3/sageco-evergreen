@@ -1,6 +1,7 @@
 import "../styles/globals.css"
 import Head from "next/head"
 import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
 import { AuthProvider } from "../context/AuthContext"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
@@ -10,8 +11,13 @@ import { useAppMode } from "../hooks/useAppMode"
 
 const ChatBot = dynamic(() => import("../components/ChatBot"), { ssr: false })
 
+// Pages that should render full-screen without Navbar/Footer (chat interfaces)
+const FULLSCREEN_ROUTES = ["/ai-broker"]
+
 function AppShell({ Component, pageProps }) {
   const appMode = useAppMode()
+  const router = useRouter()
+  const isFullscreen = FULLSCREEN_ROUTES.includes(router.pathname)
 
   return (
     <>
@@ -42,21 +48,24 @@ function AppShell({ Component, pageProps }) {
       {/* Inject app-mode performance CSS */}
       {appMode && <AppModeStyles />}
 
-      {/* Navigation — full Navbar for web, compact AppHeader for WebView */}
-      {!appMode && <Navbar />}
-      {appMode  && <AppHeader showBack showSearch showNotif />}
+      {/* Navigation — hidden on fullscreen chat pages */}
+      {!appMode && !isFullscreen && <Navbar />}
+      {appMode  && !isFullscreen && <AppHeader showBack showSearch showNotif />}
 
-      {/* Page content */}
-      <div className="pb-16 lg:pb-0">
-      <Component {...pageProps} />
+      {/* Page content — fullscreen pages get no wrapper */}
+      {isFullscreen ? (
+        <Component {...pageProps} />
+      ) : (
+        <div className="pb-16 lg:pb-0">
+          <Component {...pageProps} />
+        </div>
+      )}
 
-      </div>
+      {/* Footer — hidden in app mode and on fullscreen pages */}
+      {!appMode && !isFullscreen && <Footer />}
 
-      {/* Footer — hidden in app mode */}
-      {!appMode && <Footer />}
-
-      {/* ChatBot — hidden in app mode */}
-      {!appMode && <ChatBot />}
+      {/* ChatBot — hidden in app mode and on fullscreen pages (AI broker IS the chat) */}
+      {!appMode && !isFullscreen && <ChatBot />}
 
       {/* Android bottom nav safe-area spacer */}
       {appMode && (
