@@ -266,8 +266,10 @@ export async function getStaticProps() {
       headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` },
     })
     const data = await res.json()
+    // Ensure data is an array (Supabase returns error object on failure)
+    const properties = Array.isArray(data) ? data : []
     return {
-      props: { initialProperties: data || [], initialTotal: data?.length || 0 },
+      props: { initialProperties: properties, initialTotal: properties.length },
       revalidate: 60,
     }
   } catch {

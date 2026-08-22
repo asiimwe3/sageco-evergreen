@@ -1,7 +1,7 @@
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin.js'
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end()
-  if (req.headers["x-admin-secret"] !== (process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026")) {
+  if (req.headers["x-admin-secret"] !== (process.env.NEXT_PUBLIC_ADMIN_SECRET || "")) {
     return res.status(403).end()
   }
 

@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { supabase } from "../lib/supabase"
+import { useAuth } from "../context/AuthContext"
 
-export const ADMIN_SECRET = "sageco-admin-2026"
+// Admin secret comes from env var only — never hardcoded in client bundle
+export const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || ""
 
 const NAV = [
   { href: "/admin", icon: "🏠", label: "Dashboard" },
@@ -18,8 +21,33 @@ const NAV = [
 
 export function AdminGate({ children, title }) {
   const [authed, setAuthed] = useState(false)
-  const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const { user, profile, loading: authLoading } = useAuth()
+
+  // Check if user has admin role via Supabase Auth
+  useEffect(() => {
+    if (authLoading) return
+    
+    if (user && profile?.role === "admin") {
+      setAuthed(true)
+      setLoading(false)
+    } else if (!authLoading) {
+      setLoading(false)
+    }
+  }, [user, profile, authLoading])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Head><title>{title} | Admin</title><meta name="robots" content="noindex" /></Head>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-500 text-sm">Loading admin panel...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!authed) return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -28,14 +56,12 @@ export function AdminGate({ children, title }) {
         <div className="text-5xl mb-4">🔐</div>
         <h1 className="text-2xl font-bold text-primary mb-1">{title}</h1>
         <p className="text-gray-500 text-sm mb-6">Admin access required</p>
-        <input type="password" placeholder="Admin password"
-          value={password} onChange={e => setPassword(e.target.value)}
-          onKeyDown={e => { if (e.key === "Enter") { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}}
-          className="w-full border rounded-lg px-4 py-3 mb-3 focus:ring-2 focus:ring-primary outline-none" />
-        <button onClick={() => { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}
-          className="w-full bg-primary text-white py-3 rounded-full font-bold hover:opacity-90">
-          Enter
-        </button>
+        <p className="text-gray-400 text-sm mb-4">
+          You need an admin account to access this area.
+        </p>
+        <Link href="/login" className="inline-block bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90">
+          Sign In
+        </Link>
         <Link href="/admin" className="block mt-4 text-sm text-gray-400 hover:text-primary">← Admin Home</Link>
       </div>
     </div>

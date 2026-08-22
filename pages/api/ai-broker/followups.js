@@ -1,5 +1,5 @@
 import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
-const ADMIN_SECRET = process.env.ADMIN_SECRET || "sageco-admin-2026"
+const ADMIN_SECRET = process.env.ADMIN_SECRET || ""
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {

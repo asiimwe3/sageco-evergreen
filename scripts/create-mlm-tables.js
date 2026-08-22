@@ -2,7 +2,7 @@ import pkg from "pg"
 const { Client } = pkg
 
 const client = new Client({
-  connectionString: "postgresql://postgres.emldbjqegftrngxypeca:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3ODMyNDM1MiwiZXhwIjoyMDkzOTAwMzUyfQ.qxKXCKisdivaO-x1nrGcnpmQL8K5Fcs2l69LizuAyLk@aws-0-eu-west-1.pooler.supabase.com:6543/postgres",
+  connectionString: process.env.SUPABASE_DB_URL || "",
   ssl: { rejectUnauthorized: false }
 })
 

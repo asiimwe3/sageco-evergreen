@@ -1,5 +1,5 @@
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin.js'
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || ""
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end()

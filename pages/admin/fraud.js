@@ -2,7 +2,7 @@ import Head from "next/head"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 
-const ADMIN_SECRET = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026") : "sageco-admin-2026"
+const ADMIN_SECRET = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_ADMIN_SECRET || "") : ""
 
 export default function FraudDashboard() {
   const [flags, setFlags] = useState([])

@@ -6,7 +6,7 @@ const BASE_URL = process.env.PESAPAL_ENV === 'sandbox'
 const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
 const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
 const IPN_ID = process.env.PESAPAL_IPN_ID
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen-co.vercel.app'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end()

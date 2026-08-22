@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Link from "next/link"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-rho.vercel.app"
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 const PLANS = [
   {

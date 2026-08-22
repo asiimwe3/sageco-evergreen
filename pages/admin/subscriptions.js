@@ -4,7 +4,7 @@ import Head from "next/head"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || "sageco-admin-2026"
+const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || ""
 
 const PLAN_BADGE = {
   basic: "bg-gray-100 text-gray-600",
@@ -61,9 +61,9 @@ export default function AdminSubscriptions() {
           <h1 className="text-2xl font-bold text-primary mb-6">Admin Access</h1>
           <input type="password" placeholder="Enter admin password"
             value={password} onChange={e => setPassword(e.target.value)}
-            onKeyDown={e => { if (e.key === "Enter") { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}}
+            onKeyDown={e => { if (e.key === "Enter") { if (password) setAuthed(true); else alert("Enter password") }}}
             className="w-full border rounded-lg px-4 py-3 mb-4 focus:ring-2 focus:ring-primary outline-none" />
-          <button onClick={() => { if (password === "sageco2026") setAuthed(true); else alert("Wrong password") }}
+          <button onClick={() => { if (password) setAuthed(true); else alert("Enter password") }}
             className="w-full bg-primary text-white py-3 rounded-full font-bold hover:opacity-90">Enter</button>
         </div>
         <Footer />
