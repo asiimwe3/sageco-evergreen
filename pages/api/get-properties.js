@@ -1,48 +1,93 @@
-// SageCo Evergreen — Properties API (direct Supabase, no Base44 proxy)
-import { supabaseAdmin } from '../../lib/supabaseAdmin.js'
-export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET')
-  if (req.method === 'OPTIONS') return res.status(200).end()
-  if (req.method !== 'GET') return res.status(405).json({ error: 'Method not allowed' })
+import { supabaseAdmin as supabase } from '../../lib/supabaseAdmin.js'
 
+/**
+ * Public properties API — no admin secret required.
+ * Supports search, category filter, price range, sorting, and pagination.
+ */
+export default async function handler(req, res) {
   const {
-    category, featured, search,
-    limit = 12, offset = 0, sort = 'newest',
-    min_price, max_price,
+    search,
+    category,
+    status,
+    sort = 'newest',
+    limit = '12',
+    offset = '0',
+    min_price,
+    max_price,
+    featured,
   } = req.query
 
-  let query = supabaseAdmin
+  const pageNum = Math.max(0, parseInt(offset, 10) || 0)
+  const pageLimit = Math.min(50, Math.max(1, parseInt(limit, 10) || 12))
+
+  let query = supabase
     .from('properties')
-    .select('id, title, description, location, price, category, images, featured, bedrooms, bathrooms, area_sqft, status, created_at', { count: 'exact' })
-    .eq('status', 'available')
-    .range(Number(offset), Number(offset) + Number(limit) - 1)
+    .select('*', { count: 'exact' })
 
-  if (category && category !== 'All') query = query.eq('category', category)
-  if (featured === 'true') query = query.eq('featured', true)
-  if (search) query = query.or(`title.ilike.%${search}%,location.ilike.%${search}%,description.ilike.%${search}%`)
-  if (min_price) query = query.gte('price', parseFloat(min_price))
-  if (max_price) query = query.lte('price', parseFloat(max_price))
-
-  switch (sort) {
-    case 'price_asc': query = query.order('price', { ascending: true }); break
-    case 'price_desc': query = query.order('price', { ascending: false }); break
-    case 'oldest': query = query.order('created_at', { ascending: true }); break
-    default: query = query.order('featured', { ascending: false }).order('created_at', { ascending: false })
+  // Only show available properties by default (hide sold/rented)
+  if (status && status !== 'all') {
+    query = query.eq('status', status)
+  } else if (!status) {
+    query = query.eq('status', 'available')
   }
+
+  // Category filter
+  if (category && category !== 'All') {
+    query = query.eq('category', category)
+  }
+
+  // Search
+  if (search) {
+    query = query.or(`title.ilike.%${search}%,location.ilike.%${search}%,description.ilike.%${search}%`)
+  }
+
+  // Price range
+  if (min_price) {
+    query = query.gte('price', parseInt(min_price, 10))
+  }
+  if (max_price) {
+    query = query.lte('price', parseInt(max_price, 10))
+  }
+
+  // Featured filter
+  if (featured === 'true') {
+    query = query.eq('featured', true)
+  }
+
+  // Sorting
+  switch (sort) {
+    case 'oldest':
+      query = query.order('created_at', { ascending: true })
+      break
+    case 'price_asc':
+      query = query.order('price', { ascending: true })
+      break
+    case 'price_desc':
+      query = query.order('price', { ascending: false })
+      break
+    case 'popular':
+      query = query.order('views', { ascending: false })
+      break
+    default: // newest
+      query = query.order('created_at', { ascending: false })
+  }
+
+  // Pagination
+  query = query.range(pageNum, pageNum + pageLimit - 1)
 
   const { data, error, count } = await query
 
   if (error) {
-    console.error('[get-properties] Error:', error.message)
-    return res.status(500).json({ error: error.message, properties: [], total: 0 })
+    console.error('[get-properties] Supabase error:', error)
+    return res.status(200).json({ properties: [], total: 0, hasMore: false })
   }
+
+  const total = count || 0
+  const hasMore = pageNum + pageLimit < total
 
   return res.status(200).json({
     properties: data || [],
-    total: count || 0,
-    offset: Number(offset),
-    limit: Number(limit),
-    hasMore: (Number(offset) + Number(limit)) < (count || 0),
+    total,
+    hasMore,
   })
 }
