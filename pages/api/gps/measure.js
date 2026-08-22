@@ -27,19 +27,29 @@ export default async function handler(req, res) {
     const acres = area_sqm / 4046.86
     const hectares = area_sqm / 10000
 
-    // Save to land_passports table (or property_verifications)
+    // Save to land_passports table
     const { data, error } = await supabaseAdmin
       .from('land_passports')
       .insert([{
         property_id: property_id || null,
-        gps_coordinates: gpsString,
+        gps_coordinates: { type: 'Point', coordinates: [coordinates[0].lng, coordinates[0].lat], all_points: coordinates },
         boundary_coordinates: boundary_geojson || {
+          type: 'Polygon',
+          coordinates: [coordinates.map(c => [c.lng, c.lat]).concat([[coordinates[0].lng, coordinates[0].lat]])],
+        },
+        boundary_records: boundary_geojson || {
           type: 'Polygon',
           coordinates: [coordinates.map(c => [c.lng, c.lat]).concat([[coordinates[0].lng, coordinates[0].lat]])],
         },
         area_measured: hectares, // store in hectares
         survey_date: new Date().toISOString().split('T')[0],
-        status: 'draft',
+        verification_status: 'draft',
+        ownership_history: {
+          measured_at: new Date().toISOString(),
+          total_points: coordinates.length,
+          perimeter_m: perimeter_m,
+          area_sqm: area_sqm,
+        },
       }])
       .select()
 
@@ -53,6 +63,7 @@ export default async function handler(req, res) {
         .from('properties')
         .update({
           gps_coordinates: gpsString,
+          boundary_geojson: boundary_geojson,
           updated_date: new Date().toISOString(),
         })
         .eq('id', property_id)

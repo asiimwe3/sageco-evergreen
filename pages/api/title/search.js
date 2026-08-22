@@ -19,15 +19,37 @@ export default async function handler(req, res) {
     const searchRef = `TS-${Date.now().toString(36).toUpperCase()}`
     const cleanValue = search_value.trim()
 
-    // Step 1: Check if we have this title in our local database (from land_passports or properties)
+    // Step 1: Check our local database — search properties by title_number, plot_reference, or owner_name
     let localMatch = null
 
-    // Search properties by gps_coordinates or passport_id
-    if (search_type === 'title_number' || search_type === 'plot_reference') {
+    const { data: propertyMatch } = await supabaseAdmin
+      .from('properties')
+      .select('*')
+      .or(`title_number.ilike.%${cleanValue}%,plot_reference.ilike.%${cleanValue}%,owner_name.ilike.%${cleanValue}%,name.ilike.%${cleanValue}%`)
+      .limit(1)
+
+    if (propertyMatch && propertyMatch.length > 0) {
+      const p = propertyMatch[0]
+      localMatch = {
+        title_number: p.title_number || cleanValue,
+        plot_reference: p.plot_reference || null,
+        district: p.location || district || null,
+        area: p.size_acres ? `${p.size_acres} acres` : (p.size ? `${p.size} acres` : null),
+        title_status: 'Active',
+        owner_name: p.owner_name || 'On file',
+        tenure_type: p.tenure_type || 'Freehold',
+        registration_date: p.created_date ? new Date(p.created_date).toLocaleDateString() : null,
+        encumbrances: 'None recorded',
+        notes: 'Property record found in SageCo Evergreen database.',
+      }
+    }
+
+    // Also check land_passports by passport_uid
+    if (!localMatch) {
       const { data: passportMatch } = await supabaseAdmin
         .from('land_passports')
         .select('*')
-        .or(`passport_id.ilike.%${cleanValue}%`)
+        .or(`passport_uid.ilike.%${cleanValue}%`)
         .limit(1)
 
       if (passportMatch && passportMatch.length > 0) {
@@ -39,11 +61,11 @@ export default async function handler(req, res) {
           .single()
 
         localMatch = {
-          title_number: passport.passport_id,
-          plot_reference: property?.title_number || property?.plot_reference || null,
+          title_number: passport.passport_uid || cleanValue,
+          plot_reference: property?.plot_reference || null,
           district: property?.location || district || null,
           area: passport.area_measured ? `${passport.area_measured} hectares` : null,
-          title_status: passport.status,
+          title_status: passport.verification_status || 'Active',
           owner_name: property?.owner_name || 'Verified (see land passport)',
           tenure_type: property?.tenure_type || 'Freehold',
           registration_date: passport.issued_at ? new Date(passport.issued_at).toLocaleDateString() : null,
@@ -53,36 +75,9 @@ export default async function handler(req, res) {
       }
     }
 
-    // Search properties by title or location
-    if (!localMatch) {
-      const { data: propertyMatch } = await supabaseAdmin
-        .from('properties')
-        .select('*')
-        .or(`title_number.ilike.%${cleanValue}%,plot_reference.ilike.%${cleanValue}%,owner_name.ilike.%${cleanValue}%`)
-        .limit(1)
-
-      if (propertyMatch && propertyMatch.length > 0) {
-        const p = propertyMatch[0]
-        localMatch = {
-          title_number: p.title_number || cleanValue,
-          plot_reference: p.plot_reference || null,
-          district: p.location || district || null,
-          area: p.size_acres ? `${p.size_acres} acres` : null,
-          title_status: 'Active',
-          owner_name: p.owner_name || 'On file',
-          tenure_type: p.tenure_type || 'Freehold',
-          registration_date: p.created_date ? new Date(p.created_date).toLocaleDateString() : null,
-          encumbrances: 'None recorded',
-          notes: 'Property record found in SageCo Evergreen database.',
-        }
-      }
-    }
-
     // Step 2: Try the official MLHUD/ULIS portal
     let officialResult = null
     try {
-      // Attempt to query the Uganda Land Information System
-      // The ULIS portal may have a search API or form endpoint
       const portalUrl = `${ULAIS_PORTAL}/search?q=${encodeURIComponent(cleanValue)}&type=${search_type}&district=${encodeURIComponent(district || '')}`
 
       const response = await fetch(portalUrl, {
@@ -120,9 +115,9 @@ export default async function handler(req, res) {
       await supabaseAdmin
         .from('land_passports')
         .insert([{
-          passport_id: searchRef,
+          passport_uid: searchRef,
           property_id: null,
-          status: 'verified',
+          verification_status: 'verified',
           ownership_history: {
             search_type,
             search_value: cleanValue,
@@ -140,7 +135,7 @@ export default async function handler(req, res) {
     return res.status(404).json({
       error: 'No title found in local database. Please search on the official MLHUD portal.',
       search_id: searchRef,
-      official_url: `${MLHUD_PORTAL}`,
+      official_url: MLHUD_PORTAL,
       instructions: 'Visit the Ministry of Lands office or portal with your title number or plot reference for official verification.',
       searched_at: new Date().toISOString(),
     })
