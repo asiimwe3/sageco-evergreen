@@ -1,5 +1,6 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
+import SEO from '../../components/SEO'
 
 const STATUS_COLORS = {
   confirmed: "bg-green-100 text-green-700 border-green-200",
@@ -123,6 +124,14 @@ export default function AdminBookings() {
     .reduce((sum, b) => sum + (b.total_amount || 0), 0)
 
   return (
+    <>
+      <SEO
+        title="Manage Bookings - Admin"
+        description="Manage property viewing bookings and site visits."
+        keywords="admin bookings SAGECO"
+        path="/admin/bookings"
+        noindex
+      />
     <AdminGate title="Bookings">
       <div className="p-6 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">

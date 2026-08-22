@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 const FAQS = [
   {
@@ -68,10 +68,12 @@ export default function FAQ() {
 
   return (
     <>
-      <Head>
-        <title>FAQ | SAGECO EVERGREEN</title>
-        <meta name="description" content="Frequently asked questions about SAGECO EVERGREEN — bookings, payments, property listings, broker registration, and more." />
-      </Head>
+      <SEO
+        title="Frequently Asked Questions - SAGECO EVERGREEN"
+        description="Answers to common questions about buying land in Uganda, property viewings, payments, broker registration, and SAGECO EVERGREEN services."
+        keywords="SAGECO FAQ, real estate questions Uganda, buying land FAQ, property Uganda questions"
+        path="/faq"
+      />
 
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Frequently Asked Questions</h1>

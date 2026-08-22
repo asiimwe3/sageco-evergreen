@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -87,10 +88,12 @@ export default function AgentsPage() {
   if (view === 'landing') {
     return (
       <>
-        <Head>
-          <title>Become an Agent | SAGECO EVERGREEN MLM</title>
-          <meta name="description" content="Become a SAGECO EVERGREEN Agent. Build your own broker network, manage groups, and earn commissions. Registration fee: UGX 30,000." />
-        </Head>
+        <SEO
+        title="Become a Real Estate Agent in Uganda"
+        description="Join SAGECO EVERGREEN as a real estate agent. Register, create groups, earn commissions, and access powerful broker tools for the Ugandan property market."
+        keywords="real estate agent Uganda, become broker Uganda, property agent registration, SAGECO agents"
+        path="/agents"
+      />
         <Navbar />
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
           <section className="bg-green-700 text-white py-20 px-4 text-center">

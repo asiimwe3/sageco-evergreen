@@ -1,7 +1,7 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
 import { supabase } from "../lib/supabase"
+import SEO from '../components/SEO'
 
 export default function ResetPassword() {
   const [email, setEmail] = useState("")
@@ -36,7 +36,13 @@ export default function ResetPassword() {
 
   return (
     <>
-      <Head><title>Reset Password | SAGECO EVERGREEN</title></Head>
+      <SEO
+        title="Reset Password - SAGECO EVERGREEN"
+        description="Reset your SAGECO EVERGREEN account password."
+        keywords="reset password SAGECO"
+        path="/reset-password"
+        noindex
+      />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
         <div className="w-full max-w-md">
           <h1 className="text-3xl font-bold text-gray-800 text-center mb-2">Reset Password</h1>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import Head from "next/head"
+import SEO from '../components/SEO'
 
 export default function BrokerPaymentSuccess() {
   const router = useRouter()
@@ -28,10 +28,13 @@ export default function BrokerPaymentSuccess() {
 
   return (
     <>
-      <Head>
-        <title>Payment Confirmed | SAGECO EVERGREEN</title>
-        <meta name="robots" content="noindex" />
-      </Head>
+      <SEO
+        title="Broker Payment Success"
+        description="Your broker registration payment was successful. Welcome to SAGECO EVERGREEN."
+        keywords="broker payment success SAGECO"
+        path="/broker-payment-success"
+        noindex
+      />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-2xl shadow p-10 text-center max-w-md">
           <div className="text-6xl mb-4">{done ? "🎉" : error ? "❌" : "⏳"}</div>

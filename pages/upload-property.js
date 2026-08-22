@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import Head from 'next/head'
 import { compressImage, fileToBase64 } from '../lib/imageCompression'
 import MapPicker from '../components/MapPicker'
 import PricePredictor from '../components/PricePredictor'
+import SEO from '../components/SEO'
 
 const CATEGORIES = ['Residential', 'Commercial', 'Land', 'Plot', 'Green Project']
 
@@ -156,7 +156,13 @@ export default function UploadProperty() {
 
   return (
     <>
-      <Head><title>List a Property | SAGECO EVERGREEN</title></Head>
+      <SEO
+        title="Upload Property - List Your Land or Home"
+        description="List your property on SAGECO EVERGREEN for free. Upload land, homes, or commercial spaces for sale across Uganda. Reach thousands of buyers."
+        keywords="upload property Uganda, list property for sale, free property listing Uganda, sell land Uganda"
+        path="/upload-property"
+        noindex
+      />
       <section className="bg-primary text-white py-12 px-4 text-center">
         <h1 className="text-3xl font-bold">List Your Property</h1>
         <p className="text-green-100 mt-2">Reach thousands of buyers and renters across Uganda</p>

@@ -3,6 +3,7 @@ import Footer from "../../components/Footer"
 import Head from "next/head"
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import SEO from '../../components/SEO'
 
 const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || ""
 
@@ -54,7 +55,13 @@ export default function AdminSubscriptions() {
   if (!authed) {
     return (
       <>
-        <Head><title>Subscriptions Admin | SAGECO EVERGREEN</title><meta name="robots" content="noindex" /></Head>
+        <SEO
+        title="Subscriptions - Admin"
+        description="Manage subscriber subscriptions and payments."
+        keywords="admin subscriptions SAGECO"
+        path="/admin/subscriptions"
+        noindex
+      />
         <Navbar />
         <div className="max-w-sm mx-auto px-4 py-20 text-center">
           <div className="text-4xl mb-4">🔐</div>

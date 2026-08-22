@@ -1,5 +1,5 @@
-import Head from "next/head"
 import { useState, useRef, useEffect } from "react"
+import SEO from '../components/SEO'
 
 export default function AIBroker() {
   const [messages, setMessages] = useState([
@@ -43,10 +43,12 @@ export default function AIBroker() {
 
   return (
     <>
-      <Head>
-        <title>AI Broker — Chat | SAGECO EVERGREEN</title>
-        <meta name="description" content="Chat with our AI Real Estate Broker — available 24/7. Natural-language property search, intent parsing, and broker followups." />
-      </Head>
+      <SEO
+        title="AI Property Broker - 24/7 Property Search"
+        description="Chat with SAGECO EVERGREEN AI Broker for 24/7 natural-language property search on WhatsApp and Web. Find land and homes in Uganda instantly."
+        keywords="AI real estate broker Uganda, property chatbot, AI property search Uganda, WhatsApp property assistant"
+        path="/ai-broker"
+      />
 
       {/* Full-screen ChatGPT-style chat layout */}
       <div className="flex flex-col h-screen bg-gray-50">

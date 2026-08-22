@@ -1,7 +1,7 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import SEO from '../components/SEO'
 
 const TYPE_LABELS = {
   viewing: "Property Viewing",
@@ -48,10 +48,13 @@ export default function PaymentSuccess() {
 
   return (
     <>
-      <Head>
-        <title>{success ? "Payment Successful" : "Payment Pending"} | SAGECO EVERGREEN</title>
-        <meta name="robots" content="noindex" />
-      </Head>
+      <SEO
+        title="Payment Successful"
+        description="Your payment was processed successfully via PesaPal. Thank you for using SAGECO EVERGREEN."
+        keywords="payment success SAGECO"
+        path="/payment-success"
+        noindex
+      />
       <div className="max-w-xl mx-auto px-4 py-20 text-center">
         <div className="text-7xl mb-4">{success ? "✅" : "⏳"}</div>
         <h1 className="text-3xl font-bold text-primary mb-2">

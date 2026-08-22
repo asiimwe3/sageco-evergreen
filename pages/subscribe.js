@@ -1,6 +1,6 @@
-import Head from "next/head"
 import { useRouter } from "next/router"
 import { useState, useEffect } from "react"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -80,10 +80,12 @@ export default function Subscribe() {
 
   return (
     <>
-      <Head>
-        <title>Subscribe — {config.name} Plan | SAGECO EVERGREEN</title>
-        <meta name="robots" content="noindex" />
-      </Head>
+      <SEO
+        title="Subscribe - SAGECO EVERGREEN Newsletter"
+        description="Subscribe to SAGECO EVERGREEN newsletter for new property listings, market insights, and investment opportunities in Uganda."
+        keywords="SAGECO newsletter, property alerts Uganda, real estate subscription, new listings Uganda"
+        path="/subscribe"
+      />
       <div className="max-w-lg mx-auto px-4 py-12">
         <div className={`inline-block px-4 py-1 rounded-full text-sm font-bold mb-4 ${badgeColor}`}>
           {config.name} Plan

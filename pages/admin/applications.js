@@ -1,5 +1,6 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
+import SEO from '../../components/SEO'
 
 const STATUS_COLORS = {
   new: "bg-blue-100 text-blue-700",
@@ -42,6 +43,14 @@ export default function AdminApplications() {
   const filtered = apps.filter(a => filter === "all" || a.status === filter)
 
   return (
+    <>
+      <SEO
+        title="Job Applications - Admin"
+        description="Review job applications for SAGECO EVERGREEN."
+        keywords="admin applications SAGECO"
+        path="/admin/applications"
+        noindex
+      />
     <AdminGate title="Job Applications">
       <div className="p-6 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">

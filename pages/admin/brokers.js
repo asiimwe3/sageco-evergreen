@@ -1,5 +1,6 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
+import SEO from '../../components/SEO'
 
 const STATUS_COLORS = {
   active: "bg-green-100 text-green-700",
@@ -61,6 +62,14 @@ export default function AdminBrokers() {
   })
 
   return (
+    <>
+      <SEO
+        title="Manage Brokers - Admin"
+        description="Manage verified brokers and agents on SAGECO EVERGREEN."
+        keywords="admin brokers SAGECO"
+        path="/admin/brokers"
+        noindex
+      />
     <AdminGate title="Brokers">
       <div className="p-6 max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">

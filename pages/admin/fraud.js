@@ -1,6 +1,6 @@
-import Head from "next/head"
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import SEO from '../../components/SEO'
 
 const ADMIN_SECRET = typeof window !== 'undefined' ? (process.env.NEXT_PUBLIC_ADMIN_SECRET || "") : ""
 
@@ -23,7 +23,13 @@ export default function FraudDashboard() {
 
   return (
     <>
-      <Head><title>Fraud Detection Dashboard | SAGECO Admin</title></Head>
+      <SEO
+        title="Fraud Detection - Admin"
+        description="Monitor and review flagged listings for fraud."
+        keywords="fraud detection admin SAGECO"
+        path="/admin/fraud"
+        noindex
+      />
       <div className="min-h-screen bg-gray-50 p-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-6">

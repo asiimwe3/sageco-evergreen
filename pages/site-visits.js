@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 export default function SiteVisits() {
   const [form, setForm] = useState({ property_id: '', visitor_name: '', visitor_email: '', visitor_phone: '', visit_type: 'physical', scheduled_date: '' })
@@ -19,10 +19,12 @@ export default function SiteVisits() {
 
   return (
     <>
-      <Head>
-        <title>Remote Site-Visit Technology | SAGECO EVERGREEN</title>
-        <meta name="description" content="Schedule physical, virtual, or drone site visits with GPS check-in verification and auto-generated visit reports." />
-      </Head>
+      <SEO
+        title="Remote Site Visits - Physical, Virtual and Drone Visits"
+        description="Book remote site visits with SAGECO EVERGREEN: physical, virtual, and drone visits with GPS check-in verification for properties across Uganda."
+        keywords="site visit Uganda, virtual property tour, drone site visit, property viewing Uganda, GPS check-in property"
+        path="/site-visits"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">🛰️ Remote Site-Visit Technology</h1>

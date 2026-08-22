@@ -1,8 +1,8 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { useRouter } from "next/router"
+import SEO from '../components/SEO'
 
 export default function Signup() {
   const { signUp, signInWithGoogle } = useAuth()
@@ -51,7 +51,13 @@ export default function Signup() {
 
   return (
     <>
-      <Head><title>Create Account | SAGECO EVERGREEN</title></Head>
+      <SEO
+        title="Create Account - SAGECO EVERGREEN"
+        description="Create a SAGECO EVERGREEN account to buy land, invest in property, and access premium real estate features across Uganda."
+        keywords="SAGECO signup, register real estate Uganda, create property account"
+        path="/signup"
+        noindex
+      />
       <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">

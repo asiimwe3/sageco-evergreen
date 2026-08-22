@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import SEO from '../components/SEO'
 
 export default function JobPostSuccess() {
   const router = useRouter()
@@ -8,10 +8,13 @@ export default function JobPostSuccess() {
 
   return (
     <>
-      <Head>
-        <title>Job Listing Submitted | SAGECO EVERGREEN</title>
-        <meta name="robots" content="noindex" />
-      </Head>
+      <SEO
+        title="Job Posted Successfully"
+        description="Your job posting was successfully created on SAGECO EVERGREEN."
+        keywords="job post success SAGECO"
+        path="/job-post-success"
+        noindex
+      />
       <main className="max-w-2xl mx-auto px-4 py-20 text-center">
         <div className="bg-white border rounded-lg shadow-sm p-8">
           <p className="text-sm font-bold text-primary uppercase tracking-widest mb-3">Payment submitted</p>

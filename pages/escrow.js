@@ -1,13 +1,15 @@
-import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 export default function Escrow() {
   return (
     <>
-      <Head>
-        <title>Programmable Escrow | SAGECO EVERGREEN</title>
-        <meta name="description" content="Secure escrow with milestone-based fund release, GPS-verified site visits, and MTN MoMo/Airtel Money support." />
-      </Head>
+      <SEO
+        title="Programmable Escrow - Secure Property Transactions"
+        description="SAGECO EVERGREEN programmable escrow: milestone-based fund release with GPS-verified site visits. Secure your property transactions in Uganda."
+        keywords="escrow Uganda, property escrow service, secure real estate transactions Uganda, milestone payment property"
+        path="/escrow"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">🔒 Programmable Escrow</h1>

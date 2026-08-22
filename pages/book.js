@@ -1,6 +1,7 @@
 import Head from "next/head"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 const BOOKING_FEE = 30000
@@ -114,10 +115,12 @@ export default function Book() {
   if (confirmedBooking) {
     return (
       <>
-        <Head>
-          <title>Booking Confirmed | SAGECO EVERGREEN</title>
-          <meta name="description" content="Your property viewing has been booked." />
-        </Head>
+        <SEO
+        title="Book a Property Viewing"
+        description="Book a property viewing or site visit with SAGECO EVERGREEN. Schedule visits to verified properties across Uganda. UGX 30,000 booking fee via MTN MoMo, Airtel Money, or card."
+        keywords="book property viewing Uganda, site visit booking, real estate appointment Uganda, property viewing Kyenjojo"
+        path="/book"
+      />
           <div className="max-w-xl mx-auto px-4 py-20 text-center">
           <div className="text-6xl mb-4">✅</div>
           <h1 className="text-3xl font-bold text-primary mb-2">Booking Confirmed!</h1>

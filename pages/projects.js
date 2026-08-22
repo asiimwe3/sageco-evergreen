@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -57,17 +58,13 @@ const jsonLd = {
 export default function Projects() {
   return (
     <>
+      <SEO
+        title="Our Projects - SAGECO EVERGREEN"
+        description="Explore SAGECO EVERGREEN eco-friendly property developments and green real estate projects across Uganda. Sustainable land development initiatives."
+        keywords="eco property projects Uganda, green real estate Uganda, sustainable development Uganda, SAGECO projects"
+        path="/projects"
+      />
       <Head>
-        <title>Green Projects Uganda | SAGECO EVERGREEN</title>
-        <meta
-          name="description"
-          content="Explore SAGECO EVERGREEN green projects in Uganda: agro-forestry, eco lodges, solar-ready property, nursery beds, and sustainable real estate partnerships."
-        />
-        <meta
-          name="keywords"
-          content="green projects Uganda, eco real estate Uganda, agroforestry land Uganda, solar property Uganda, sustainable development Uganda"
-        />
-        <link rel="canonical" href={`${SITE_URL}/projects`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/projects`} />
         <meta property="og:title" content="Green Projects Uganda | SAGECO EVERGREEN" />

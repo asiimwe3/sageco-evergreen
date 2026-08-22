@@ -1,13 +1,15 @@
-import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 export default function Eco() {
   return (
     <>
-      <Head>
-        <title>Eco-Land Investment Intelligence | SAGECO EVERGREEN</title>
-        <meta name="description" content="Carbon potential scoring, reforestation analysis, agroforestry systems, and renewable energy suitability per property." />
-      </Head>
+      <SEO
+        title="Eco-Land Intelligence - Carbon Scoring and Green Development"
+        description="SAGECO EVERGREEN eco-land intelligence: carbon scoring, reforestation tracking, and renewable energy analysis for Ugandan properties."
+        keywords="eco land Uganda, carbon scoring property, green real estate Uganda, reforestation land, renewable energy property"
+        path="/eco"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">🌿 Eco-Land Investment Intelligence</h1>

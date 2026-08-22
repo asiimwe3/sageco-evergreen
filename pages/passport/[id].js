@@ -1,5 +1,5 @@
-import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 export default function Passport({ passport, property }) {
   if (!passport) return (
@@ -13,10 +13,13 @@ export default function Passport({ passport, property }) {
 
   return (
     <>
-      <Head>
-        <title>Land Passport {passport.passport_id} | SAGECO EVERGREEN</title>
-        <meta name="description" content={`Digital Land Passport for ${property?.title || 'property'}`} />
-      </Head>
+      <SEO
+        title="Land Passport"
+        description="Digital land passport with GPS boundaries and ownership history."
+        keywords="land passport, digital property record, GPS boundary"
+        path="/passports"
+        noindex
+      />
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-3xl mx-auto px-4">
           <div className="border-2 border-green-700 rounded-xl p-8 bg-white shadow-lg">

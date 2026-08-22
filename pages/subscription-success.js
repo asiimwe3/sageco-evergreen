@@ -1,7 +1,7 @@
-import Head from "next/head"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 const PLAN_NAMES = { basic: "Basic", pro: "Pro", premium: "Premium" }
 
@@ -36,7 +36,13 @@ export default function SubscriptionSuccess() {
 
   return (
     <>
-      <Head><title>Subscription {status === "success" ? "Activated" : "Processing"} | SAGECO EVERGREEN</title></Head>
+      <SEO
+        title="Subscription Active"
+        description="Your SAGECO EVERGREEN subscription is now active. Enjoy premium features."
+        keywords="subscription success SAGECO"
+        path="/subscription-success"
+        noindex
+      />
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white rounded-2xl shadow-md p-10 max-w-md w-full text-center">
           {status === "verifying" && (

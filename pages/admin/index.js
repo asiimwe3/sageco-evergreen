@@ -2,6 +2,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useState, useEffect } from "react"
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
+import SEO from '../../components/SEO'
 
 const SECTIONS = [
   { href: "/admin/properties",    icon: "🏡", label: "Properties",       desc: "Add, edit, feature, remove listings",        statKey: "properties",    color: "text-primary bg-green-50" },
@@ -25,6 +26,14 @@ export default function AdminDashboard() {
   }, [])
 
   return (
+    <>
+      <SEO
+        title="Admin Dashboard"
+        description="SAGECO EVERGREEN admin dashboard. Manage properties, bookings, brokers, and applications."
+        keywords="admin dashboard, SAGECO admin"
+        path="/admin"
+        noindex
+      />
     <AdminGate title="Admin Dashboard">
       <div className="p-6 max-w-7xl mx-auto">
         <div className="mb-8">

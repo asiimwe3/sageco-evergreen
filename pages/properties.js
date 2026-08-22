@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
-import Head from 'next/head'
 import Link from 'next/link'
+import SEO from '../components/SEO'
 
 const CATEGORIES = ['All', 'Residential', 'Commercial', 'Land', 'Plot', 'Green Project']
 const PAGE_SIZE = 12
@@ -75,10 +75,12 @@ export default function Properties({ initialProperties, initialTotal }) {
 
   return (
     <>
-      <Head>
-        <title>Properties for Sale & Rent in Uganda | SAGECO EVERGREEN</title>
-        <meta name="description" content="Browse residential homes, commercial spaces, land, plots, and green projects across Uganda. Verified listings with direct broker contact." />
-      </Head>
+      <SEO
+        title="Properties for Sale in Uganda"
+        description="Browse verified land, homes, and commercial properties for sale across Uganda. Filter by location, price, and type. Kyenjojo, Kampala, and more."
+        keywords="properties for sale Uganda, land for sale Uganda, houses for sale Kampala, commercial property Uganda, plots for sale Kyenjojo"
+        path="/properties"
+      />
 
       {/* Hero */}
       <section className="bg-primary text-white py-16 px-4 text-center">

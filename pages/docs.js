@@ -1,6 +1,7 @@
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -161,13 +162,13 @@ export default function Docs() {
 
   return (
     <>
+      <SEO
+        title="Documentation - SAGECO EVERGREEN"
+        description="SAGECO EVERGREEN platform documentation. Learn how to use our property tools, GPS measurement, escrow, and investment features."
+        keywords="SAGECO documentation, real estate platform guide, property tools docs Uganda"
+        path="/docs"
+      />
       <Head>
-        <title>SAGECO EVERGREEN Documentation | Real Estate Platform Help</title>
-        <meta
-          name="description"
-          content="Current documentation for SAGECO EVERGREEN: property listings, broker registration, job posts, payments, uploads, admin tools, and support."
-        />
-        <link rel="canonical" href={`${SITE_URL}/docs`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${SITE_URL}/docs`} />
         <meta property="og:title" content="SAGECO EVERGREEN Documentation" />

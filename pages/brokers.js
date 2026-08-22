@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -30,10 +31,13 @@ export default function Brokers() {
 
   return (
     <>
+      <SEO
+        title="Verified Real Estate Brokers in Uganda"
+        description="Connect with verified real estate brokers and agents across Uganda. Find trusted professionals for property buying, selling, and consultation."
+        keywords="real estate brokers Uganda, property agents Uganda, verified brokers Kyenjojo, real estate agents Kampala"
+        path="/brokers"
+      />
       <Head>
-        <title>Real Estate Brokers in Uganda | SAGECO EVERGREEN</title>
-        <meta name="description" content="Connect with verified real estate professionals in Uganda. Find experienced property brokers and agents through SAGECO EVERGREEN." />
-        <link rel="canonical" href={`${SITE_URL}/brokers`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/brokers`} />
         <meta property="og:title" content="Real Estate Brokers in Uganda | SAGECO EVERGREEN" />

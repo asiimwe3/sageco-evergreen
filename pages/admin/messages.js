@@ -1,5 +1,6 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
+import SEO from '../../components/SEO'
 
 export default function AdminMessages() {
   const [messages, setMessages] = useState([])
@@ -50,6 +51,14 @@ export default function AdminMessages() {
   const unreadCount = messages.filter(m => m.status === "unread").length
 
   return (
+    <>
+      <SEO
+        title="Messages - Admin"
+        description="Manage contact form messages and inquiries."
+        keywords="admin messages SAGECO"
+        path="/admin/messages"
+        noindex
+      />
     <AdminGate title="Messages">
       <div className="p-6 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">

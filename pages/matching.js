@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 export default function Matching() {
   const [form, setForm] = useState({ budget_min: '', budget_max: '', preferred_location: '', preferred_category: '', min_acres: '', investment_goals: '', user_email: '' })
@@ -23,10 +23,12 @@ export default function Matching() {
 
   return (
     <>
-      <Head>
-        <title>Smart Property Matching | SAGECO EVERGREEN</title>
-        <meta name="description" content="AI-powered matching algorithm scores properties against your budget, location, acreage, and investment goals." />
-      </Head>
+      <SEO
+        title="Smart Property Matching - AI Property Finder"
+        description="SAGECO EVERGREEN AI-powered property matching: find your ideal property based on budget, location, and goals. Smart property finder for Uganda."
+        keywords="property matching Uganda, AI property finder, smart real estate search Uganda, property recommendation"
+        path="/matching"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">🎯 Smart Property Matching</h1>

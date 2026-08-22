@@ -1,5 +1,6 @@
 import Head from "next/head"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 const LISTING_FEE = 5000
@@ -79,14 +80,15 @@ export default function PostJob() {
 
   return (
     <>
+      <SEO
+        title="Post a Job - SAGECO EVERGREEN"
+        description="Post a real estate job listing on SAGECO EVERGREEN. Reach property professionals across Uganda."
+        keywords="post job SAGECO, real estate job listing Uganda, hire property agents Uganda"
+        path="/post-job"
+        noindex
+      />
       <Head>
-        <title>Post a Job | SAGECO EVERGREEN</title>
-        <meta
-          name="description"
-          content="Employers can list jobs on SAGECO EVERGREEN for UGX 5,000 per job post."
-        />
-        <link rel="canonical" href={`${SITE_URL}/post-job`} />
-      </Head>
+        </Head>
 
       <main className="bg-gray-50">
         <section className="bg-primary text-white px-4 py-14">

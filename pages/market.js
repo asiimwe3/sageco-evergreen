@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
+;
+import SEO from '../components/SEO'
 
 // ---------- Mock data (swap with Supabase queries later) ----------
 const CATEGORIES = [
@@ -90,10 +91,12 @@ export default function Market() {
 
   return (
     <>
-      <Head>
-        <title>Market | Sageco Evergreen</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
+      <SEO
+        title="Property Market Analysis - Uganda Real Estate Trends"
+        description="SAGECO EVERGREEN property market analysis: real estate trends, pricing data, and market insights for Ugandas land and property market."
+        keywords="property market Uganda, real estate trends Uganda, land prices Uganda, property market analysis Kampala"
+        path="/market"
+      />
 
       <div className="min-h-screen bg-gray-50 pb-20 font-sans">
         {/* ---------- Sticky Header ---------- */}

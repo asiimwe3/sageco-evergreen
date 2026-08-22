@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import SEO from '../components/SEO'
 
 export default function Verification() {
   const [status, setStatus] = useState(null)
@@ -15,10 +15,12 @@ export default function Verification() {
 
   return (
     <>
-      <Head>
-        <title>Drone & Spatial Verification | SAGECO EVERGREEN</title>
-        <meta name="description" content="Drone mapping, LiDAR scans, 3D twins, and GPS-verified boundary GeoJSON for every SAGECO property." />
-      </Head>
+      <SEO
+        title="Drone Property Verification - GPS Boundary Scanning"
+        description="SAGECO EVERGREEN drone verification: LiDAR scans, 3D twins, and GPS-verified boundaries for properties in Uganda. Secure land verification."
+        keywords="drone verification Uganda, GPS boundary scanning, property verification, LiDAR land survey Uganda"
+        path="/verification"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Drone & Spatial Verification</h1>

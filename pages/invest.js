@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import SEO from '../components/SEO'
 
 export default function Invest() {
   const [investments, setInvestments] = useState([])
@@ -17,10 +17,12 @@ export default function Invest() {
 
   return (
     <>
-      <Head>
-        <title>Fractional Investment | SAGECO EVERGREEN</title>
-        <meta name="description" content="Buy fractional shares of land properties with token-based ownership tracking and ROI projections." />
-      </Head>
+      <SEO
+        title="Property Investment in Uganda"
+        description="Invest in Ugandan real estate with fractional ownership, tokenized land shares, and ROI projections. Start investing in land from UGX 500,000."
+        keywords="property investment Uganda, fractional land ownership, real estate investing Uganda, tokenized property"
+        path="/invest"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">📊 Tokenized Fractional Investment</h1>

@@ -1,13 +1,15 @@
-import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 export default function Passports() {
   return (
     <>
-      <Head>
-        <title>Digital Land Passports | SAGECO EVERGREEN</title>
-        <meta name="description" content="Unique verifiable passport per property with GPS coordinates, drone imagery, ownership history, and verification certificates." />
-      </Head>
+      <SEO
+        title="Digital Land Passports - Verified Property Records"
+        description="SAGECO EVERGREEN digital land passports: verifiable property records with GPS boundaries, ownership history, and survey data for Ugandan land."
+        keywords="land passport Uganda, digital property records, verified land documents Uganda, property GPS records"
+        path="/passports"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">📜 Digital Land Passports</h1>

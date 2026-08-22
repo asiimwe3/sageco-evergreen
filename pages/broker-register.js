@@ -1,6 +1,6 @@
 import { useState } from "react"
-import Head from "next/head"
 import { compressImage, fileToBase64 } from "../lib/imageCompression"
+import SEO from '../components/SEO'
 
 const PLANS = [
   {
@@ -187,10 +187,12 @@ export default function BrokerRegister() {
 
   return (
     <>
-      <Head>
-        <title>Broker Registration | SAGECO EVERGREEN</title>
-        <meta name="description" content="Register as a verified broker on SAGECO EVERGREEN. List properties, reach clients, and grow your real estate business in Uganda." />
-      </Head>
+      <SEO
+        title="Register as a Broker - SAGECO EVERGREEN"
+        description="Register as a verified broker with SAGECO EVERGREEN. UGX 32,000 registration fee. Get access to property listings, dashboard, and client management tools."
+        keywords="broker registration Uganda, real estate agent register, SAGECO broker signup, property agent Uganda"
+        path="/broker-register"
+      />
       <section className="bg-primary text-white py-12 px-4 text-center">
         <h1 className="text-3xl font-bold">Broker Registration</h1>
         <p className="text-green-100 mt-2">Join SAGECO EVERGREEN as a verified real estate broker</p>

@@ -2,10 +2,10 @@ import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../lib/supabaseAdmin.js'
 import { useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
-import Head from 'next/head'
 import Link from 'next/link'
 import MapPicker from '../../components/MapPicker'
 import PricePredictor from '../../components/PricePredictor'
+import SEO from '../components/SEO'
 
 // ── Server-side data fetch (fixes blank page on first load + SEO) ────────────
 export async function getServerSideProps({ params }) {
@@ -73,15 +73,13 @@ export default function PropertyDetail({ property, similar }) {
 
   return (
     <>
-      <Head>
-        <title>{property.title} | SAGECO EVERGREEN</title>
-        <meta name="description" content={property.description?.slice(0, 160) || `${property.category} property in ${property.location}`} />
-        {/* OG tags for social sharing */}
-        <meta property="og:title" content={property.title} />
-        <meta property="og:description" content={`${property.category} in ${property.location} — UGX ${Number(property.price).toLocaleString()}`} />
-        {images?.[0] && <meta property="og:image" content={images[0]} />}
-        <meta property="og:type" content="website" />
-      </Head>
+      <SEO
+        title="Property Details"
+        description="View detailed property information, images, GPS boundaries, and booking options."
+        keywords="property details Uganda, land for sale, property listing"
+        path="/properties"
+        noindex
+      />
 
       {/* Lightbox */}
       {lightbox && images && (

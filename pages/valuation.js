@@ -1,6 +1,6 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 export default function Valuation() {
   const [propertyId, setPropertyId] = useState('')
@@ -22,10 +22,12 @@ export default function Valuation() {
 
   return (
     <>
-      <Head>
-        <title>Predictive Valuation & Arable Analytics | SAGECO EVERGREEN</title>
-        <meta name="description" content="AI + comparable + satellite analysis with soil data, climate risk scoring, and crop suitability per acreage." />
-      </Head>
+      <SEO
+        title="AI Property Valuation - Predictive Land and Home Pricing"
+        description="Get AI-powered property valuations in Uganda. Predictive pricing with comparable analysis, crop and soil data for land and homes."
+        keywords="property valuation Uganda, land value estimation, AI property pricing Uganda, home valuation tool"
+        path="/valuation"
+      />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">📈 Predictive Valuation & Arable Analytics</h1>

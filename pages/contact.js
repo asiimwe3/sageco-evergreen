@@ -1,6 +1,6 @@
-import Head from "next/head"
 import { useState } from "react"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "", message: "" })
@@ -36,10 +36,12 @@ export default function Contact() {
 
   return (
     <>
-      <Head>
-        <title>Contact Us | SAGECO EVERGREEN</title>
-        <meta name="description" content="Get in touch with SAGECO EVERGREEN. Contact us about property listings, broker registration, or any enquiry." />
-      </Head>
+      <SEO
+        title="Contact SAGECO EVERGREEN"
+        description="Get in touch with SAGECO EVERGREEN for property inquiries, viewings, and consultations. Call 0750 414 366 or WhatsApp us. Based in Kyenjojo, Uganda."
+        keywords="contact SAGECO Evergreen, real estate contact Uganda, property inquiry Kyenjojo, WhatsApp property Uganda"
+        path="/contact"
+      />
 
       <section className="bg-primary text-white py-16 px-4 text-center">
         <h1 className="text-4xl font-bold mb-2">Contact Us</h1>

@@ -1,9 +1,9 @@
-import Head from "next/head"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { useRouter } from "next/router"
 import { supabase } from "../lib/supabase"
+import SEO from '../components/SEO'
 
 const PLAN_BADGE = {
   basic: "bg-gray-100 text-gray-600",
@@ -66,7 +66,13 @@ export default function Account() {
 
   return (
     <>
-      <Head><title>My Account | SAGECO EVERGREEN</title><meta name="robots" content="noindex" /></Head>
+      <SEO
+        title="My Account - SAGECO EVERGREEN"
+        description="Manage your SAGECO EVERGREEN account, view bookings, properties, and investments."
+        keywords="SAGECO account, property dashboard Uganda"
+        path="/account"
+        noindex
+      />
 
       {/* Header */}
       <section className="bg-primary text-white py-10 px-4">

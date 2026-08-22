@@ -2,6 +2,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/router"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -76,7 +77,13 @@ export default function Apply() {
   if (status === "success") {
     return (
       <>
-        <Head><title>Application Submitted | SAGECO EVERGREEN</title></Head>
+        <SEO
+        title="Apply for a Job - SAGECO EVERGREEN"
+        description="Apply for open positions at SAGECO EVERGREEN. Upload your CV and join Ugandas growing real estate company."
+        keywords="SAGECO jobs, real estate careers Uganda, apply job Kyenjojo"
+        path="/apply"
+        noindex
+      />
           <div className="max-w-xl mx-auto px-4 py-20 text-center">
           <div className="text-6xl mb-4">🎉</div>
           <h1 className="text-3xl font-bold text-primary mb-2">Application Submitted!</h1>

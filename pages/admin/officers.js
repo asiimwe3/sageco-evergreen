@@ -1,6 +1,7 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
 import { compressImage, fileToBase64 } from "../../lib/imageCompression"
+import SEO from '../../components/SEO'
 
 export default function AdminOfficers() {
   const [officers, setOfficers] = useState([])
@@ -97,6 +98,14 @@ export default function AdminOfficers() {
   }
 
   return (
+    <>
+      <SEO
+        title="Manage Officers - Admin"
+        description="Manage SAGECO EVERGREEN field officers."
+        keywords="admin officers SAGECO"
+        path="/admin/officers"
+        noindex
+      />
     <AdminGate title="Officers">
       <div className="p-6 max-w-5xl mx-auto">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">

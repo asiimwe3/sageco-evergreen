@@ -1,6 +1,7 @@
 import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -76,10 +77,13 @@ export default function Careers() {
 
   return (
     <>
+      <SEO
+        title="Careers at SAGECO EVERGREEN"
+        description="Join SAGECO EVERGREEN team. We are hiring real estate professionals, agents, and tech talent across Uganda. Build your career in Ugandas property sector."
+        keywords="careers SAGECO Evergreen, real estate jobs Uganda, property jobs Kampala, real estate careers Kyenjojo"
+        path="/careers"
+      />
       <Head>
-        <title>Careers at SAGECO EVERGREEN | Real Estate Jobs Uganda</title>
-        <meta name="description" content="Join the SAGECO EVERGREEN team. Explore real estate career opportunities in Uganda — sales, property management, marketing and more." />
-        <link rel="canonical" href={`${SITE_URL}/careers`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`${SITE_URL}/careers`} />
         <meta property="og:title" content="Careers at SAGECO EVERGREEN | Real Estate Jobs Uganda" />

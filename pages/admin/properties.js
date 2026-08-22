@@ -1,5 +1,6 @@
 import { AdminGate, ADMIN_SECRET } from "../../components/AdminLayout"
 import { useState, useEffect } from "react"
+import SEO from '../../components/SEO'
 
 const STATUS_BADGE = {
   available: "bg-green-100 text-green-700",
@@ -66,6 +67,14 @@ export default function AdminProperties() {
   })
 
   return (
+    <>
+      <SEO
+        title="Manage Properties - Admin"
+        description="Manage property listings on SAGECO EVERGREEN."
+        keywords="admin properties SAGECO"
+        path="/admin/properties"
+        noindex
+      />
     <AdminGate title="Properties">
       <div className="p-6 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-6 flex-wrap gap-3">

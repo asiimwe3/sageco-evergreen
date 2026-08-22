@@ -1,5 +1,6 @@
 import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -76,10 +77,13 @@ const PLANS = [
 export default function Plans() {
   return (
     <>
+      <SEO
+        title="Plans and Pricing - SAGECO EVERGREEN"
+        description="Choose from our broker registration plans and subscription packages. Affordable pricing for property listing, agent tools, and premium features in Uganda."
+        keywords="SAGECO pricing, broker plans Uganda, property listing fees, real estate subscription Uganda"
+        path="/plans"
+      />
       <Head>
-        <title>Broker Subscription Plans | SAGECO EVERGREEN</title>
-        <meta name="description" content="Choose a broker subscription plan and start listing properties with SAGECO EVERGREEN in Kyenjojo, Uganda." />
-        <link rel="canonical" href={`${SITE_URL}/plans`} />
         <meta property="og:title" content="Broker Plans | SAGECO EVERGREEN" />
         <meta property="og:description" content="Affordable broker plans to list and sell properties across Uganda." />
         <meta property="og:url" content={`${SITE_URL}/plans`} />

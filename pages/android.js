@@ -1,13 +1,15 @@
-import Head from "next/head"
 import Link from "next/link"
+import SEO from '../components/SEO'
 
 export default function AndroidPage() {
   return (
     <>
-      <Head>
-        <title>Download Android App | SAGECO EVERGREEN</title>
-        <meta name="description" content="Download the SAGECO EVERGREEN Android app and browse properties, book viewings, and connect with brokers on the go." />
-      </Head>
+      <SEO
+        title="Download SAGECO EVERGREEN Android App"
+        description="Download the SAGECO EVERGREEN Android app for property search, GPS land measurement, and investment tracking on your phone. Available for all Ugandans."
+        keywords="SAGECO Android app, real estate app Uganda, property app download, Uganda property mobile app"
+        path="/android"
+      />
 
       <section className="bg-gradient-to-br from-primary to-green-800 text-white py-24 px-4 text-center">
         <div className="text-6xl mb-4">📱</div>
