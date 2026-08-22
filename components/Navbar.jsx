@@ -5,6 +5,8 @@ import { useAuth } from "../context/AuthContext"
 
 const NAV_LINKS = [
   { href: "/properties", label: "Properties" },
+  { href: "/gps-measure", label: "GPS Measure" },
+  { href: "/title-search", label: "Title Search" },
   { href: "/brokers",    label: "Brokers" },
   { href: "/agents",     label: "Agents" },
   { href: "/ai-broker",  label: "AI Broker" },
