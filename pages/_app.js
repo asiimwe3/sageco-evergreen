@@ -47,7 +47,10 @@ function AppShell({ Component, pageProps }) {
       {appMode  && <AppHeader showBack showSearch showNotif />}
 
       {/* Page content */}
+      <div className="pb-16 lg:pb-0">
       <Component {...pageProps} />
+
+      </div>
 
       {/* Footer — hidden in app mode */}
       {!appMode && <Footer />}
