@@ -1,27 +1,23 @@
 import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
-import { supabase } from "../lib/supabase"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 export default function Brokers() {
   const [brokers, setBrokers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
 
   useEffect(() => {
     async function fetchBrokers() {
       try {
-        const { data, error } = await supabase
-          .from("brokers").select("*")
-          .in("registration_status", ["registered", "active"])
-          .order("created_at", { ascending: false })
-        if (error) {
-          console.error('[Brokers] Supabase error:', error)
-          setBrokers([])
-        } else {
-          setBrokers(data || [])
-        }
+        const params = new URLSearchParams()
+        if (search) params.set("search", search)
+        const res = await fetch(`/api/get-brokers?${params}`)
+        if (!res.ok) throw new Error(`API error ${res.status}`)
+        const data = await res.json()
+        setBrokers(data.brokers || [])
       } catch (err) {
         console.error('[Brokers] fetch failed:', err)
         setBrokers([])
@@ -30,7 +26,7 @@ export default function Brokers() {
       }
     }
     fetchBrokers()
-  }, [])
+  }, [search])
 
   return (
     <>
@@ -57,6 +53,16 @@ export default function Brokers() {
             <p className="text-gray-500 text-sm">Register as a SAGECO EVERGREEN broker — UGX 32,000 registration · UGX 45,000 dashboard activation</p>
           </div>
           <Link href="/broker-register" className="bg-secondary text-dark px-6 py-2 rounded-full font-bold hover:opacity-90">Register Now</Link>
+        </div>
+
+        {/* Search */}
+        <div className="mb-6">
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search brokers by name, specialization, or location..."
+            className="w-full border rounded-full px-5 py-2.5 focus:ring-2 focus:ring-primary outline-none text-sm"
+          />
         </div>
 
         {loading ? (
