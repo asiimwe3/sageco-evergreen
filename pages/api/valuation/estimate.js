@@ -49,7 +49,7 @@ export default async function handler(req, res) {
     cropSuitability = ['coffee', 'maize', 'cassava', 'beans']
   } else if (loc.includes('gulu') || loc.includes('lira') || loc.includes('northern')) {
     cropSuitability = ['rice', 'millet', 'sorghum', 'beans']
-  } else if (loc.includes('mbale') || loc.includes('eastern') || loc.includes('jinja'])) {
+  } else if (loc.includes('mbale') || loc.includes('eastern') || loc.includes('jinja')) {
     cropSuitability = ['rice', 'maize', 'millet', 'beans']
   }
 
