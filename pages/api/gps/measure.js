@@ -44,7 +44,7 @@ export default async function handler(req, res) {
         },
         area_measured: hectares, // store in hectares
         survey_date: new Date().toISOString().split('T')[0],
-        verification_status: 'draft',
+        verification_status: 'pending',
         ownership_history: {
           measured_at: new Date().toISOString(),
           total_points: coordinates.length,
