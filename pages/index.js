@@ -120,14 +120,14 @@ export default function Home({ featuredProperties, stats }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       </Head>
 
-      {/* Hero */}
+      {/* Hero — single, clean, no duplicate CTA below */}
       <section className={"bg-gradient-to-br from-primary to-green-800 text-white " + (appMode ? "py-10" : "py-24") + " px-4 text-center"}>
         <p className="text-green-200 text-sm uppercase tracking-widest mb-3 font-medium">Uganda&apos;s Trusted Property Platform</p>
         <h1 className="text-4xl md:text-6xl font-bold mb-4">Find Your Dream Property</h1>
         <p className="text-xl text-green-100 mb-8 max-w-2xl mx-auto">Premium real estate in Uganda — homes, commercial spaces, and land with a green future in mind.</p>
         <div className="flex gap-4 justify-center flex-wrap">
           <Link href="/properties" className="bg-secondary text-dark font-bold px-8 py-3 rounded-full hover:opacity-90 text-lg">Browse Properties</Link>
-          <Link href="/book" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Book a Viewing</Link>
+          <Link href="/ai-broker" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Chat with AI Broker</Link>
         </div>
         <div className="mt-6 text-green-200 text-sm">
           {"📞 "} <a href="tel:+256750414366" className="hover:text-white">0750 414 366</a>
@@ -217,37 +217,6 @@ export default function Home({ featuredProperties, stats }) {
             <Link href="/properties" className="text-primary font-bold hover:underline mt-2 inline-block">Browse all properties →</Link>
           </div>
         )}
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-16 px-4 bg-gray-50">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-primary mb-8">Why Choose SAGECO EVERGREEN?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: "✅", title: "Verified Properties", desc: "Every listing is reviewed by our team and verified with drone technology before going live." },
-              { icon: "💳", title: "Secure Payments", desc: "Pay via MTN MoMo, Airtel Money, or card through PesaPal. Bookings from UGX 30,000." },
-              { icon: "🌿", title: "Green Future", desc: "We specialize in eco-friendly developments with carbon scoring and sustainability analysis." }
-            ].map(function(item, i) { return (
-              <div key={i} className="bg-white rounded-xl p-8 shadow-sm">
-                <div className="text-4xl mb-4">{item.icon}</div>
-                <h3 className="font-bold text-lg text-gray-800 mb-2">{item.title}</h3>
-                <p className="text-gray-500 text-sm">{item.desc}</p>
-              </div>
-            ) })}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 px-4 bg-gradient-to-br from-primary to-green-800 text-white text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Find Your Property?</h2>
-        <p className="text-green-100 mb-8 max-w-xl mx-auto">Browse our verified listings or let our AI Broker find the perfect match for you.</p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <Link href="/properties" className="bg-secondary text-dark font-bold px-8 py-3 rounded-full hover:opacity-90 text-lg">Browse Properties</Link>
-          <Link href="/matching" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Get AI Matched</Link>
-          <Link href="/ai-broker" className="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-primary text-lg transition">Chat with AI Broker</Link>
-        </div>
       </section>
     </>
   )
