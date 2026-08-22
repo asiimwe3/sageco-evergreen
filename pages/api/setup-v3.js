@@ -243,43 +243,53 @@ ALTER TABLE properties ADD COLUMN IF NOT EXISTS featured boolean DEFAULT false;
 export default async function handler(req, res) {
   if (req.query.secret !== 'setup-v3-2026') return res.status(403).json({ error: "Forbidden" })
 
-  // Try connecting via pg with various connection strings
-  const dbUrl = process.env.DATABASE_URL || process.env.SUPABASE_DB_URL
-  
-  if (dbUrl) {
-    try {
-      const client = new Client({ connectionString: dbUrl, ssl: { rejectUnauthorized: false } })
-      await client.connect()
-      await client.query(SQL)
-      await client.end()
-      return res.status(200).json({ success: true, message: "v3.0 tables created via DATABASE_URL" })
-    } catch (err) {
-      // Fall through to Supabase API approach
-    }
-  }
+  const projectRef = "emldbjqegftrngxypeca"
+  const jwt = SUPA_KEY
 
-  // Try using the Supabase SQL endpoint via fetch
   try {
-    const projectRef = "emldbjqegftrngxypeca"
-    const response = await fetch(`https://${projectRef}.supabase.co/rest/v1/rpc/exec_sql`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SUPA_KEY}`,
-        'apikey': SUPA_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ sql: SQL })
-    })
-    
-    if (response.ok) {
-      return res.status(200).json({ success: true, message: "v3.0 tables created via Supabase RPC" })
-    }
-  } catch (err) {
-    // Fall through
-  }
+    const { Client } = require("pg")
+    const results = []
 
-  return res.status(500).json({ 
-    error: "Could not run migration automatically. Please run supabase/migrations/004_v3_features.sql in your Supabase SQL Editor.",
-    instructions: "Go to https://supabase.com/dashboard/project/emldbjqegftrngxypeca/sql/new and paste the SQL from supabase/migrations/004_v3_features.sql"
-  })
+    const connections = [
+      `postgresql://postgres:${jwt}@db.${projectRef}.supabase.co:5432/postgres`,
+      `postgresql://postgres.${projectRef}:${jwt}@aws-0-eu-west-1.pooler.supabase.com:6543/postgres`,
+      `postgresql://postgres.${projectRef}:${jwt}@aws-0-eu-central-1.pooler.supabase.com:6543/postgres`,
+    ]
+
+    let client = null
+    for (const connStr of connections) {
+      try {
+        client = new Client({
+          connectionString: connStr,
+          ssl: { rejectUnauthorized: false },
+          connectionTimeoutMillis: 10000
+        })
+        await client.connect()
+        results.push("Connected: " + connStr.split("@")[1])
+        break
+      } catch (e) {
+        results.push("Failed: " + connStr.split("@")[1] + " -> " + e.message)
+        if (client) try { await client.end() } catch (_) {}
+        client = null
+      }
+    }
+
+    if (!client) {
+      return res.status(500).json({ error: "All connections failed", results })
+    }
+
+    await client.query(SQL)
+    results.push("Migration SQL executed successfully!")
+
+    // Verify tables were created
+    const { rows } = await client.query(
+      "SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename IN ('property_verifications','fraud_flags','eco_scores','escrow_transactions','land_passports','fractional_investments','investment_holdings','site_visits','property_matches','property_valuations','broker_followups')"
+    )
+    results.push("Tables: " + rows.map(r => r.tablename).join(", "))
+
+    await client.end()
+    return res.status(200).json({ success: true, results })
+  } catch (err) {
+    return res.status(500).json({ error: err.message })
+  }
 }
