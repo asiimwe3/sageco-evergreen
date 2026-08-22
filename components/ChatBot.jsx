@@ -63,40 +63,44 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating button — uses avatar photo */}
+      {/* Floating button — compact, doesn't overlap content */}
       <button
         onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-xl border-4 border-green-600 overflow-hidden hover:scale-105 transition-transform"
+        className="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full shadow-lg border-2 border-green-600 overflow-hidden hover:scale-105 transition-transform bg-green-700"
         aria-label="Chat with us"
       >
         {open ? (
           <div className="w-full h-full bg-green-700 flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
         ) : (
-          <Image
-            src={AVATAR}
-            alt="SAGECO Chat Assistant"
-            width={64}
-            height={64}
-            className="object-cover w-full h-full"
-          />
+          <>
+            <Image
+              src={AVATAR}
+              alt="SAGECO Chat Assistant"
+              width={56}
+              height={56}
+              className="object-cover w-full h-full"
+            />
+            {/* Notification dot */}
+            <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse" />
+          </>
         )}
       </button>
 
       {/* Chat window */}
       {open && (
-        <div className="fixed bottom-28 right-6 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200" style={{ maxHeight: "70vh" }}>
+        <div className="fixed bottom-24 right-5 z-50 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-gray-200" style={{ maxHeight: "65vh" }}>
           {/* Header */}
           <div className="bg-green-700 text-white px-4 py-3 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-green-400 shrink-0">
+            <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-green-400 shrink-0">
               <Image
                 src={AVATAR}
                 alt="SAGECO Assistant"
-                width={40}
-                height={40}
+                width={36}
+                height={36}
                 className="object-cover w-full h-full"
               />
             </div>
