@@ -3,16 +3,12 @@ import Link from "next/link"
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="bg-gray-900 text-gray-300 pt-14 pb-6 mt-16">
+    <footer className="bg-gray-900 text-gray-300 pt-12 pb-6 mt-16">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-10">
-        {/* Brand */}
+        {/* About — no duplicate logo, just text */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-2xl">🌿</span>
-            <span className="font-extrabold text-white text-lg">SAGECO EVERGREEN</span>
-          </div>
-          <p className="text-sm text-gray-400 leading-relaxed">Premier real estate platform in Uganda — homes, commercial spaces, and eco-friendly land.</p>
-          <div className="mt-4 space-y-1 text-sm">
+          <p className="text-sm text-gray-400 leading-relaxed mb-4">Premier real estate platform in Uganda — homes, commercial spaces, and eco-friendly land.</p>
+          <div className="space-y-1 text-sm">
             <p>📍 Kyenjojo, Uganda</p>
             <p>📞 <a href="tel:+256750414366" className="hover:text-white">0750 414 366</a></p>
             <p>📧 <a href="mailto:sagecoevergreen@gmail.com" className="hover:text-white">sagecoevergreen@gmail.com</a></p>
