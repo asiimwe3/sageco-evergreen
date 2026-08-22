@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Head from 'next/head'
 import { compressImage, fileToBase64 } from '../lib/imageCompression'
+import MapPicker from '../components/MapPicker'
+import PricePredictor from '../components/PricePredictor'
 
 const CATEGORIES = ['Residential', 'Commercial', 'Land', 'Plot', 'Green Project']
 
@@ -28,6 +30,7 @@ export default function UploadProperty() {
   const [uploadProgress, setUploadProgress] = useState([])
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState('')
+  const [gps, setGps] = useState({ lat: null, lng: null, district: null })
 
   const isLand = form.category === 'Land'
   const isPlot = form.category === 'Plot'
@@ -114,6 +117,9 @@ export default function UploadProperty() {
       is_negotiable: form.is_negotiable,
       contact_name: form.contact_name || null,
       contact_phone: form.contact_phone || null,
+      gps_lat: gps.lat,
+      gps_lng: gps.lng,
+      gps_district: gps.district || null,
     }
 
     const res = await fetch('/api/add-property', {
@@ -205,6 +211,40 @@ export default function UploadProperty() {
                   className="w-full border rounded-lg px-4 py-3 focus:outline-none focus:border-primary" />
               </div>
             </div>
+
+            {/* GPS Location & Map */}
+            <div className="border-t pt-5">
+              <p className="text-sm font-bold text-gray-700 mb-1">📍 GPS Location & Map</p>
+              <p className="text-xs text-gray-500 mb-3">Click on the map to set the exact property location. This enables AI price prediction.</p>
+              <MapPicker
+                lat={gps.lat}
+                lng={gps.lng}
+                onChange={(c) => setGps(prev => ({ ...prev, ...c }))}
+                height={280}
+              />
+            </div>
+
+            {/* AI Price Prediction */}
+            <div className="border-t pt-5">
+              <PricePredictor
+                lat={gps.lat}
+                lng={gps.lng}
+                location={form.location}
+                category={form.category}
+                sub_type={form.sub_type}
+                land_acres={form.land_acres}
+                area_sqft={form.area_sqft}
+                plot_feet={form.plot_feet}
+                price={form.price}
+                water_available={form.water_available}
+                electricity_available={form.electricity_available}
+                road_distance_km={form.road_distance_km}
+                fence={form.fence}
+                title_deed={form.title_deed}
+              />
+            </div>
+
+
 
             {/* Residential / Commercial Size Fields */}
             {(isResidential || isCommercial) && (
