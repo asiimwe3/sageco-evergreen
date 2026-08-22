@@ -13,6 +13,8 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
   const [search, setSearch] = useState('')
   const [searching, setSearching] = useState(false)
   const LRef = useRef(null)
+  const onChangeRef = useRef(onChange)
+  onChangeRef.current = onChange
 
   // Load Leaflet CSS
   useEffect(() => {
@@ -74,6 +76,10 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
       updateCoords(pos.lat, pos.lng)
     })
 
+    // Fire onChange with initial coordinates so parent form has them immediately
+    const initCoords = { lat: coords.lat, lng: coords.lng }
+    onChangeRef.current && onChangeRef.current(initCoords)
+
     // Reverse geocode initial position
     reverseGeocode(coords.lat, coords.lng)
   }
@@ -81,7 +87,7 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
   function updateCoords(lat, lng) {
     const rounded = { lat: Math.round(lat * 1e6) / 1e6, lng: Math.round(lng * 1e6) / 1e6 }
     setCoords(rounded)
-    onChange && onChange(rounded)
+    onChangeRef.current && onChangeRef.current(rounded)
     reverseGeocode(rounded.lat, rounded.lng)
   }
 
@@ -91,11 +97,10 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
       const data = await res.json()
       if (data.display_name) {
         setAddress(data.display_name)
-        // Extract district/county
         const addr = data.address || {}
         const district = addr.county || addr.state_district || addr.city || addr.town || addr.village || ''
         if (district) {
-          onChange && onChange({ lat, lng, district: district.replace(/ District$/, '').trim() })
+          onChangeRef.current && onChangeRef.current({ lat, lng, district: district.replace(/ District$/, '').trim() })
         }
       }
     } catch (e) {
