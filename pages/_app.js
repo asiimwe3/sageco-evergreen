@@ -38,6 +38,14 @@ function AppShell({ Component, pageProps }) {
         <meta name="creator" content="DeryCode Technologies" />
         <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
         <meta name="x-built-by" content="DeryCode Technologies" />
+        {/* Google Search Console verification — replace with your code */}
+        {process.env.GOOGLE_SITE_VERIFICATION && (
+          <meta name="google-site-verification" content={process.env.GOOGLE_SITE_VERIFICATION} />
+        )}
+        {/* Bing Webmaster verification — replace with your code */}
+        {process.env.BING_SITE_VERIFICATION && (
+          <meta name="msvalidate.01" content={process.env.BING_SITE_VERIFICATION} />
+        )}
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
         <meta name="geo.region" content="UG" />
@@ -46,6 +54,13 @@ function AppShell({ Component, pageProps }) {
         <meta name="ICBM" content="0.6426, 30.6286" />
         <meta name="format-detection" content="telephone=yes" />
         <link rel="manifest" href="/manifest.json" />
+        {/* Performance: preconnect to external resources */}
+        <link rel="preconnect" href="https://unpkg.com" />
+        <link rel="dns-prefetch" href="https://unpkg.com" />
+        <link rel="preconnect" href="https://emldbjqegftrngxypeca.supabase.co" />
+        <link rel="dns-prefetch" href="https://emldbjqegftrngxypeca.supabase.co" />
+        <link rel="dns-prefetch" href="https://server.arcgisonline.com" />
+        <link rel="dns-prefetch" href="https://pay.pesapal.com" />
         <link rel="alternate" hrefLang="en-UG" href="https://sageco-evergreen-co.vercel.app" />
       </Head>
 

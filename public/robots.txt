@@ -1,31 +1,45 @@
+# robots.txt — SAGECO EVERGREEN
+# Built by DeryCode Technologies — https://derycode.publicvm.com
 User-agent: *
 Allow: /
 Allow: /properties
-Allow: /property/
 Allow: /brokers
-Allow: /book
+Allow: /invest
 Allow: /plans
 Allow: /projects
-Allow: /careers
 Allow: /contact
+Allow: /book
+Allow: /careers
 Allow: /faq
-Allow: /docs
+Allow: /market
+Allow: /ai-broker
+Allow: /gps-measure
+Allow: /title-search
+Allow: /valuation
+Allow: /verification
+Allow: /eco
+Allow: /escrow
+Allow: /passports
+Allow: /matching
+Allow: /site-visits
+Allow: /agents
+Allow: /broker-register
+Allow: /subscribe
+Allow: /android
 Disallow: /payment-success
 Disallow: /broker-payment-success
 Disallow: /job-post-success
 Disallow: /subscription-success
 Disallow: /reset-password
-Disallow: /admin
-Disallow: /api/
-Disallow: /account
 Disallow: /login
 Disallow: /signup
+Disallow: /account
 Disallow: /upload-property
-Disallow: /broker-register
-Disallow: /apply
-Disallow: /subscribe
 Disallow: /post-job
-Disallow: /broker-payment-success
-Disallow: /job-post-success
+Disallow: /apply
+Disallow: /admin
+Disallow: /api/
+
+Crawl-delay: 1
 
 Sitemap: https://sageco-evergreen-co.vercel.app/sitemap.xml
