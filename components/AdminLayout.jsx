@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: "📊" },
@@ -13,6 +13,63 @@ const navItems = [
   { href: "/admin/subscriptions", label: "Subscriptions", icon: "💳" },
   { href: "/admin/fraud", label: "Fraud Check", icon: "🛡️" },
 ]
+
+
+/**
+ * AdminGate — wraps admin pages, prompts for admin secret if not set.
+ * Stores secret in sessionStorage (not NEXT_PUBLIC env var).
+ */
+export function AdminGate({ children, title }) {
+  const [authed, setAuthed] = useState(false)
+  const [secret, setSecret] = useState('')
+
+  useEffect(() => {
+    const stored = sessionStorage.getItem('sageco_admin_secret')
+    if (stored) {
+      setAuthed(true)
+    }
+  }, [])
+
+  if (!authed) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-xl shadow-lg p-8 max-w-md w-full">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">Admin Access</h1>
+          <p className="text-gray-500 mb-6 text-sm">Enter the admin secret to access the dashboard.</p>
+          <input
+            type="password"
+            value={secret}
+            onChange={e => setSecret(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && secret) {
+                sessionStorage.setItem('sageco_admin_secret', secret)
+                setAuthed(true)
+              }
+            }}
+            placeholder="Admin secret"
+            className="w-full border rounded-lg px-4 py-3 mb-4 focus:outline-none focus:border-green-700"
+          />
+          <button
+            onClick={() => {
+              if (secret) {
+                sessionStorage.setItem('sageco_admin_secret', secret)
+                setAuthed(true)
+              }
+            }}
+            className="w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition"
+          >
+            Enter Dashboard
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  return <AdminLayout title={title}>{children}</AdminLayout>
+}
+
+// Backwards-compatible export: returns secret from sessionStorage
+export const ADMIN_SECRET = typeof window !== 'undefined' ? (sessionStorage.getItem('sageco_admin_secret') || '') : ''
 
 export default function AdminLayout({ children, title = "Admin Dashboard" }) {
   const router = useRouter()

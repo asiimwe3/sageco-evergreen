@@ -46,18 +46,18 @@ const nextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "SAMEORIGIN" },
           { key: "X-XSS-Protection", value: "1; mode=block" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com",
               "img-src 'self' data: blob: https: data:",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://*.supabase.co https://pay.pesapal.com https://cybqa.pesapal.com",
-              "frame-src https://pay.pesapal.com https://cybqa.pesapal.com"
+              "connect-src 'self' https://*.supabase.co https://pay.pesapal.com https://cybqa.pesapal.com https://nominatim.openstreetmap.org",
+              "frame-src https://pay.pesapal.com https://cybqa.pesapal.com https://maps.google.com https://www.google.com"
             ].join("; ")
           }
         ]

@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 
 /**
  * MapPicker — Leaflet + OpenStreetMap based GPS picker.
- * No API key required. User clicks on map to drop pin, drag to adjust.
+ * Dynamically loads Leaflet on client-side only (SSR-safe).
+ * User clicks on map to drop pin, drag to adjust.
  */
 export default function MapPicker({ lat, lng, onChange, height = 300 }) {
   const mapRef = useRef(null)
@@ -12,77 +13,90 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
   const [address, setAddress] = useState('')
   const [search, setSearch] = useState('')
   const [searching, setSearching] = useState(false)
-  const LRef = useRef(null)
+  const [mapLoaded, setMapLoaded] = useState(false)
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
 
-  // Load Leaflet CSS
+  // Initialize map on mount (client-side only)
   useEffect(() => {
-    if (!document.getElementById('leaflet-css')) {
-      const link = document.createElement('link')
-      link.id = 'leaflet-css'
-      link.rel = 'stylesheet'
-      link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
-      document.head.appendChild(link)
-    }
-  }, [])
+    let map = null
+    let marker = null
 
-  // Load Leaflet JS dynamically, then init map
-  useEffect(() => {
-    if (window.L) {
-      initMap()
-      return
-    }
-    const script = document.createElement('script')
-    script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
-    script.onload = () => initMap()
-    document.body.appendChild(script)
-    // eslint-disable-next-line
-  }, [])
+    import('leaflet').then((module) => {
+      const L = module.default || module
 
-  function initMap() {
-    const L = window.L
-    if (!L || !containerRef.current) return
-    LRef.current = L
+      // Also import CSS
+      import('leaflet/dist/leaflet.css')
 
-    if (mapRef.current) {
-      mapRef.current.remove()
-    }
+      // Fix default marker icon for bundlers
+      if (L.Icon && L.Icon.Default) {
+        delete L.Icon.Default.prototype._getIconUrl
+        try {
+          const iconRetina = require('leaflet/dist/images/marker-icon-2x.png')
+          const icon = require('leaflet/dist/images/marker-icon.png')
+          const shadow = require('leaflet/dist/images/marker-shadow.png')
+          L.Icon.Default.mergeOptions({
+            iconRetinaUrl: iconRetina.default || iconRetina,
+            iconUrl: icon.default || icon,
+            shadowUrl: shadow.default || shadow,
+          })
+        } catch (e) {
+          // Icon fix is non-critical — we use custom divIcon
+        }
+      }
 
-    const center = [coords.lat, coords.lng]
-    mapRef.current = L.map(containerRef.current).setView(center, 14)
+      if (!containerRef.current) return
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap',
-      maxZoom: 19,
-    }).addTo(mapRef.current)
+      const center = [coords.lat, coords.lng]
+      map = L.map(containerRef.current).setView(center, 14)
 
-    const customIcon = L.divIcon({
-      html: `<div style="font-size: 32px; transform: translateX(-50%) translateY(-100%); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));">📍</div>`,
-      className: '',
-      iconSize: [0, 0],
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap',
+        maxZoom: 19,
+      }).addTo(map)
+
+      const customIcon = L.divIcon({
+        html: `<div style="font-size: 32px; transform: translateX(-50%) translateY(-100%); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));">📍</div>`,
+        className: '',
+        iconSize: [0, 0],
+      })
+
+      marker = L.marker(center, { icon: customIcon, draggable: true }).addTo(map)
+
+      marker.on('dragend', (e) => {
+        const pos = e.target.getLatLng()
+        updateCoords(pos.lat, pos.lng)
+      })
+
+      map.on('click', (e) => {
+        const pos = e.latlng
+        marker.setLatLng(pos)
+        updateCoords(pos.lat, pos.lng)
+      })
+
+      mapRef.current = map
+      markerRef.current = marker
+      setMapLoaded(true)
+
+      // Fire onChange with initial coordinates
+      onChangeRef.current && onChangeRef.current({ lat: coords.lat, lng: coords.lng })
+
+      // Reverse geocode initial position
+      reverseGeocode(coords.lat, coords.lng)
+
+      // Fix: invalidate size after mount
+      setTimeout(() => {
+        if (mapRef.current) mapRef.current.invalidateSize()
+      }, 100)
     })
 
-    markerRef.current = L.marker(center, { icon: customIcon, draggable: true }).addTo(mapRef.current)
-
-    markerRef.current.on('dragend', (e) => {
-      const pos = e.target.getLatLng()
-      updateCoords(pos.lat, pos.lng)
-    })
-
-    mapRef.current.on('click', (e) => {
-      const pos = e.latlng
-      markerRef.current.setLatLng(pos)
-      updateCoords(pos.lat, pos.lng)
-    })
-
-    // Fire onChange with initial coordinates so parent form has them immediately
-    const initCoords = { lat: coords.lat, lng: coords.lng }
-    onChangeRef.current && onChangeRef.current(initCoords)
-
-    // Reverse geocode initial position
-    reverseGeocode(coords.lat, coords.lng)
-  }
+    return () => {
+      if (map) {
+        map.remove()
+        mapRef.current = null
+      }
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function updateCoords(lat, lng) {
     const rounded = { lat: Math.round(lat * 1e6) / 1e6, lng: Math.round(lng * 1e6) / 1e6 }
@@ -133,7 +147,10 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
   }
 
   function useMyLocation() {
-    if (!navigator.geolocation) return
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.')
+      return
+    }
     navigator.geolocation.getCurrentPosition((pos) => {
       const la = pos.coords.latitude
       const ln = pos.coords.longitude
@@ -156,7 +173,7 @@ export default function MapPicker({ lat, lng, onChange, height = 300 }) {
           value={search}
           onChange={e => setSearch(e.target.value)}
           placeholder="Search location in Uganda (e.g. Kyenjojo town)"
-          className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-600"
+          className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-700"
         />
         <button type="submit" disabled={searching}
           className="bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-800 disabled:opacity-50">

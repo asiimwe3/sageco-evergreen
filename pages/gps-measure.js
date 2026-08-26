@@ -21,78 +21,61 @@ export default function GPSMeasurePage() {
   const drawnPolygon = useRef(null)
   const markersRef = useRef([])
   const currentLayer = useRef(null)
+  const LRef = useRef(null)
   const satelliteLayer = useRef(null)
   const streetLayer = useRef(null)
 
-  // Load Leaflet dynamically and init map
+  // Init map using dynamically imported Leaflet (SSR-safe)
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    let cancelled = false
 
-    let cleanup = () => {}
+    import('leaflet').then((module) => {
+      const L = module.default || module
+      import('leaflet/dist/leaflet.css')
 
-    const initMap = () => {
-      if (!window.L || !mapRef.current) {
-        setMapError('Map library failed to load')
-        return
-      }
+      LRef.current = L
+      if (cancelled || !mapRef.current || mapInstance.current) return
 
       try {
-        // Check if map already initialized
-        if (mapInstance.current) {
-          mapInstance.current.remove()
-        }
-
-        // Center on Uganda
-        mapInstance.current = window.L.map(mapRef.current, {
+        mapInstance.current = L.map(mapRef.current, {
           center: [1.3733, 32.2903],
           zoom: 7,
           zoomControl: true,
           attributionControl: true,
         })
 
-        // Street map layer (default)
-        streetLayer.current = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        streetLayer.current = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; OpenStreetMap contributors',
           maxZoom: 19,
         }).addTo(mapInstance.current)
 
-        // Satellite layer
-        satelliteLayer.current = window.L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        satelliteLayer.current = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
           attribution: 'Esri World Imagery',
           maxZoom: 19,
         })
 
         currentLayer.current = streetLayer.current
 
-        // Layer control
-        window.L.control.layers({
+        L.control.layers({
           'Street Map': streetLayer.current,
           'Satellite': satelliteLayer.current,
         }).addTo(mapInstance.current)
 
-        // Scale bar
-        window.L.control.scale({ imperial: false, metric: true }).addTo(mapInstance.current)
+        L.control.scale({ imperial: false, metric: true }).addTo(mapInstance.current)
 
-        // Listen for layer changes
         mapInstance.current.on('baselayerchange', (e) => {
           setLayerType(e.name === 'Satellite' ? 'satellite' : 'street')
         })
 
-        // Click to add point
         mapInstance.current.on('click', (e) => {
           addPoint(e.latlng.lat, e.latlng.lng)
         })
 
-        // CRITICAL: invalidateSize after container is rendered
         setTimeout(() => {
-          if (mapInstance.current) {
-            mapInstance.current.invalidateSize()
-          }
+          if (mapInstance.current) mapInstance.current.invalidateSize()
         }, 100)
         setTimeout(() => {
-          if (mapInstance.current) {
-            mapInstance.current.invalidateSize()
-          }
+          if (mapInstance.current) mapInstance.current.invalidateSize()
         }, 500)
 
         setMapReady(true)
@@ -100,33 +83,15 @@ export default function GPSMeasurePage() {
       } catch (err) {
         setMapError('Failed to initialize map: ' + err.message)
       }
-    }
+    })
 
-    // Load Leaflet CSS
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'
-    document.head.appendChild(link)
-
-    // Check if Leaflet is already loaded
-    if (window.L) {
-      initMap()
-    } else {
-      const script = document.createElement('script')
-      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js'
-      script.onload = initMap
-      script.onerror = () => setMapError('Failed to load map library')
-      document.head.appendChild(script)
-    }
-
-    cleanup = () => {
+    return () => {
+      cancelled = true
       if (mapInstance.current) {
         mapInstance.current.remove()
         mapInstance.current = null
       }
     }
-
-    return cleanup
   }, [])
 
   const addPoint = (lat, lng) => {
@@ -138,7 +103,7 @@ export default function GPSMeasurePage() {
   }
 
   const updateMap = (pts) => {
-    if (!mapInstance.current || !window.L) return
+    if (!mapInstance.current || !LRef.current) return
 
     // Clear existing markers and polygon
     markersRef.current.forEach(m => mapInstance.current.removeLayer(m))
@@ -150,7 +115,7 @@ export default function GPSMeasurePage() {
 
     // Add markers for each point
     pts.forEach((p, i) => {
-      const marker = window.L.circleMarker([p.lat, p.lng], {
+      const marker = LRef.current.circleMarker([p.lat, p.lng], {
         radius: 7,
         fillColor: '#16a34a',
         color: '#fff',
@@ -163,7 +128,7 @@ export default function GPSMeasurePage() {
 
     // Draw polygon if 3+ points
     if (pts.length >= 3) {
-      drawnPolygon.current = window.L.polygon(pts.map(p => [p.lat, p.lng]), {
+      drawnPolygon.current = LRef.current.polygon(pts.map(p => [p.lat, p.lng]), {
         color: '#16a34a',
         weight: 3,
         opacity: 0.8,
@@ -171,7 +136,7 @@ export default function GPSMeasurePage() {
         fillOpacity: 0.2,
       }).addTo(mapInstance.current)
     } else if (pts.length === 2) {
-      drawnPolygon.current = window.L.polyline(pts.map(p => [p.lat, p.lng]), {
+      drawnPolygon.current = LRef.current.polyline(pts.map(p => [p.lat, p.lng]), {
         color: '#16a34a',
         weight: 3,
         dashArray: '5, 5',
@@ -255,7 +220,7 @@ export default function GPSMeasurePage() {
     setArea(0)
     setPerimeter(0)
     setSaved(false)
-    if (mapInstance.current && window.L) {
+    if (mapInstance.current && LRef.current) {
       markersRef.current.forEach(m => mapInstance.current.removeLayer(m))
       markersRef.current = []
       if (drawnPolygon.current) {
