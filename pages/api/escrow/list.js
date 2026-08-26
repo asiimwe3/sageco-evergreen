@@ -1,12 +1,18 @@
-import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
+import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../../lib/supabaseAdmin.js'
+import { verifyAuth } from '../../../lib/company.js'
 
 export default async function handler(req, res) {
-  const { property_id, buyer_email } = req.query
-  let query = supabaseAdmin.from('escrow_transactions').select('*').order('created_at', { ascending: false })
-  if (property_id) query = query.eq('property_id', property_id)
-  if (buyer_email) query = query.eq('buyer_email', buyer_email)
+  if (req.method !== 'GET') return res.status(405).json({ error: "Method not allowed" })
 
-  const { data, error } = await query
+  const { user, error: authError } = await verifyAuth(req.headers.authorization, SUPA_URL, SUPA_KEY)
+  if (!user) return res.status(401).json({ error: authError || "Authentication required" })
+
+  const { data, error } = await supabaseAdmin
+    .from('escrow_transactions')
+    .select('*, properties(title, location, price, images)')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+
   if (error) return res.status(500).json({ error: error.message })
-  res.status(200).json({ escrows: data || [] })
+  res.status(200).json({ transactions: data || [] })
 }

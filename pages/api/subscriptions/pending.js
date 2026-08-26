@@ -1,5 +1,5 @@
 import { supabaseAdmin as supabase } from '../../../lib/supabaseAdmin.js'
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || ""
+const ADMIN_SECRET = process.env.ADMIN_SECRET
 
 export default async function handler(req, res) {
   if (req.headers["x-admin-secret"] !== ADMIN_SECRET) {

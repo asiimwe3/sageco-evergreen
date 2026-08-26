@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import SEO from '../../components/SEO'
 
-const ADMIN_SECRET = process.env.NEXT_PUBLIC_ADMIN_SECRET || ""
+const ADMIN_SECRET = typeof window !== 'undefined' ? (sessionStorage.getItem('sageco_admin_secret') || "") : ""
 
 const PLAN_BADGE = {
   basic: "bg-gray-100 text-gray-600",

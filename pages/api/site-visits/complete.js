@@ -1,22 +1,24 @@
-import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
+import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../../lib/supabaseAdmin.js'
+import { verifyAuth } from '../../../lib/company.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: "Method not allowed" })
 
-  const { visit_id, notes, visit_report_url } = req.body
+  const { user, error: authError } = await verifyAuth(req.headers.authorization, SUPA_URL, SUPA_KEY)
+  if (!user) return res.status(401).json({ error: authError || "Authentication required" })
+
+  const { visit_id, notes, rating } = req.body
   if (!visit_id) return res.status(400).json({ error: "visit_id required" })
 
-  const { data, error } = await supabaseAdmin
-    .from('site_visits')
-    .update({
-      status: 'completed', notes: notes || null,
-      visit_report_url: visit_report_url || null,
-      updated_at: new Date().toISOString()
-    })
+  const { data: visit } = await supabaseAdmin.from('site_visits').select('*').eq('id', visit_id).single()
+  if (!visit) return res.status(404).json({ error: "Visit not found" })
+  if (visit.user_id !== user.id) return res.status(403).json({ error: "Not authorized" })
+
+  const { data, error } = await supabaseAdmin.from('site_visits')
+    .update({ status: 'completed', notes, rating })
     .eq('id', visit_id)
-    .select()
-    .single()
+    .select().single()
 
   if (error) return res.status(500).json({ error: error.message })
-  res.status(200).json({ success: true, visit: data })
+  res.status(200).json({ visit: data })
 }

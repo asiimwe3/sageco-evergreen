@@ -1,8 +1,17 @@
-const BASE_URL = process.env.PESAPAL_ENV === 'sandbox' 
-  ? 'https://cybqa.pesapal.com/v3' 
-  : 'https://pay.pesapal.com/v3'
+// PesaPal debug endpoint — secured with admin secret
+// This was previously public and could expose payment configuration.
 
 export default async function handler(req, res) {
+  // Require admin secret
+  const ADMIN_SECRET = process.env.ADMIN_SECRET
+  if (!ADMIN_SECRET || req.headers["x-admin-secret"] !== ADMIN_SECRET) {
+    return res.status(403).json({ error: "Unauthorized — admin access required" })
+  }
+
+  const BASE_URL = process.env.PESAPAL_ENV === 'sandbox' 
+    ? 'https://cybqa.pesapal.com/v3' 
+    : 'https://pay.pesapal.com/v3'
+
   const CONSUMER_KEY = process.env.PESAPAL_CONSUMER_KEY
   const CONSUMER_SECRET = process.env.PESAPAL_CONSUMER_SECRET
   const IPN_ID = process.env.PESAPAL_IPN_ID

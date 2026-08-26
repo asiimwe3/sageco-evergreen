@@ -1,7 +1,12 @@
-import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
+import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../../lib/supabaseAdmin.js'
+import { verifyAuth } from '../../../lib/company.js'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: "Method not allowed" })
+
+  // Require auth
+  const { user, error: authError } = await verifyAuth(req.headers.authorization, SUPA_URL, SUPA_KEY)
+  if (!user) return res.status(401).json({ error: authError || "Authentication required" })
 
   const { investment_id, investor_email, investor_name, investor_phone, shares_requested } = req.body
   if (!investment_id || !investor_email || !shares_requested) return res.status(400).json({ error: "investment_id, investor_email, shares_requested required" })
@@ -13,22 +18,18 @@ export default async function handler(req, res) {
   if (shares_requested > inv.shares_available) return res.status(400).json({ error: `Only ${inv.shares_available} shares available` })
 
   const amount = shares_requested * Number(inv.price_per_share)
-  const { data: holding, error: hErr } = await supabaseAdmin
-    .from('investment_holdings')
-    .insert([{
-      fractional_investment_id: investment_id, investor_email, investor_name, investor_phone,
-      shares_owned: shares_requested, amount_invested: amount, status: 'active'
-    }])
-    .select()
-    .single()
 
-  if (hErr) return res.status(500).json({ error: hErr.message })
+  const { data, error } = await supabaseAdmin.from('investment_holdings').insert([{
+    investment_id, investor_email, investor_name, investor_phone,
+    shares_owned: shares_requested, amount_paid: amount, currency: 'UGX',
+    status: 'pending_payment', user_id: user.id
+  }]).select().single()
 
-  const newAvailable = inv.shares_available - shares_requested
-  const newStatus = newAvailable === 0 ? 'sold_out' : 'active'
+  if (error) return res.status(500).json({ error: error.message })
+
   await supabaseAdmin.from('fractional_investments')
-    .update({ shares_available: newAvailable, status: newStatus, updated_at: new Date().toISOString() })
+    .update({ shares_available: inv.shares_available - shares_requested })
     .eq('id', investment_id)
 
-  res.status(200).json({ success: true, holding, total_cost: amount, shares_remaining: newAvailable })
+  res.status(201).json({ holding: data, amount_due: amount })
 }

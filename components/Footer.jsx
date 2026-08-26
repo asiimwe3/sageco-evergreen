@@ -5,15 +5,9 @@ export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 pt-16 pb-8 mt-16">
       <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
-        {/* About — bigger, more local */}
+        {/* About — no logo (navbar already has it) */}
         <div>
-          <div className="flex items-center gap-3 mb-4">
-            <img src="/logo.jpg" alt="SAGECO EVERGREEN" className="h-12 w-12 rounded-full" />
-            <div>
-              <p className="font-extrabold text-white text-lg">SAGECO</p>
-              <p className="text-green-400 text-sm font-semibold tracking-widest">EVERGREEN</p>
-            </div>
-          </div>
+          <p className="font-extrabold text-white text-lg mb-3">SAGECO <span className="text-green-400 text-sm font-semibold tracking-widest">EVERGREEN</span></p>
           <p className="text-base text-gray-400 leading-relaxed mb-5">Uganda's trusted real estate platform — land, homes, and commercial properties with a green future. Serving Kyenjojo, Kampala, and all of Uganda.</p>
           <div className="space-y-2 text-base">
             <p className="flex items-center gap-2">📍 Kyenjojo, Western Uganda</p>
@@ -29,7 +23,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Quick Links — bigger */}
+        {/* Quick Links */}
         <div>
           <h4 className="font-bold text-white mb-4 text-lg">Quick Links</h4>
           <ul className="space-y-3 text-base">
@@ -39,7 +33,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* For Brokers — bigger */}
+        {/* For Brokers */}
         <div>
           <h4 className="font-bold text-white mb-4 text-lg">For Brokers</h4>
           <ul className="space-y-3 text-base">
@@ -53,7 +47,7 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-white mb-4 text-lg">Company</h4>
           <ul className="space-y-3 text-base">
-            {[["About Us","/projects"],["Careers","/careers"],["Contact","/contact"],["FAQ","/faq"],["Android App","/android"]].map(([l,h]) => (
+            {[["About Us","/projects"],["Careers","/careers"],["Contact","/contact"],["FAQ","/faq"],["Android App","/android"],["Docs","/docs"]].map(([l,h]) => (
               <li key={h}><Link href={h} className="hover:text-white transition">{l}</Link></li>
             ))}
           </ul>
