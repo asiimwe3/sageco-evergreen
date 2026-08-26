@@ -202,25 +202,43 @@ export default function Home({ featuredProperties, stats }) {
     <>
       <Head>
         <title>SAGECO EVERGREEN | Premium Real Estate Uganda</title>
-        <meta name="description" content="Buy land and property in Uganda with SAGECO EVERGREEN. Land for sale, residential homes, commercial spaces, and eco-friendly developments in Kyenjojo, Kampala, and across Uganda. Book a viewing today — 0750 414 366." />
-        <meta name="keywords" content="land for sale Uganda, buy land Uganda, real estate Uganda, property for sale Uganda, land in Kyenjojo, plots for sale Uganda, commercial property Uganda, residential homes Uganda, houses for sale Uganda, SAGECO EVERGREEN, real estate company Uganda, property brokers Uganda" />
+        <meta name="description" content="Buy land and property in Uganda with SAGECO EVERGREEN. Land for sale, residential homes, commercial spaces, and eco-friendly developments in Kyenjojo, Kampala, and across Uganda. Free GPS land measuring, title search, and verified brokers. Book a viewing today — 0750 414 366." />
+        <meta name="keywords" content="land for sale Uganda, buy land Uganda, real estate Uganda, property for sale Uganda, land in Kyenjojo, plots for sale Uganda, commercial property Uganda, residential homes Uganda, houses for sale Uganda, SAGECO EVERGREEN, real estate company Uganda, property brokers Uganda, property investment Uganda, land title search Uganda, GPS land measuring" />
+        <meta name="author" content="SAGECO EVERGREEN Company Ltd" />
+        <meta name="publisher" content="DeryCode Technologies" />
+        <meta name="creator" content="DeryCode Technologies" />
+        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="geo.region" content="UG" />
+        <meta name="geo.placename" content="Kyenjojo, Uganda" />
+        <meta name="geo.position" content="0.6426;30.6286" />
+        <meta name="ICBM" content="0.6426, 30.6286" />
         <link rel="canonical" href={SITE_URL} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
-        <meta property="og:description" content="Buy land and property in Uganda. Land for sale, homes, commercial spaces, and eco-friendly developments. Book a viewing today!" />
+        <meta property="og:description" content="Buy land and property in Uganda. Land for sale, homes, commercial spaces, and eco-friendly developments. Free GPS measuring, title search, and verified brokers." />
         <meta property="og:image" content={SITE_URL + "/og-image.png"} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="SAGECO EVERGREEN — Premium Real Estate Uganda" />
+        <meta property="og:image:secure_url" content={SITE_URL + "/og-image.png"} />
         <meta property="og:locale" content="en_UG" />
+        <meta property="og:site_name" content="SAGECO EVERGREEN" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@SagecoEvergreen" />
+        <meta name="twitter:creator" content="@DeryCode" />
         <meta name="twitter:title" content="SAGECO EVERGREEN | Premium Real Estate Uganda" />
+        <meta name="twitter:description" content="Buy land and property in Uganda. Land for sale, homes, commercial spaces, and eco-friendly developments across Uganda." />
         <meta name="twitter:image" content={SITE_URL + "/og-image.png"} />
-        <meta name="publisher" content="DeryCode Technologies" />
-        <meta name="creator" content="DeryCode Technologies" />
-        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+        <meta name="twitter:image:alt" content="SAGECO EVERGREEN — Premium Real Estate Uganda" />
         <meta name="x-built-by" content="DeryCode Technologies" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }} />
       </Head>
 
       {/* Hero — BIGGER, local people focused */}
