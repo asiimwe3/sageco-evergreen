@@ -1,74 +1,50 @@
-# Contributing to sageco-evergreen
+# Contributing to DeryCode SAGECO Evergreen
 
-Thank you for your interest in contributing! This document outlines the process for contributing to this project.
+> ⚠️ **This is a proprietary project owned by DeryCode Technologies.**
+> Unauthorized access, copying, or modification of this codebase is prohibited.
 
-## 🚀 Getting Started
+## Who Can Contribute
 
-1. **Fork** the repository
-2. **Clone** your fork locally:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/sageco-evergreen.git
-   cd sageco-evergreen
-   ```
-3. **Install** dependencies and set up your environment
-4. **Create** a branch for your feature:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
+Only **DeryCode Technologies team members** and authorized
+SAGECO EVERGREEN developers may contribute to this repository.
 
-## 📋 Development Guidelines
+If you are not a DeryCode team member and you have access to this
+repository, your access is unauthorized — please contact
+sagecoevergreen@gmail.com immediately.
 
-### Code Style
-- Follow the existing code style and formatting
-- Use meaningful variable and function names
-- Keep functions small and focused
-- Add comments for complex logic
+## How to Contribute (DeryCode Team)
 
-### Commit Messages
-Use conventional commit format:
-- `feat:` new feature
-- `fix:` bug fix
-- `docs:` documentation changes
-- `refactor:` code refactoring
-- `test:` adding tests
-- `chore:` maintenance tasks
+1. **Clone the repository** — only via authorized GitHub accounts.
+2. **Create a feature branch** — `git checkout -b feat/your-feature-name`
+3. **Write clean code** — follow existing patterns, add comments where needed.
+4. **Test before pushing** — run `npm run build` locally.
+5. **Commit with conventions** — use prefixes: `feat:`, `fix:`, `refactor:`, `docs:`, `chore:`
+6. **Push and create a PR** — request review from the code owner (@asiimwe3).
+7. **Do NOT deploy directly** — all deploys go through Vercel via the `main` branch.
 
-Example: `feat: add user authentication flow`
+## Code Ownership
 
-### Testing
-- Write tests for new features
-- Ensure all existing tests pass before submitting
-- Aim for meaningful coverage of critical paths
+All code in this repository is owned by:
+- **DeryCode Technologies** (development & maintenance)
+- **SAGECO EVERGREEN Company Limited** (product owner)
 
-## 🔄 Pull Request Process
+See [CODEOWNERS](.github/CODEOWNERS) for the ownership configuration.
 
-1. Update documentation for any new features
-2. Ensure your code follows the style guidelines
-3. Run tests and ensure they pass
-4. Create a Pull Request with:
-   - Clear title and description
-   - Reference to any related issues
-   - Screenshots for UI changes
+## Tech Stack
 
-## 🐛 Reporting Bugs
+- **Framework:** Next.js 14 (React 18)
+- **Database:** Supabase (PostgreSQL)
+- **Styling:** Tailwind CSS 3
+- **Payments:** PesaPal (MTN MoMo, Airtel Money, Card)
+- **Maps:** Leaflet + OpenStreetMap
+- **Deploy:** Vercel (auto-deploy from `main` branch)
 
-Open an issue with:
-- Clear description of the bug
-- Steps to reproduce
-- Expected vs actual behavior
-- Environment details (OS, browser, version)
+## Contact
 
-## 💡 Suggesting Features
-
-Open an issue with:
-- Clear description of the feature
-- Use case and motivation
-- Possible implementation approach
-
-## 📜 Code of Conduct
-
-Be respectful, constructive, and professional. Harassment or discrimination of any kind will not be tolerated.
+- **Technical:** asiimwe3 (GitHub)
+- **Business:** sagecoevergreen@gmail.com
+- **Website:** https://derycode.publicvm.com
 
 ---
 
-Thank you for contributing! 🎉
+© 2024–2026 DeryCode Technologies. All rights reserved.

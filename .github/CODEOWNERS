@@ -1,0 +1,26 @@
+# ════════════════════════════════════════════════════════════════
+# DeryCode SAGECO Evergreen — Code Owners
+# ════════════════════════════════════════════════════════════════
+# Only DeryCode Technologies team members have ownership and
+# approval rights over this repository.
+#
+# All code in this repository is owned by DeryCode Technologies
+# and SAGECO EVERGREEN Company Limited.
+# ════════════════════════════════════════════════════════════════
+
+# Global code owner — DeryCode Technologies (Asiimwe Derick)
+* @asiimwe3
+
+# All source code, pages, components, and API routes
+/pages/        @asiimwe3
+/components/   @asiimwe3
+/lib/          @asiimwe3
+/hooks/        @asiimwe3
+/context/      @asiimwe3
+/supabase/     @asiimwe3
+
+# Configuration and infrastructure
+/package.json  @asiimwe3
+/next.config.js @asiimwe3
+/tailwind.config.js @asiimwe3
+/.github/      @asiimwe3

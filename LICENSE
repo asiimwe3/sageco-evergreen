@@ -1,21 +1,46 @@
-MIT License
+DeryCode SAGECO Evergreen — Proprietary Software License
+═══════════════════════════════════════════════════════════
 
-Copyright (c) 2026 Asiimwe Derick
+Copyright © 2024–2026 DeryCode Technologies and SAGECO EVERGREEN
+Company Limited. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+This software and its source code ("the Software") is the
+exclusive intellectual property of DeryCode Technologies and
+SAGECO EVERGREEN Company Limited.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+NO PART OF THIS SOFTWARE MAY BE COPIED, MODIFIED, DISTRIBUTED,
+SUBLICENSED, OR USED TO DERIVE OTHER WORKS WITHOUT THE EXPRESS
+WRITTEN PERMISSION OF DeryCode Technologies.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+PERMITTED USES:
+  • Internal development and deployment by DeryCode Technologies
+    team members.
+  • Use by SAGECO EVERGREEN Company Limited for its business
+    operations.
+  • Review and audit by authorized stakeholders with a
+    signed NDA or access agreement.
+
+PROHIBITED USES:
+  • Copying, forking, cloning, or redistributing this codebase
+    or any portion of it.
+  • Modifying the source code without authorization from
+    DeryCode Technologies.
+  • Using any part of this codebase to build competing products
+    or services.
+  • Selling, leasing, or sublicensing the Software or any
+    derivative works.
+  • Removing or altering this license notice.
+
+AUTHORIZATION:
+  Only individuals explicitly authorized in writing by
+  DeryCode Technologies may access, modify, or deploy this
+  software. Access is granted on a per-individual basis and
+  may be revoked at any time.
+
+CONTACT:
+  For licensing inquiries, access requests, or permissions:
+    Email: sagecoevergreen@gmail.com
+    Web:   https://derycode.publicvm.com
+
+This license is governed by the laws of Uganda.
+═══════════════════════════════════════════════════════════
