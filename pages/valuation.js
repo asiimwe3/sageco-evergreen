@@ -27,6 +27,7 @@ export default function Valuation() {
         description="Get AI-powered property valuations in Uganda. Predictive pricing with comparable analysis, crop and soil data for land and homes."
         keywords="property valuation Uganda, land value estimation, AI property pricing Uganda, home valuation tool"
         path="/valuation"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "AI Valuation", "path": "/valuation"}]}
       />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">

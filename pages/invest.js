@@ -22,6 +22,7 @@ export default function Invest() {
         description="Invest in Ugandan real estate with fractional ownership, tokenized land shares, and ROI projections. Start investing in land from UGX 500,000."
         keywords="property investment Uganda, fractional land ownership, real estate investing Uganda, tokenized property"
         path="/invest"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Invest", "path": "/invest"}]}
       />
       <div className="min-h-screen bg-gray-50">
         <section className="bg-gradient-to-br from-green-700 to-green-900 text-white py-20 px-4 text-center">

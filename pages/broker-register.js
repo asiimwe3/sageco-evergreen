@@ -192,6 +192,7 @@ export default function BrokerRegister() {
         description="Register as a verified broker with SAGECO EVERGREEN. UGX 32,000 registration fee. Get access to property listings, dashboard, and client management tools."
         keywords="broker registration Uganda, real estate agent register, SAGECO broker signup, property agent Uganda"
         path="/broker-register"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Register as Broker", "path": "/broker-register"}]}
       />
       <section className="bg-primary text-white py-12 px-4 text-center">
         <h1 className="text-3xl font-bold">Broker Registration</h1>

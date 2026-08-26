@@ -120,6 +120,7 @@ export default function Book() {
         description="Book a property viewing or site visit with SAGECO EVERGREEN. Schedule visits to verified properties across Uganda. UGX 30,000 booking fee via MTN MoMo, Airtel Money, or card."
         keywords="book property viewing Uganda, site visit booking, real estate appointment Uganda, property viewing Kyenjojo"
         path="/book"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Book a Viewing", "path": "/book"}]}
       />
           <div className="max-w-xl mx-auto px-4 py-20 text-center">
           <div className="text-6xl mb-4">✅</div>

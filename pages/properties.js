@@ -80,6 +80,7 @@ export default function Properties({ initialProperties, initialTotal }) {
         description="Browse verified land, homes, and commercial properties for sale across Uganda. Filter by location, price, and type. Kyenjojo, Kampala, and more."
         keywords="properties for sale Uganda, land for sale Uganda, houses for sale Kampala, commercial property Uganda, plots for sale Kyenjojo"
         path="/properties"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Properties", "path": "/properties"}]}
       />
 
       {/* Hero */}

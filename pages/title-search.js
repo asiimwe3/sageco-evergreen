@@ -73,6 +73,7 @@ export default function TitleSearchPage() {
         description="Verify land ownership and title status through the Uganda land registry. SAGECO EVERGREEN title search service for secure property transactions."
         keywords="land title search Uganda, property ownership verification, land registry Uganda, title deed search"
         path="/title-search"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Title Search", "path": "/title-search"}]}
       />
       <Navbar />
       <div className="min-h-screen bg-gray-50 pt-20 pb-12">

@@ -82,6 +82,7 @@ export default function Plans() {
         description="Choose from our broker registration plans and subscription packages. Affordable pricing for property listing, agent tools, and premium features in Uganda."
         keywords="SAGECO pricing, broker plans Uganda, property listing fees, real estate subscription Uganda"
         path="/plans"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Plans", "path": "/plans"}]}
       />
       <Head>
         <meta property="og:title" content="Broker Plans | SAGECO EVERGREEN" />

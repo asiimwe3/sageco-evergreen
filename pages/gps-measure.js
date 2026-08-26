@@ -340,6 +340,7 @@ export default function GPSMeasurePage() {
         description="Measure land area in Uganda using GPS coordinates on an interactive map. Draw boundaries, calculate acreage in acres, hectares, and square meters. Free GPS land measurement tool by SAGECO EVERGREEN."
         keywords="GPS land measurement Uganda, measure land area, land boundary GPS, acreage calculator Uganda, GPS coordinates land, land survey tool Uganda, GeoJSON export"
         path="/gps-measure"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "GPS Land Measuring", "path": "/gps-measure"}]}
       />
       <Navbar />
       <div className="min-h-screen bg-gray-50 pt-24 pb-12">

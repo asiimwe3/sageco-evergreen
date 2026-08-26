@@ -55,6 +55,99 @@ const faqJsonLd = {
   ]
 }
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "SAGECO EVERGREEN",
+  "url": SITE_URL,
+  "publisher": {
+    "@type": "Organization",
+    "name": "SAGECO EVERGREEN Company Ltd",
+    "url": SITE_URL,
+    "logo": SITE_URL + "/logo.jpg"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": SITE_URL + "/properties?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+
+const servicesJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "SAGECO EVERGREEN Services",
+  "itemListElement": [
+    {
+      "@type": "Service",
+      "name": "Property Sales",
+      "description": "Buy verified land, residential homes, and commercial properties across Uganda.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/properties"
+    },
+    {
+      "@type": "Service",
+      "name": "GPS Land Measuring",
+      "description": "Free GPS-based land measurement tool for accurate acreage, perimeter, and boundary mapping.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/gps-measure"
+    },
+    {
+      "@type": "Service",
+      "name": "Land Title Search",
+      "description": "Verify land ownership and title status through the Uganda land registry.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/title-search"
+    },
+    {
+      "@type": "Service",
+      "name": "AI Property Valuation",
+      "description": "AI-powered property valuations with predictive pricing, comparable analysis, and crop/soil data.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/valuation"
+    },
+    {
+      "@type": "Service",
+      "name": "Programmable Escrow",
+      "description": "Milestone-based fund release with GPS-verified site visits for secure property transactions.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/escrow"
+    },
+    {
+      "@type": "Service",
+      "name": "Drone Property Verification",
+      "description": "LiDAR scans, 3D twins, and GPS-verified boundaries for properties in Uganda.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/verification"
+    },
+    {
+      "@type": "Service",
+      "name": "Digital Land Passports",
+      "description": "Verifiable property records with GPS boundaries, ownership history, and survey data.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/passports"
+    },
+    {
+      "@type": "Service",
+      "name": "Broker Registration",
+      "description": "Register as a verified broker with SAGECO EVERGREEN. UGX 32,000 registration fee.",
+      "provider": { "@type": "RealEstateAgent", "name": "SAGECO EVERGREEN" },
+      "areaServed": { "@type": "Country", "name": "Uganda" },
+      "url": SITE_URL + "/broker-register"
+    }
+  ]
+}
+
 const founderJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",

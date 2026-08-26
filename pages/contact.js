@@ -41,6 +41,7 @@ export default function Contact() {
         description="Get in touch with SAGECO EVERGREEN for property inquiries, viewings, and consultations. Call 0750 414 366 or WhatsApp us. Based in Kyenjojo, Uganda."
         keywords="contact SAGECO Evergreen, real estate contact Uganda, property inquiry Kyenjojo, WhatsApp property Uganda"
         path="/contact"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Contact", "path": "/contact"}]}
       />
 
       <section className="bg-primary text-white py-16 px-4 text-center">

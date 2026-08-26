@@ -36,6 +36,7 @@ export default function Brokers() {
         description="Connect with verified real estate brokers and agents across Uganda. Find trusted professionals for property buying, selling, and consultation."
         keywords="real estate brokers Uganda, property agents Uganda, verified brokers Kyenjojo, real estate agents Kampala"
         path="/brokers"
+        breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Brokers", "path": "/brokers"}]}
       />
       <Head>
         <meta property="og:type" content="website" />
