@@ -2,10 +2,14 @@ import { useEffect, useState } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import SEO from '../components/SEO'
+import { useAuth } from '../context/AuthContext'
+import { useRouter } from 'next/router'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 export default function Brokers() {
+  const { user, profile } = useAuth()
+  const router = useRouter()
   const [brokers, setBrokers] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
@@ -28,6 +32,33 @@ export default function Brokers() {
     }
     fetchBrokers()
   }, [search])
+
+  async function handleStartChat(broker) {
+    if (!user) {
+      router.push(`/login?redirect=/messages`)
+      return
+    }
+    try {
+      const res = await fetch('/api/chat/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          buyer_id: user.id,
+          buyer_name: profile?.full_name || user.email,
+          buyer_email: user.email,
+          broker_id: broker.user_id || broker.id,
+          broker_name: broker.full_name,
+          broker_email: broker.email,
+        })
+      })
+      const data = await res.json()
+      if (data.conversation) {
+        router.push(`/messages?conversation=${data.conversation.id}`)
+      }
+    } catch (err) {
+      console.error('Failed to start chat:', err)
+    }
+  }
 
   return (
     <>
@@ -114,6 +145,12 @@ export default function Brokers() {
                     <a href={`https://wa.me/${b.phone.replace(/\D/g,"")}`} target="_blank" rel="noopener noreferrer"
                       className="text-sm bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600">💬 WhatsApp</a>
                   )}
+                  <button
+                    onClick={() => handleStartChat(b)}
+                    className="text-sm bg-primary text-white px-3 py-1 rounded-full hover:bg-primary/90 transition font-medium"
+                  >
+                    💬 Message Me
+                  </button>
                   {b.email && (
                     <a href={`mailto:${b.email}`} className="text-sm bg-gray-50 text-gray-600 px-3 py-1 rounded-full hover:bg-gray-100">✉️ Email</a>
                   )}

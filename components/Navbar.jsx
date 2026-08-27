@@ -13,6 +13,7 @@ const PRIMARY_LINKS = [
 ]
 
 const MORE_LINKS = [
+  { href: "/messages",      label: "Messages" },
   { href: "/gps-measure",   label: "GPS Measure" },
   { href: "/title-search",  label: "Title Search" },
   { href: "/agents",        label: "Agents" },
@@ -100,6 +101,13 @@ export default function Navbar() {
               {profile?.role === 'admin' && (
                 <Link href="/admin" className="text-sm bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full font-bold hover:bg-yellow-200 transition">Admin</Link>
               )}
+              <Link href="/messages"
+                className="relative p-2 rounded-full hover:bg-gray-100 transition"
+                title="Messages">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </Link>
               <Link href="/account"
                 className="flex items-center gap-2 px-4 py-2 rounded-full border-2 border-gray-200 hover:border-primary text-base font-medium text-gray-700 transition">
                 <div className="w-8 h-8 rounded-full bg-green-600 text-white flex items-center justify-center text-sm font-bold">
@@ -161,7 +169,14 @@ export default function Navbar() {
                 {profile?.role === 'admin' && (
                   <Link href="/admin" onClick={() => setOpen(false)} className="text-base bg-yellow-100 text-yellow-700 px-4 py-3 rounded-xl font-bold text-center">Admin Dashboard</Link>
                 )}
-                <Link href="/account" onClick={() => setOpen(false)} className="text-base text-gray-700 py-3 px-4 hover:text-primary font-semibold">My Account</Link>
+                <Link href="/messages"
+                className="relative p-2 rounded-full hover:bg-gray-100 transition"
+                title="Messages">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </Link>
+              <Link href="/account" onClick={() => setOpen(false)} className="text-base text-gray-700 py-3 px-4 hover:text-primary font-semibold">My Account</Link>
                 <button onClick={handleSignOut} className="text-base text-red-500 py-3 px-4 text-left font-semibold">Sign Out</button>
               </>
             ) : (
