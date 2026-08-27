@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS property_verifications (
   verification_type text CHECK (verification_type IN ('drone', 'lidar', 'ground')),
   boundary_geojson jsonb,
   drone_images text[] DEFAULT '{}',
-  3d_model_url text,
+  "3d_model_url" text,
   gps_coordinates text,
   verification_status text DEFAULT 'pending' CHECK (verification_status IN ('pending', 'verified', 'failed')),
   verified_by text,
