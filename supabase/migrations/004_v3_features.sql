@@ -116,6 +116,18 @@ CREATE TABLE IF NOT EXISTS escrow_transactions (
   completed_at timestamptz
 );
 
+-- Ensure all columns exist (in case table was created by another process)
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS buyer_email text;
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS seller_email text;
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS buyer_phone text;
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS amount numeric;
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS currency text DEFAULT 'UGX';
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS milestones jsonb;
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS payment_ref text;
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS status text DEFAULT 'pending';
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS escrow_type text DEFAULT 'purchase';
+ALTER TABLE escrow_transactions ADD COLUMN IF NOT EXISTS gps_verified boolean DEFAULT false;
+
 ALTER TABLE escrow_transactions ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Service role can manage escrow_transactions" ON escrow_transactions;
