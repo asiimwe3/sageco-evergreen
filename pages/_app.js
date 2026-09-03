@@ -18,6 +18,8 @@ function AppShell({ Component, pageProps }) {
   const appMode = useAppMode()
   const router = useRouter()
   const isFullscreen = FULLSCREEN_ROUTES.includes(router.pathname)
+  // The Home screen renders its own edge-to-edge hero + top bar in App Mode
+  const isAppHome = appMode && router.pathname === "/"
 
   return (
     <>
@@ -111,7 +113,7 @@ function AppShell({ Component, pageProps }) {
 
       {/* Navigation — hidden on fullscreen chat pages */}
       {!appMode && !isFullscreen && <Navbar />}
-      {appMode  && !isFullscreen && <AppHeader showBack showSearch showNotif />}
+      {appMode  && !isFullscreen && !isAppHome && <AppHeader showBack showSearch showNotif />}
 
       {/* Page content — fullscreen pages get no wrapper */}
       {isFullscreen ? (
