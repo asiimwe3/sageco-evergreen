@@ -4,10 +4,10 @@ export default async function handler(req, res) {
 
   res.setHeader('Cache-Control', 'no-store')
   return res.status(200).json({
-    versionCode: 6,
-    versionName: "3.0.0",
+    versionCode: 7,
+    versionName: "3.0.1",
     apkUrl: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://sageco-evergreen-co.vercel.app'}/downloads/sageco-app-latest.apk`,
-    notes: "SageCo Evergreen v3.0.0 — the app is now one with the website: every screen, feature and payment identical, always in sync.",
+    notes: "v3.0.1 — connects to the fast domain first with automatic failover, loading progress bar, and a clear retry screen if offline.",
     forceUpdate: false,
   })
 }
