@@ -1,7 +1,7 @@
 import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../lib/supabaseAdmin.js'
 import { useState } from 'react'
-import { useAppMode } from "../hooks/useAppMode"
-import Navbar from "../components/Navbar"
+import { useAppMode } from "../../hooks/useAppMode"
+import Navbar from "../../components/Navbar"
 import Footer from '../../components/Footer'
 import Link from 'next/link'
 import MapPicker from '../../components/MapPicker'
