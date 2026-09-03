@@ -176,7 +176,6 @@ const founderJsonLd = {
 
 const v3Features = [
   { icon: "🛸", title: "Drone Verification", desc: "LiDAR scans, 3D twins & GPS-verified boundaries", slug: "/verification" },
-  { icon: "🛡️", title: "AI Fraud Detection", desc: "Duplicate listings, boundary conflicts & pricing checks", slug: "/admin/fraud" },
   { icon: "🌿", title: "Eco-Land Intelligence", desc: "Carbon scoring, reforestation & renewable energy analysis", slug: "/eco" },
   { icon: "🔒", title: "Programmable Escrow", desc: "Milestone-based fund release with GPS-verified visits", slug: "/escrow" },
   { icon: "📜", title: "Digital Land Passports", desc: "Verifiable passport per property with GPS & ownership history", slug: "/passports" },
