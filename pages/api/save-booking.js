@@ -11,6 +11,15 @@ export default async function handler(req, res) {
     payment_type, status
   } = req.body
 
+  // Input validation
+  if (!reference || !customer_name || !customer_email || !customer_phone || !preferred_date) {
+    return res.status(400).json({ error: "Missing required fields: reference, customer_name, customer_email, customer_phone, preferred_date" })
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(customer_email)) {
+    return res.status(400).json({ error: "Invalid email address" })
+  }
+
   try {
     const { data, error } = await supabase.from("bookings").insert([{
       reference,
