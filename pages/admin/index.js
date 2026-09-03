@@ -11,6 +11,7 @@ const SECTIONS = [
   { href: "/admin/applications",  icon: "📋", label: "Applications",     desc: "Review & respond to career applications",    statKey: "applications",  color: "text-orange-700 bg-orange-50" },
   { href: "/admin/messages",      icon: "💬", label: "Messages",         desc: "Read & reply to contact form messages",      statKey: "messages",      color: "text-pink-700 bg-pink-50" },
   { href: "/admin/officers",      icon: "👔", label: "Officers",         desc: "Manage company team & staff",                statKey: "officers",      color: "text-teal-700 bg-teal-50" },
+  { href: "/admin/withdrawals",  icon: "💸", label: "Withdrawals",      desc: "Approve or reject agent withdrawal requests", statKey: "withdrawals", color: "text-emerald-700 bg-emerald-50" },
 ]
 
 export default function AdminDashboard() {

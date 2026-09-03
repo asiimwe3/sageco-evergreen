@@ -1,4 +1,4 @@
-// MLM Agent Dashboard — get agent stats, downline, commissions, group
+// MLM Agent Dashboard — get agent stats, downline, commissions, group, wallet
 import { supabaseAdmin } from '../../../lib/supabaseAdmin.js'
 
 export default async function handler(req, res) {
@@ -10,32 +10,26 @@ export default async function handler(req, res) {
   if (!agent_id) return res.status(400).json({ error: 'Agent ID is required' })
 
   try {
-    // Get agent profile
     const { data: agent } = await supabaseAdmin
       .from('agents').select('*').eq('id', agent_id).limit(1)
-
     if (!agent || agent.length === 0) return res.status(404).json({ error: 'Agent not found' })
 
-    // Get downline (direct + indirect)
     const { data: directDownline } = await supabaseAdmin
       .from('agent_downline')
       .select('downline_agent_id, level, status, created_at')
       .eq('agent_id', agent_id)
       .order('created_at', { ascending: false })
 
-    // Get downline agent details
     let downlineDetails = []
     if (directDownline && directDownline.length > 0) {
       const downlineIds = directDownline.map(d => d.downline_agent_id)
       const { data: dlAgents } = await supabaseAdmin
         .from('agents')
-        .select('id, full_name, phone, location, registration_status, level, downline_count, created_at')
+        .select('id, full_name, phone, location, registration_status, level, downline_count')
         .in('id', downlineIds)
-        .order('created_at', { ascending: false })
       downlineDetails = dlAgents || []
     }
 
-    // Get commissions
     const { data: commissions } = await supabaseAdmin
       .from('agent_commissions')
       .select('*')
@@ -43,45 +37,50 @@ export default async function handler(req, res) {
       .order('created_at', { ascending: false })
       .limit(20)
 
-    // Get group info
     let group = null
     if (agent[0].group_id) {
       const { data: groupData } = await supabaseAdmin
         .from('agent_groups').select('*').eq('id', agent[0].group_id).limit(1)
-      group = groupData && groupData.length > 0 ? groupData[0] : null
+      group = groupData && groupData[0]
     }
 
-    // Get sponsor info
     let sponsor = null
     if (agent[0].sponsor_id) {
-      const { data: sData } = await supabaseAdmin
+      const { data: sponsorData } = await supabaseAdmin
         .from('agents').select('id, full_name, phone, level').eq('id', agent[0].sponsor_id).limit(1)
-      sponsor = sData && sData.length > 0 ? sData[0] : null
+      sponsor = sponsorData && sponsorData[0]
     }
 
-    // Calculate totals
-    const totalCommissions = (commissions || []).reduce((sum, c) => sum + Number(c.amount), 0)
-    const pendingCommissions = (commissions || []).filter(c => c.status === 'pending').reduce((sum, c) => sum + Number(c.amount), 0)
-    const paidCommissions = (commissions || []).filter(c => c.status === 'paid').reduce((sum, c) => sum + Number(c.amount), 0)
-    const directCount = (directDownline || []).filter(d => d.level === 1).length
+    // Calculate stats
+    const totalEarnings = parseFloat(agent[0].total_earnings) || 0
+    const totalWithdrawn = parseFloat(agent[0].total_withdrawn) || 0
+    const pendingWithdrawal = parseFloat(agent[0].pending_withdrawal) || 0
+    const availableBalance = totalEarnings - totalWithdrawn - pendingWithdrawal
+
+    const pendingCommissions = (commissions || []).filter(c => c.status === 'pending').reduce((s, c) => s + parseFloat(c.amount), 0)
+    const paidCommissions = (commissions || []).filter(c => c.status === 'paid').reduce((s, c) => s + parseFloat(c.amount), 0)
+
+    const stats = {
+      direct_downline: downlineDetails.filter(d => d.registration_status === 'active' || d.registration_status === 'pending').length,
+      total_downline: directDownline ? directDownline.length : 0,
+      pending_commissions: pendingCommissions,
+      paid_commissions: paidCommissions,
+      total_earnings: totalEarnings,
+      available_balance: availableBalance,
+      total_withdrawn: totalWithdrawn,
+      pending_withdrawal: pendingWithdrawal
+    }
 
     return res.status(200).json({
       agent: agent[0],
       sponsor,
       group,
       downline: downlineDetails,
-      downline_count: directCount,
-      total_downline: (directDownline || []).length,
       commissions: commissions || [],
-      stats: {
-        total_commissions: totalCommissions,
-        pending_commissions: pendingCommissions,
-        paid_commissions: paidCommissions,
-        direct_downline: directCount,
-        level: agent[0].level || 1,
-      }
+      stats
     })
   } catch (err) {
+    console.error('Dashboard error:', err)
     return res.status(500).json({ error: err.message })
   }
 }
