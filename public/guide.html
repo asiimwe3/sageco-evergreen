@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SAGECO EVERGREEN — How to Use (Mobile Guide)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --green:#1e6e3c; --green-dark:#1b5e20; --green-light:#e8f5e9;
+  --gold:#ffc107; --white:#fff; --dark:#1a1a1a; --gray:#666; --gray-l:#f5f5f5;
+  --phone-bg:#0a0a0a;
+}
+
+body {
+  font-family:'Inter',sans-serif;
+  background:#0f0f0f;
+  color:var(--dark);
+  overflow:hidden;
+}
+
+/* SLIDE SYSTEM */
+.slide {
+  width:100vw; height:100vh; min-height:640px;
+  display:none; position:relative; overflow:hidden;
+}
+.slide.active { display:flex; }
+
+/* PHONE FRAME */
+.phone {
+  width:320px; height:640px;
+  background:#1a1a1a;
+  border-radius:36px;
+  border:8px solid #2a2a2a;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+}
+.phone::before {
+  content:''; position:absolute;
+  top:0; left:50%; transform:translateX(-50%);
+  width:120px; height:22px;
+  background:#1a1a1a;
+  border-radius:0 0 16px 16px;
+  z-index:100;
+}
+.phone-screen {
+  width:100%; height:100%;
+  overflow-y:auto;
+  background:#fff;
+  position:relative;
+}
+.phone-screen::-webkit-scrollbar { width:0; }
+
+/* Status bar */
+.status-bar {
+  height:36px; padding:8px 16px 4px;
+  display:flex; align-items:center; justify-content:space-between;
+  font-size:11px; font-weight:600; color:#333;
+  background:#fff; position:sticky; top:0; z-index:50;
+}
+.status-bar .icons { display:flex; gap:4px; align-items:center; font-size:10px; }
+
+/* Mobile nav bar */
+.m-nav {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:8px 12px; background:#fff;
+  border-bottom:1px solid #eee;
+  position:sticky; top:36px; z-index:49;
+}
+.m-nav .logo { font-weight:800; font-size:13px; color:var(--green-dark); display:flex; align-items:center; gap:4px; }
+.m-nav .logo .dot { width:18px; height:18px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; }
+.m-nav .burger { font-size:18px; color:#333; }
+.m-nav .wa-btn { background:#25d366; color:#fff; padding:4px 10px; border-radius:12px; font-size:10px; font-weight:600; }
+
+/* Mobile hero */
+.m-hero {
+  background:linear-gradient(135deg,#1b5e20,#2e7d32);
+  color:#fff; padding:20px 16px; text-align:center;
+}
+.m-hero .badge { font-size:10px; color:var(--gold); margin-bottom:6px; }
+.m-hero h1 { font-size:18px; font-weight:800; margin-bottom:4px; }
+.m-hero p { font-size:11px; opacity:0.9; margin-bottom:12px; line-height:1.4; }
+.m-hero .btn-row { display:flex; gap:8px; justify-content:center; }
+.m-hero .btn-primary { background:#fff; color:var(--green-dark); padding:7px 14px; border-radius:6px; font-size:11px; font-weight:700; }
+.m-hero .btn-ghost { border:1px solid rgba(255,255,255,0.5); color:#fff; padding:7px 14px; border-radius:6px; font-size:11px; font-weight:600; }
+
+/* Mobile features */
+.m-features { padding:12px; }
+.m-features .section-title { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:8px; }
+.m-feature-card {
+  display:flex; align-items:center; gap:8px;
+  padding:10px; background:var(--gray-l);
+  border-radius:8px; margin-bottom:6px;
+}
+.m-feature-card .icon { font-size:18px; }
+.m-feature-card .ftext h4 { font-size:11px; font-weight:600; }
+.m-feature-card .ftext p { font-size:9px; color:#888; }
+
+/* Mobile search */
+.m-search-bar {
+  padding:10px 12px; display:flex; gap:6px;
+}
+.m-search-bar input {
+  flex:1; padding:7px 10px; border:1px solid #ddd;
+  border-radius:6px; font-size:11px;
+}
+.m-search-bar .go { background:var(--green); color:#fff; padding:7px 12px; border-radius:6px; font-size:11px; font-weight:600; }
+
+/* Mobile chips */
+.m-chips { display:flex; gap:4px; padding:0 12px 8px; overflow-x:auto; }
+.m-chips .chip {
+  padding:4px 10px; border-radius:12px; font-size:10px;
+  white-space:nowrap; border:1px solid #ddd;
+}
+.m-chips .chip.active { background:var(--green); color:#fff; border-color:var(--green); }
+
+/* Mobile property card */
+.m-prop-card {
+  border:1px solid #eee; border-radius:8px;
+  overflow:hidden; margin-bottom:10px;
+  background:#fff;
+}
+.m-prop-card .img-ph {
+  height:100px; background:linear-gradient(135deg,#c8e6c9,#a5d6a7);
+  display:flex; align-items:center; justify-content:center;
+  font-size:24px;
+}
+.m-prop-card .body { padding:10px; }
+.m-prop-card .body h4 { font-size:12px; font-weight:600; margin-bottom:2px; }
+.m-prop-card .body p { font-size:10px; color:#666; }
+.m-prop-card .body .price { font-size:13px; font-weight:700; color:var(--green); margin-top:4px; }
+
+/* Mobile form */
+.m-form { padding:12px; }
+.m-field { margin-bottom:10px; }
+.m-field label { font-size:10px; font-weight:600; color:#555; display:block; margin-bottom:3px; }
+.m-field input, .m-field select, .m-field textarea {
+  width:100%; padding:8px 10px; border:1px solid #ddd;
+  border-radius:6px; font-size:11px; background:#fff;
+}
+.m-field .hint { font-size:9px; color:#aaa; margin-top:2px; }
+
+/* Mobile button */
+.m-btn {
+  display:block; width:100%; padding:10px;
+  background:var(--green); color:#fff;
+  border:none; border-radius:6px; font-size:12px;
+  font-weight:700; text-align:center;
+}
+.m-btn.secondary { background:transparent; color:var(--green); border:1px solid var(--green); }
+.m-btn.gold { background:var(--gold); color:#000; }
+.m-btn.wa { background:#25d366; }
+
+/* Mobile section header */
+.m-section-h {
+  padding:12px; background:var(--green-light);
+}
+.m-section-h h2 { font-size:15px; font-weight:700; color:var(--green-dark); }
+.m-section-h p { font-size:10px; color:#666; margin-top:2px; }
+
+/* Mobile CTA strip */
+.m-cta {
+  background:#fffde7; border:1px solid #ffe082;
+  padding:10px 12px; margin:8px 12px; border-radius:8px;
+}
+.m-cta h4 { font-size:11px; font-weight:700; }
+.m-cta p { font-size:9px; color:#666; margin-top:2px; }
+.m-cta .btn { background:#ffc107; color:#000; padding:5px 10px; border-radius:4px; font-size:10px; font-weight:600; display:inline-block; margin-top:6px; }
+
+/* Steps indicator */
+.m-steps {
+  display:flex; align-items:center; padding:12px; gap:4px;
+}
+.m-steps .step {
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:700;
+}
+.m-steps .step.done { background:var(--green); color:#fff; }
+.m-steps .step.active { background:var(--green); color:#fff; box-shadow:0 0 0 3px var(--green-light); }
+.m-steps .step.todo { background:#eee; color:#999; }
+.m-steps .line { flex:1; height:2px; background:#eee; }
+.m-steps .line.done { background:var(--green); }
+
+/* Plan table */
+.m-plan-card {
+  border:2px solid #eee; border-radius:8px;
+  padding:12px; margin-bottom:8px;
+}
+.m-plan-card.featured { border-color:var(--green); background:var(--green-light); }
+.m-plan-card h4 { font-size:13px; font-weight:700; }
+.m-plan-card .price { font-size:16px; font-weight:800; color:var(--green); margin:4px 0; }
+.m-plan-card ul { list-style:none; }
+.m-plan-card li { font-size:10px; color:#555; padding:2px 0; }
+.m-plan-card li::before { content:'✓ '; color:var(--green); }
+
+/* Chat */
+.chat-bubble {
+  max-width:85%; padding:8px 10px; border-radius:10px;
+  font-size:11px; line-height:1.4; margin-bottom:6px;
+}
+.chat-bubble.bot { background:var(--green-light); border:1px solid #c8e6c9; }
+.chat-bubble.user { background:#e3f2fd; margin-left:auto; text-align:right; }
+.chat-suggestions { display:flex; flex-wrap:wrap; gap:4px; padding:4px 0 8px; }
+.chat-suggestions .s { border:1px solid #ddd; padding:4px 8px; border-radius:12px; font-size:9px; }
+.chat-input { display:flex; gap:4px; padding:8px 12px; border-top:1px solid #eee; position:sticky; bottom:0; background:#fff; }
+.chat-input input { flex:1; padding:7px 10px; border:1px solid #ddd; border-radius:20px; font-size:11px; }
+.chat-input .send { width:32px; height:32px; background:var(--green); border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; }
+
+/* Footer */
+.m-footer {
+  background:#1b5e20; color:#fff;
+  padding:14px 12px; font-size:9px; line-height:1.5;
+}
+.m-footer h4 { font-size:11px; margin-bottom:4px; }
+.m-footer a { color:#fff; text-decoration:none; }
+.m-footer .contact-row { display:flex; gap:8px; margin-bottom:4px; }
+
+/* MASTER SLIDE LAYOUT */
+.slide-content {
+  display:flex; gap:20px; padding:24px;
+  align-items:center; justify-content:center;
+  width:100%; height:100%;
+}
+
+/* Info panel */
+.info-panel {
+  width:340px; flex-shrink:0;
+}
+.info-panel .step-badge {
+  display:inline-block; background:var(--green); color:#fff;
+  padding:4px 14px; border-radius:20px;
+  font-size:12px; font-weight:700; margin-bottom:12px;
+}
+.info-panel h2 {
+  font-size:20px; font-weight:800; color:var(--dark);
+  margin-bottom:6px; line-height:1.2;
+}
+.info-panel .subtitle {
+  font-size:13px; color:var(--green); font-weight:600;
+  margin-bottom:14px;
+}
+.info-panel .desc {
+  font-size:13px; color:#555; line-height:1.6;
+  margin-bottom:14px;
+}
+.info-panel .tips {
+  background:var(--green-light); border-radius:8px;
+  padding:12px 14px; margin-bottom:10px;
+}
+.info-panel .tips h4 {
+  font-size:12px; font-weight:700; color:var(--green-dark);
+  margin-bottom:6px;
+}
+.info-panel .tips p {
+  font-size:11px; color:#555; line-height:1.5;
+  margin-bottom:3px;
+}
+.info-panel .url {
+  display:inline-block; font-family:monospace;
+  font-size:11px; color:var(--green);
+  background:var(--green-light); padding:3px 10px;
+  border-radius:4px; margin-top:6px;
+}
+
+/* COVER SLIDE */
+.cover-slide {
+  background:linear-gradient(135deg,#1b5e20,#2e7d32);
+  flex-direction:column; align-items:center; justify-content:center;
+  color:#fff; text-align:center; padding:40px;
+}
+.cover-slide.active { display:flex; }
+.cover-slide .emoji { font-size:48px; margin-bottom:12px; }
+.cover-slide h1 { font-size:32px; font-weight:900; margin-bottom:6px; }
+.cover-slide h2 { font-size:16px; font-weight:400; opacity:0.9; margin-bottom:20px; }
+.cover-slide .phones-row {
+  display:flex; gap:12px; margin:20px 0;
+}
+.cover-slide .mini-phone {
+  width:50px; height:90px; border-radius:8px;
+  border:3px solid rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.1);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px;
+}
+.cover-slide .meta { font-size:12px; opacity:0.7; }
+
+/* SECTION DIVIDER */
+.section-div {
+  background:var(--green-dark);
+  flex-direction:column; align-items:center; justify-content:center;
+  color:#fff; text-align:center;
+}
+.section-div.active { display:flex; }
+.section-div .bg-num {
+  font-size:120px; font-weight:900; opacity:0.08;
+  position:absolute;
+}
+.section-div h2 { font-size:28px; font-weight:800; z-index:1; }
+.section-div p { font-size:14px; opacity:0.8; margin-top:8px; z-index:1; }
+
+/* NAVIGATION */
+.nav {
+  position:fixed; bottom:16px; right:16px;
+  display:flex; gap:6px; z-index:999;
+}
+.nav button {
+  width:40px; height:40px; border-radius:50%;
+  border:2px solid var(--green); background:#fff;
+  color:var(--green); font-size:18px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.nav button:hover { background:var(--green); color:#fff; }
+.counter {
+  position:fixed; bottom:22px; left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,0.7); color:#fff;
+  padding:4px 14px; border-radius:12px;
+  font-size:12px; z-index:999;
+}
+
+/* CLOSING */
+.closing-slide {
+  background:linear-gradient(135deg,#1b5e20,#2e7d32);
+  flex-direction:column; align-items:center; justify-content:center;
+  color:#fff; text-align:center; padding:40px;
+}
+.closing-slide.active { display:flex; }
+.closing-slide h1 { font-size:28px; font-weight:900; margin-bottom:8px; }
+.closing-slide p { font-size:14px; opacity:0.9; }
+.closing-slide .cards {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:12px;
+  margin-top:24px; max-width:400px;
+}
+.closing-slide .card {
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:10px; padding:14px;
+}
+.closing-slide .card .ic { font-size:20px; margin-bottom:4px; }
+.closing-slide .card .lb { font-size:9px; opacity:0.7; }
+.closing-slide .card .vl { font-size:12px; font-weight:600; }
+
+/* Booking type card */
+.m-booking-type {
+  border:1px solid #ddd; border-radius:8px;
+  padding:10px 12px; margin-bottom:6px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.m-booking-type.sel { border:2px solid var(--green); background:var(--green-light); }
+.m-booking-type h4 { font-size:12px; font-weight:600; }
+.m-booking-type p { font-size:9px; color:#888; }
+.m-booking-type .pr { font-size:12px; font-weight:700; color:var(--green); }
+
+/* Showcase layout (3 phones) */
+.triple-phones { display:flex; gap:10px; align-items:flex-start; }
+.triple-phones .phone { width:240px; height:480px; }
+.triple-phones .phone { border-width:6px; border-radius:28px; }
+.triple-phones .phone::before { width:80px; height:16px; }
+
+/* Two phone layout */
+.dual-phones { display:flex; gap:14px; align-items:flex-start; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: COVER -->
+<div class="slide cover-slide active" data-slide="1">
+  <div class="emoji">🌿</div>
+  <h1>SAGECO EVERGREEN</h1>
+  <h2>How to Use — Mobile Guide</h2>
+  <div class="phones-row">
+    <div class="mini-phone">🏠</div>
+    <div class="mini-phone">🔍</div>
+    <div class="mini-phone">🤖</div>
+    <div class="mini-phone">🔒</div>
+    <div class="mini-phone">📊</div>
+  </div>
+  <p class="meta">A step-by-step guide for every user 🇺🇬<br/>September 2026</p>
+</div>
+
+<!-- SLIDE 2: WHAT YOU CAN DO -->
+<div class="slide" data-slide="2">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">START HERE</span>
+      <h2>What You Can Do on SAGECO</h2>
+      <p class="subtitle">5 things every user can do</p>
+      <p class="desc">SAGECO EVERGREEN is your one-stop platform for real estate in Uganda. Here's what you can do — all from your phone.</p>
+      <div class="tips">
+        <h4>🏠 1. Browse & Search Properties</h4>
+        <p>Find verified land, homes, and commercial spaces across Uganda</p>
+      </div>
+      <div class="tips">
+        <h4>🔍 2. Book a Viewing</h4>
+        <p>Pay UGX 30,000 via MTN MoMo or Airtel and visit any property</p>
+      </div>
+      <div class="tips">
+        <h4>🤖 3. Chat with AI Broker</h4>
+        <p>24/7 instant answers about properties, bookings, and investment</p>
+      </div>
+      <div class="tips">
+        <h4>📊 4. Invest in Land</h4>
+        <p>Buy fractional shares from UGX 50,000 and earn as land grows</p>
+      </div>
+      <div class="tips">
+        <h4>👋 5. Become a Broker</h4>
+        <p>Register as an agent, list properties, and grow your business</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-hero">
+          <div class="badge">🇺🇬 UGANDA'S TRUSTED PROPERTY PLATFORM</div>
+          <h1>Find Your Dream Property</h1>
+          <p>Premium land, homes, and commercial spaces — verified and secure</p>
+          <div class="btn-row">
+            <span class="btn-primary">Browse Properties</span>
+            <span class="btn-ghost">Chat with AI</span>
+          </div>
+        </div>
+        <div class="m-features">
+          <div class="section-title">Smart Features</div>
+          <div class="m-feature-card"><span class="icon">🛸</span><div class="ftext"><h4>Drone Verification</h4><p>GPS-verified boundaries</p></div></div>
+          <div class="m-feature-card"><span class="icon">🔒</span><div class="ftext"><h4>Programmable Escrow</h4><p>Secure transactions</p></div></div>
+          <div class="m-feature-card"><span class="icon">🌿</span><div class="ftext"><h4>Eco-Land Intelligence</h4><p>Carbon scoring & green dev</p></div></div>
+          <div class="m-feature-card"><span class="icon">📊</span><div class="ftext"><h4>Fractional Investment</h4><p>From UGX 50,000</p></div></div>
+        </div>
+        <div class="m-footer">
+          <h4>SAGECO EVERGREEN</h4>
+          <p>Kyenjojo, Western Uganda</p>
+          <p>📞 0750 414 366</p>
+          <p>📧 sagecoevergreen@gmail.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: SECTION 1 - Property Buyer -->
+<div class="slide section-div" data-slide="3">
+  <div class="bg-num">01</div>
+  <h2>Finding & Booking Property</h2>
+  <p>For property buyers and renters</p>
+</div>
+
+<!-- SLIDE 4: HOMEPAGE -->
+<div class="slide" data-slide="4">
+  <div class="slide-content">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-hero">
+          <div class="badge">🇺🇬 UGANDA'S TRUSTED PROPERTY PLATFORM</div>
+          <h1>Find Your Dream Property</h1>
+          <p>Premium land, homes, and commercial spaces — verified, secure, and built for Ugandans</p>
+          <div class="btn-row">
+            <span class="btn-primary">Browse Properties</span>
+            <span class="btn-ghost">Chat with AI</span>
+          </div>
+        </div>
+        <div style="padding:12px;display:flex;gap:4px;justify-content:center;flex-wrap:wrap;">
+          <span style="font-size:9px;background:var(--green-light);padding:3px 8px;border-radius:4px;">✅ Verified</span>
+          <span style="font-size:9px;background:var(--green-light);padding:3px 8px;border-radius:4px;">🔒 Escrow</span>
+          <span style="font-size:9px;background:var(--green-light);padding:3px 8px;border-radius:4px;">📍 GPS</span>
+          <span style="font-size:9px;background:var(--green-light);padding:3px 8px;border-radius:4px;">🌿 Eco</span>
+        </div>
+        <div class="m-features">
+          <div class="section-title">How SAGECO Works</div>
+          <div class="m-feature-card"><span class="icon">1️⃣</span><div class="ftext"><h4>Browse & Verify</h4><p>Explore with GPS & drone imagery</p></div></div>
+          <div class="m-feature-card"><span class="icon">2️⃣</span><div class="ftext"><h4>Book & Pay</h4><p>UGX 30,000 via MoMo or card</p></div></div>
+          <div class="m-feature-card"><span class="icon">3️⃣</span><div class="ftext"><h4>Own & Invest</h4><p>Escrow protection & land passports</p></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel">
+      <span class="step-badge">STEP 1</span>
+      <h2>Open the Homepage</h2>
+      <p class="subtitle">sageco-evergreen-co.vercel.app</p>
+      <p class="desc">When you open SAGECO on your phone, you'll see the homepage. It shows what SAGECO offers and gives you two main buttons.</p>
+      <div class="tips">
+        <h4>👆 What to Tap</h4>
+        <p><b>Browse Properties</b> — to see all listings</p>
+        <p><b>Chat with AI</b> — to ask questions instantly</p>
+        <p><b>WhatsApp</b> (top right) — to message us directly</p>
+      </div>
+      <div class="tips">
+        <h4>💡 What to Look For</h4>
+        <p>Trust badges: Verified, Escrow, GPS, Eco</p>
+        <p>3-step process: Browse → Book → Own</p>
+        <p>Featured properties below the hero</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5: PROPERTIES LIST -->
+<div class="slide" data-slide="5">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">STEP 2</span>
+      <h2>Search & Filter Properties</h2>
+      <p class="subtitle">/properties</p>
+      <p class="desc">Tap "Browse Properties" to see all listings. Use the search bar and filters to find exactly what you need.</p>
+      <div class="tips">
+        <h4>🔍 How to Search</h4>
+        <p>Type a location like "Kyenjojo" or "Kampala"</p>
+        <p>Or type a property type like "land" or "house"</p>
+      </div>
+      <div class="tips">
+        <h4>🏷️ Filter by Category</h4>
+        <p>Residential, Commercial, Land, Plot, Green Project</p>
+      </div>
+      <div class="tips">
+        <h4>💰 Filter by Price</h4>
+        <p>Set min and max price in Ugandan Shillings</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-section-h" style="margin:0;border-radius:0;">
+          <h2>Our Properties</h2>
+          <p>62 verified listings across Uganda</p>
+        </div>
+        <div class="m-search-bar">
+          <input placeholder="Search by title, location..." value="Kyenjojo" />
+          <span class="go">Go</span>
+        </div>
+        <div class="m-chips">
+          <span class="chip active">All</span>
+          <span class="chip">Residential</span>
+          <span class="chip">Land</span>
+          <span class="chip">Commercial</span>
+          <span class="chip">Green</span>
+        </div>
+        <div style="padding:0 12px 8px;display:flex;gap:6px;align-items:center;">
+          <span style="font-size:9px;color:#888;">Price:</span>
+          <input style="width:60px;padding:3px 6px;border:1px solid #ddd;border-radius:4px;font-size:9px;" placeholder="Min" value="0" />
+          <span style="font-size:9px;">—</span>
+          <input style="width:60px;padding:3px 6px;border:1px solid #ddd;border-radius:4px;font-size:9px;" placeholder="Max" value="50000000" />
+        </div>
+        <div class="m-cta">
+          <h4>📋 Property owner?</h4>
+          <p>List your property for free</p>
+          <span class="btn">List Property</span>
+        </div>
+        <div style="padding:0 12px;">
+          <div class="m-prop-card">
+            <div class="img-ph">🏠</div>
+            <div class="body">
+              <h4>📍 Residential Plot — Kyenjojo</h4>
+              <p>50x100ft · GPS verified</p>
+              <div class="price">UGX 12,000,000</div>
+            </div>
+          </div>
+          <div class="m-prop-card">
+            <div class="img-ph">🌾</div>
+            <div class="body">
+              <h4>📍 Agricultural Land — Fort Portal</h4>
+              <p>1 acre · Green project</p>
+              <div class="price">UGX 25,000,000</div>
+            </div>
+          </div>
+          <div class="m-prop-card">
+            <div class="img-ph">🏢</div>
+            <div class="body">
+              <h4>📍 Commercial Space — Kampala</h4>
+              <p>Prime location</p>
+              <div class="price">UGX 85,000,000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 6: AI BROKER -->
+<div class="slide" data-slide="6">
+  <div class="slide-content">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;padding:12px;border-bottom:1px solid #eee;">
+          <div style="width:36px;height:36px;background:#1a1a2e;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🤖</div>
+          <div>
+            <h4 style="font-size:13px;">SAGECO AI Broker</h4>
+            <p style="font-size:9px;color:green;">● Online 24/7</p>
+          </div>
+        </div>
+        <div style="padding:12px;">
+          <div class="chat-bubble bot">
+            Hi! I'm the SAGECO AI Broker 🤖<br>I can help you find properties, book viewings, or answer questions about real estate in Uganda.<br><br>What are you looking for today?
+          </div>
+          <div class="chat-suggestions">
+            <span class="s">Find land in Kyenjojo</span>
+            <span class="s">How to book a viewing?</span>
+            <span class="s">Register as broker</span>
+            <span class="s">Investment options</span>
+          </div>
+          <div class="chat-bubble user">Find land in Kyenjojo under 5 million</div>
+          <div class="chat-bubble bot">
+            I found 3 properties in Kyenjojo under UGX 5,000,000:<br><br>1. 🏠 Residential Plot — UGX 3,500,000<br>2. 🌾 Agricultural Land — UGX 4,200,000<br>3. 📍 Plot 50x100 — UGX 4,800,000<br><br>Would you like to book a viewing?
+          </div>
+        </div>
+        <div class="chat-input">
+          <input placeholder="Ask me anything..." />
+          <div class="send">→</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel">
+      <span class="step-badge">STEP 3</span>
+      <h2>Chat with the AI Broker</h2>
+      <p class="subtitle">/ai-broker — Available 24/7</p>
+      <p class="desc">Not sure where to start? Chat with our AI Broker. It works like WhatsApp — just type your question and get instant answers.</p>
+      <div class="tips">
+        <h4>💬 What to Ask</h4>
+        <p>"Find land in Kyenjojo under 5 million"</p>
+        <p>"How do I book a viewing?"</p>
+        <p>"I want to register as a broker"</p>
+        <p>"Tell me about investment options"</p>
+      </div>
+      <div class="tips">
+        <h4>⚡ Why Use the AI Broker</h4>
+        <p>Instant answers — no waiting</p>
+        <p>Available 24/7, even at 2 AM</p>
+        <p>Works on WhatsApp and web</p>
+        <p>Searches all properties in real-time</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: BOOK VIEWING -->
+<div class="slide" data-slide="7">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">STEP 4</span>
+      <h2>Book a Viewing & Pay</h2>
+      <p class="subtitle">/book — PesaPal payment</p>
+      <p class="desc">Found a property you like? Book a viewing online and pay the fee through PesaPal with MTN MoMo, Airtel Money, or card.</p>
+      <div class="tips">
+        <h4>📋 3 Booking Types</h4>
+        <p><b>Property Viewing</b> — UGX 30,000</p>
+        <p><b>Consultation</b> — UGX 15,000</p>
+        <p><b>Site Visit</b> — UGX 30,000</p>
+      </div>
+      <div class="tips">
+        <h4>💳 Payment Methods</h4>
+        <p>MTN MoMo, Airtel Money, Visa Card</p>
+        <p>Processed securely via PesaPal</p>
+      </div>
+      <div class="tips">
+        <h4>⏰ What Happens Next</h4>
+        <p>A broker contacts you within 24 hours</p>
+        <p>Payment held in escrow until viewing confirmed</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-section-h" style="margin:0;border-radius:0;">
+          <h2>Book a Viewing</h2>
+          <p>Secure your slot via PesaPal</p>
+        </div>
+        <div class="m-steps">
+          <div class="step active">1</div>
+          <div class="line"></div>
+          <div class="step todo">2</div>
+        </div>
+        <div style="padding:0 12px;font-size:10px;color:#888;margin-bottom:6px;">Details → Payment</div>
+        <div class="m-form">
+          <div style="font-size:11px;font-weight:600;margin-bottom:8px;">Select Booking Type</div>
+          <div class="m-booking-type sel">
+            <div><h4>🏠 Property Viewing</h4><p>Visit and inspect a property</p></div>
+            <span class="pr">UGX 30,000</span>
+          </div>
+          <div class="m-booking-type">
+            <div><h4>💬 Consultation</h4><p>Talk about your needs</p></div>
+            <span class="pr">UGX 15,000</span>
+          </div>
+          <div class="m-booking-type">
+            <div><h4>📍 Site Visit</h4><p>Visit a green project</p></div>
+            <span class="pr">UGX 30,000</span>
+          </div>
+          <div class="m-field" style="margin-top:10px;"><label>Your Name *</label><input placeholder="John Doe" /></div>
+          <div class="m-field"><label>Phone *</label><input placeholder="0750 414 366" /></div>
+          <div class="m-field"><label>Preferred Date</label><input placeholder="Select date" /></div>
+          <div style="background:var(--gray-l);padding:8px;border-radius:6px;margin:10px 0;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;"><span>Total fee</span><strong>UGX 30,000</strong></div>
+          </div>
+          <span class="m-btn">Continue to Payment →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: BOOKING PAYMENT -->
+<div class="slide" data-slide="8">
+  <div class="slide-content">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-section-h" style="margin:0;border-radius:0;">
+          <h2>Payment</h2>
+          <p>Step 2 of 2 — PesaPal</p>
+        </div>
+        <div class="m-steps">
+          <div class="step done">✓</div>
+          <div class="line done"></div>
+          <div class="step active">2</div>
+        </div>
+        <div class="m-form">
+          <div style="font-size:11px;font-weight:600;margin-bottom:8px;">Select Payment Method</div>
+          <div class="m-booking-type sel">
+            <div><h4>📱 MTN MoMo</h4><p>Pay with MTN Mobile Money</p></div>
+            <span style="font-size:18px;">📲</span>
+          </div>
+          <div class="m-booking-type">
+            <div><h4>📱 Airtel Money</h4><p>Pay with Airtel</p></div>
+            <span style="font-size:18px;">📲</span>
+          </div>
+          <div class="m-booking-type">
+            <div><h4>💳 Visa Card</h4><p>Credit or debit card</p></div>
+            <span style="font-size:18px;">💳</span>
+          </div>
+          <div class="m-field" style="margin-top:10px;"><label>Phone Number for MoMo</label><input placeholder="0750 414 366" value="0750 414 366" /></div>
+          <div style="background:#fffde7;border:1px solid #ffe082;padding:8px;border-radius:6px;margin:8px 0;font-size:10px;color:#666;">
+            🔒 Your payment is held in <b>programmable escrow</b>. Funds are released only after your viewing is confirmed.
+          </div>
+          <div style="background:var(--gray-l);padding:8px;border-radius:6px;margin:8px 0;">
+            <div style="display:flex;justify-content:space-between;font-size:11px;"><span>Viewing fee</span><strong>UGX 30,000</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-top:4px;border-top:1px solid #ddd;padding-top:4px;"><span><b>Total</b></span><strong style="color:var(--green);">UGX 30,000</strong></div>
+          </div>
+          <span class="m-btn">Pay UGX 30,000 →</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel">
+      <span class="step-badge">STEP 5</span>
+      <h2>Complete Payment</h2>
+      <p class="subtitle">MTN MoMo · Airtel · Card</p>
+      <p class="desc">Select your payment method and enter your phone number. You'll get a payment prompt on your phone.</p>
+      <div class="tips">
+        <h4>📱 MTN MoMo Steps</h4>
+        <p>1. Select MTN MoMo</p>
+        <p>2. Enter your MTN number</p>
+        <p>3. Tap "Pay UGX 30,000"</p>
+        <p>4. Approve the prompt on your phone</p>
+        <p>5. Done — you're booked!</p>
+      </div>
+      <div class="tips">
+        <h4>🔒 Escrow Protection</h4>
+        <p>Your money is held safely. It's only released to the broker after your viewing is confirmed. If the viewing doesn't happen, you get a refund.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 9: CONTACT BROKER -->
+<div class="slide" data-slide="9">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">STEP 6</span>
+      <h2>Contact a Broker Directly</h2>
+      <p class="subtitle">/brokers</p>
+      <p class="desc">Prefer to talk to a real person? Browse our verified brokers and contact them directly on WhatsApp or by phone.</p>
+      <div class="tips">
+        <h4>🔍 How to Find a Broker</h4>
+        <p>Go to /brokers</p>
+        <p>Search by name, location, or specialization</p>
+        <p>Each broker shows their area and specialty</p>
+      </div>
+      <div class="tips">
+        <h4>💬 How to Contact</h4>
+        <p>Tap <b>WhatsApp</b> to message them instantly</p>
+        <p>Tap <b>Call</b> to phone them directly</p>
+        <p>They respond within 24 hours</p>
+      </div>
+      <div class="tips">
+        <h4>✅ All Brokers Are Verified</h4>
+        <p>Every broker on SAGECO is registered and verified before they can list properties.</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-section-h" style="margin:0;border-radius:0;">
+          <h2>Our Brokers</h2>
+          <p>Connect with verified agents</p>
+        </div>
+        <div class="m-cta">
+          <h4>Are you a real estate agent?</h4>
+          <p>UGX 32,000 registration · UGX 45,000 activation</p>
+          <span class="btn">Register Now</span>
+        </div>
+        <div class="m-search-bar">
+          <input placeholder="Search brokers..." />
+          <span class="go">Find</span>
+        </div>
+        <div style="padding:0 12px;">
+          <div class="m-prop-card" style="border:1px solid #eee;">
+            <div class="body" style="padding:10px;">
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                <div style="width:36px;height:36px;background:#e3f2fd;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>
+                <div>
+                  <h4 style="font-size:12px;">Mwesige Kateeba</h4>
+                  <p style="font-size:9px;color:#888;">📍 Kyenjojo · Consultant</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <span style="border:1px solid #ddd;padding:4px 10px;border-radius:4px;font-size:10px;">📞 Call</span>
+                <span style="background:#25d366;color:#fff;padding:4px 10px;border-radius:4px;font-size:10px;">💬 WhatsApp</span>
+              </div>
+            </div>
+          </div>
+          <div class="m-prop-card" style="border:1px solid #eee;">
+            <div class="body" style="padding:10px;">
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                <div style="width:36px;height:36px;background:#fce4ec;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;">👤</div>
+                <div>
+                  <h4 style="font-size:12px;">Sarah Namutebi</h4>
+                  <p style="font-size:9px;color:#888;">📍 Kampala · All Properties</p>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <span style="border:1px solid #ddd;padding:4px 10px;border-radius:4px;font-size:10px;">📞 Call</span>
+                <span style="background:#25d366;color:#fff;padding:4px 10px;border-radius:4px;font-size:10px;">💬 WhatsApp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: SECTION 2 - Investment -->
+<div class="slide section-div" data-slide="10">
+  <div class="bg-num">02</div>
+  <h2>Investing in Property</h2>
+  <p>For investors — buy land shares from UGX 50,000</p>
+</div>
+
+<!-- SLIDE 11: INVEST PAGE -->
+<div class="slide" data-slide="11">
+  <div class="slide-content">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-hero" style="padding:16px;">
+          <h1 style="font-size:16px;">📊 Fractional Investment</h1>
+          <p>Buy shares of land from UGX 50,000</p>
+        </div>
+        <div style="padding:12px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;background:var(--green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">1</div>
+            <div><h4 style="font-size:11px;">Browse Offerings</h4><p style="font-size:9px;color:#888;">Explore investments</p></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;background:var(--green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">2</div>
+            <div><h4 style="font-size:11px;">Buy Shares</h4><p style="font-size:9px;color:#888;">From UGX 50,000</p></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:28px;height:28px;background:var(--green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">3</div>
+            <div><h4 style="font-size:11px;">Track Ownership</h4><p style="font-size:9px;color:#888;">Via dashboard</p></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <div style="width:28px;height:28px;background:var(--green);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">4</div>
+            <div><h4 style="font-size:11px;">Earn Returns</h4><p style="font-size:9px;color:#888;">ROI as land appreciates</p></div>
+          </div>
+        </div>
+        <div style="padding:0 12px;">
+          <div class="m-prop-card">
+            <div class="img-ph">🌾</div>
+            <div class="body">
+              <h4>📍 Land — Mubende (2 acres)</h4>
+              <p>Total value: UGX 40,000,000</p>
+              <div class="price">Share: UGX 50,000</div>
+              <p style="font-size:9px;color:var(--green);margin-top:4px;">📈 Expected ROI: 15% in 12 months</p>
+            </div>
+          </div>
+          <div class="m-prop-card">
+            <div class="img-ph">🌳</div>
+            <div class="body">
+              <h4>📍 Green Project — Fort Portal</h4>
+              <p>Total value: UGX 60,000,000</p>
+              <div class="price">Share: UGX 100,000</div>
+              <p style="font-size:9px;color:var(--green);margin-top:4px;">📈 Expected ROI: 20% in 18 months</p>
+            </div>
+          </div>
+        </div>
+        <div style="padding:12px;"><span class="m-btn">Start Investing →</span></div>
+      </div>
+    </div>
+    <div class="info-panel">
+      <span class="step-badge">STEP 1</span>
+      <h2>Browse Investment Opportunities</h2>
+      <p class="subtitle">/invest</p>
+      <p class="desc">You don't need millions to own land. With fractional investment, you buy shares starting from just UGX 50,000.</p>
+      <div class="tips">
+        <h4>📊 How It Works</h4>
+        <p>1. Browse available land investments</p>
+        <p>2. Each shows total value, share price & ROI</p>
+        <p>3. Choose how many shares to buy</p>
+        <p>4. Pay via PesaPal (MoMo, Airtel, card)</p>
+        <p>5. Track your investment in your dashboard</p>
+      </div>
+      <div class="tips">
+        <h4>🌾 Example</h4>
+        <p>Land in Mubende costs UGX 40M total. You buy 1 share at UGX 50,000. As the land value grows, your share grows too.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: INVEST - BUY SHARES -->
+<div class="slide" data-slide="12">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">STEP 2</span>
+      <h2>Buy Shares & Track</h2>
+      <p class="subtitle">Login → Buy → Dashboard</p>
+      <p class="desc">To invest, you need an account. Sign in with Google or email, then buy shares.</p>
+      <div class="tips">
+        <h4>👤 Create an Account</h4>
+        <p>Go to /login</p>
+        <p>Tap "Continue with Google" for one-click sign in</p>
+        <p>Or enter email + password</p>
+      </div>
+      <div class="tips">
+        <h4>📊 Track Your Investment</h4>
+        <p>Log in to your dashboard anytime</p>
+        <p>See your shares, current value, and ROI</p>
+        <p>Get notified when the property sells</p>
+      </div>
+      <div class="tips">
+        <h4>💰 Earn Returns</h4>
+        <p>When the property appreciates, your shares grow. When it's sold or developed, you get your proportional share of the profits.</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-section-h" style="margin:0;border-radius:0;">
+          <h2>Buy Shares</h2>
+          <p>🌾 Land — Mubende (2 acres)</p>
+        </div>
+        <div class="m-form">
+          <div style="background:var(--gray-l);padding:10px;border-radius:8px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px;"><span>Total property value</span><strong>UGX 40,000,000</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px;"><span>Price per share</span><strong>UGX 50,000</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--green);"><span>Expected ROI (12 months)</span><strong>15%</strong></div>
+          </div>
+          <div class="m-field"><label>Number of Shares</label><input value="5" /><div class="hint">5 shares = UGX 250,000</div></div>
+          <div class="m-field"><label>Total Investment</label><input value="UGX 250,000" readonly /></div>
+          <div style="background:#fffde7;border:1px solid #ffe082;padding:8px;border-radius:6px;margin:8px 0;font-size:10px;">
+            📜 You'll receive <b>digital tokens</b> representing your ownership. Track them in your dashboard.
+          </div>
+          <span class="m-btn">Pay UGX 250,000 →</span>
+          <p style="text-align:center;font-size:9px;color:#aaa;margin-top:8px;">Via PesaPal (MoMo, Airtel, Card)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: SECTION 3 - Broker -->
+<div class="slide section-div" data-slide="13">
+  <div class="bg-num">03</div>
+  <h2>Becoming a Broker</h2>
+  <p>For real estate agents — register & list properties</p>
+</div>
+
+<!-- SLIDE 14: BROKER REGISTER STEP 1 -->
+<div class="slide" data-slide="14">
+  <div class="slide-content">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-hero" style="padding:14px;">
+          <h1 style="font-size:15px;">Broker Registration</h1>
+          <p>Join SAGECO as a verified agent</p>
+        </div>
+        <div class="m-steps">
+          <div class="step active">1</div>
+          <div class="line"></div>
+          <div class="step todo">2</div>
+          <div class="line"></div>
+          <div class="step todo">3</div>
+        </div>
+        <div style="padding:0 12px;font-size:10px;color:#888;margin-bottom:6px;">Profile → Fee → Plan</div>
+        <div class="m-form">
+          <div class="m-field"><label>Full Name *</label><input placeholder="John Doe" /></div>
+          <div class="m-field"><label>Email *</label><input placeholder="john@email.com" /></div>
+          <div class="m-field"><label>Phone *</label><input placeholder="+256 700 000000" /></div>
+          <div class="m-field"><label>Location</label><input placeholder="Kyenjojo" /></div>
+          <div class="m-field"><label>Specialization</label><input placeholder="Land, Residential" /></div>
+          <span class="m-btn">Continue to Step 2 →</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel">
+      <span class="step-badge">STEP 1</span>
+      <h2>Fill Your Profile</h2>
+      <p class="subtitle">/broker-register</p>
+      <p class="desc">Start by entering your personal details. This is what clients will see when they find you on the broker directory.</p>
+      <div class="tips">
+        <h4>📋 What to Enter</h4>
+        <p>Full name, email, and phone number</p>
+        <p>Your location (e.g., Kyenjojo)</p>
+        <p>Your specialization (e.g., Land, Residential)</p>
+      </div>
+      <div class="tips">
+        <h4>💡 Tips</h4>
+        <p>Use a phone number you check often</p>
+        <p>Choose specializations that match your experience</p>
+        <p>Your location helps match you with nearby clients</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 15: BROKER REGISTER STEPS 2-3 -->
+<div class="slide" data-slide="15">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">STEPS 2 & 3</span>
+      <h2>Pay Fee & Choose Plan</h2>
+      <p class="subtitle">UGX 32,000 + monthly subscription</p>
+      <p class="desc">After your profile, pay the registration fee and choose your subscription plan.</p>
+      <div class="tips">
+        <h4>💳 Step 2: Registration Fee</h4>
+        <p>UGX 32,000 via PesaPal</p>
+        <p>Covers account setup and verification</p>
+        <p>One-time payment</p>
+      </div>
+      <div class="tips" style="background:#fff3e0;border-radius:8px;padding:12px 14px;">
+        <h4 style="color:#e65100;">📊 Step 3: Choose Your Plan</h4>
+        <p><b>Free</b> — 3 properties, basic profile</p>
+        <p><b>Basic</b> — 10 properties, standard</p>
+        <p><b>Pro</b> — 50 properties, featured + priority</p>
+        <p><b>Premium</b> — unlimited, top placement</p>
+      </div>
+      <div class="tips">
+        <h4>🔧 After Registration</h4>
+        <p>Pay UGX 45,000 for dashboard activation</p>
+        <p>Then list properties via /upload-property</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-hero" style="padding:14px;">
+          <h1 style="font-size:15px;">Choose Your Plan</h1>
+          <p>Step 3 — Broker Subscription</p>
+        </div>
+        <div class="m-steps">
+          <div class="step done">✓</div>
+          <div class="line done"></div>
+          <div class="step done">✓</div>
+          <div class="line done"></div>
+          <div class="step active">3</div>
+        </div>
+        <div style="padding:12px;">
+          <div class="m-plan-card">
+            <h4>Free</h4>
+            <div class="price">UGX 0</div>
+            <ul><li>3 properties</li><li>Basic profile</li><li>No expiry</li></ul>
+          </div>
+          <div class="m-plan-card">
+            <h4>Basic</h4>
+            <div class="price">UGX 15,000<span style="font-size:9px;color:#888;">/mo</span></div>
+            <ul><li>10 properties</li><li>Standard profile</li><li>1 month</li></ul>
+          </div>
+          <div class="m-plan-card featured">
+            <h4>Pro ⭐</h4>
+            <div class="price">UGX 35,000<span style="font-size:9px;color:#888;">/mo</span></div>
+            <ul><li>50 properties</li><li>Featured + priority search</li><li>WhatsApp badge</li></ul>
+          </div>
+          <div class="m-plan-card">
+            <h4>Premium 💎</h4>
+            <div class="price">UGX 65,000<span style="font-size:9px;color:#888;">/mo</span></div>
+            <ul><li>Unlimited properties</li><li>Top verified placement</li><li>Priority support</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 16: LOGIN -->
+<div class="slide" data-slide="16">
+  <div class="slide-content">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div style="padding:24px 16px;text-align:center;">
+          <div style="font-size:40px;margin-bottom:12px;">🌿</div>
+          <h2 style="font-size:18px;font-weight:700;">Welcome Back</h2>
+          <p style="font-size:11px;color:#888;margin-bottom:16px;">Sign in to your SAGECO account</p>
+        </div>
+        <div style="padding:0 16px;">
+          <div style="border:1px solid #ddd;padding:10px;border-radius:8px;display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+            <div style="font-size:16px;">🔵</div>
+            <span style="font-size:12px;font-weight:600;">Continue with Google</span>
+          </div>
+          <p style="text-align:center;color:#aaa;font-size:10px;margin:8px 0;">or sign in with email</p>
+          <div class="m-field"><label>Email</label><input placeholder="your@email.com" /></div>
+          <div class="m-field"><label>Password</label><input placeholder="Your password" type="password" /></div>
+          <p style="text-align:right;font-size:10px;color:var(--green);margin-bottom:12px;">Forgot password?</p>
+          <span class="m-btn">Sign In</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-panel">
+      <span class="step-badge">ACCOUNT</span>
+      <h2>Sign In to Your Account</h2>
+      <p class="subtitle">/login</p>
+      <p class="desc">Brokers and investors need to sign in to access their dashboard, manage listings, and track investments.</p>
+      <div class="tips">
+        <h4>🔓 Two Ways to Sign In</h4>
+        <p><b>Google</b> — one tap, no password needed</p>
+        <p><b>Email + Password</b> — traditional login</p>
+      </div>
+      <div class="tips">
+        <h4>👤 Who Needs to Login?</h4>
+        <p>Brokers — to manage listings and leads</p>
+        <p>Investors — to check shares and ROI</p>
+        <p>Property buyers — to track bookings</p>
+      </div>
+      <div class="tips">
+        <h4>🔐 Security</h4>
+        <p>Powered by Supabase Auth. Your data is encrypted and secure. Never share your password.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 17: FAQ -->
+<div class="slide" data-slide="17">
+  <div class="slide-content">
+    <div class="info-panel">
+      <span class="step-badge">HELP</span>
+      <h2>Frequently Asked Questions</h2>
+      <p class="subtitle">/faq</p>
+      <p class="desc">Got questions? The FAQ page answers the most common questions from SAGECO users.</p>
+      <div class="tips">
+        <h4>❓ Common Questions</h4>
+        <p>How do I verify a property?</p>
+        <p>What is programmable escrow?</p>
+        <p>How does fractional investment work?</p>
+        <p>What payment methods are accepted?</p>
+        <p>How do I become a broker?</p>
+        <p>What are digital land passports?</p>
+      </div>
+      <div class="tips">
+        <h4>📞 Still Need Help?</h4>
+        <p>WhatsApp: 0750 414 366</p>
+        <p>Email: sagecoevergreen@gmail.com</p>
+        <p>Hours: Mon–Sat, 8AM–6PM</p>
+      </div>
+    </div>
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="status-bar"><span>9:41</span><span class="icons">📶 🔋</span></div>
+        <div class="m-nav">
+          <div class="logo"><span class="dot">🌿</span> SAGECO</div>
+          <span class="wa-btn">WhatsApp</span>
+        </div>
+        <div class="m-section-h" style="margin:0;border-radius:0;">
+          <h2>FAQ</h2>
+          <p>Find answers to common questions</p>
+        </div>
+        <div style="padding:12px;">
+          <div class="m-search-bar" style="padding:0 0 10px;"><input placeholder="Search questions..." /><span class="go">🔍</span></div>
+          <div style="border:1px solid #eee;border-radius:8px;padding:10px;margin-bottom:6px;">
+            <h4 style="font-size:11px;display:flex;justify-content:space-between;">How do I verify a property? <span>+</span></h4>
+          </div>
+          <div style="border:1px solid #eee;border-radius:8px;padding:10px;margin-bottom:6px;background:var(--green-light);border-color:var(--green);">
+            <h4 style="font-size:11px;display:flex;justify-content:space-between;">What is programmable escrow? <span>−</span></h4>
+            <p style="font-size:10px;color:#555;margin-top:6px;line-height:1.5;">Escrow holds your payment safely. Money is released to the seller only after the viewing or transaction milestone is confirmed. This protects both buyers and sellers.</p>
+          </div>
+          <div style="border:1px solid #eee;border-radius:8px;padding:10px;margin-bottom:6px;">
+            <h4 style="font-size:11px;display:flex;justify-content:space-between;">How does investment work? <span>+</span></h4>
+          </div>
+          <div style="border:1px solid #eee;border-radius:8px;padding:10px;margin-bottom:6px;">
+            <h4 style="font-size:11px;display:flex;justify-content:space-between;">What payments do you accept? <span>+</span></h4>
+          </div>
+          <div style="border:1px solid #eee;border-radius:8px;padding:10px;margin-bottom:6px;">
+            <h4 style="font-size:11px;display:flex;justify-content:space-between;">How do I become a broker? <span>+</span></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 18: QUICK TIPS -->
+<div class="slide" data-slide="18">
+  <div class="slide-content" style="flex-direction:column;justify-content:center;">
+    <div style="text-align:center;margin-bottom:20px;">
+      <span class="step-badge" style="background:var(--gold);color:#000;display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:700;">PRO TIPS</span>
+      <h2 style="font-size:24px;font-weight:800;margin-top:10px;">5 Tips for Getting the Most Out of SAGECO</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:700px;">
+      <div style="background:var(--green-light);border-radius:12px;padding:18px;border-left:4px solid var(--green);">
+        <h3 style="font-size:14px;font-weight:700;color:var(--green-dark);">🤖 Use the AI Broker First</h3>
+        <p style="font-size:12px;color:#555;margin-top:6px;line-height:1.5;">Before contacting a human, chat with the AI Broker. It can search all properties, guide you through booking, and answer questions instantly — 24/7.</p>
+      </div>
+      <div style="background:#fff3e0;border-radius:12px;padding:18px;border-left:4px solid #ff9800;">
+        <h3 style="font-size:14px;font-weight:700;color:#e65100;">📱 Save to Home Screen</h3>
+        <p style="font-size:12px;color:#555;margin-top:6px;line-height:1.5;">Open sageco-evergreen-co.vercel.app in your browser, tap the menu, and select "Add to Home Screen." It works like an app — no download needed.</p>
+      </div>
+      <div style="background:#e3f2fd;border-radius:12px;padding:18px;border-left:4px solid #1565c0;">
+        <h3 style="font-size:14px;font-weight:700;color:#1565c0;">🔒 Always Use Escrow</h3>
+        <p style="font-size:12px;color:#555;margin-top:6px;line-height:1.5;">Never pay a broker directly. Always use SAGECO's booking and escrow system. Your money is protected until the viewing is confirmed.</p>
+      </div>
+      <div style="background:#f3e5f5;border-radius:12px;padding:18px;border-left:4px solid #6a1b9a;">
+        <h3 style="font-size:14px;font-weight:700;color:#6a1b9a;">📊 Start Small with Investment</h3>
+        <p style="font-size:12px;color:#555;margin-top:6px;line-height:1.5;">You don't need millions. Start with UGX 50,000 in fractional investment. As you learn how it works, you can invest more.</p>
+      </div>
+      <div style="background:var(--green-light);border-radius:12px;padding:18px;border-left:4px solid var(--green);">
+        <h3 style="font-size:14px;font-weight:700;color:var(--green-dark);;">💬 WhatsApp is Your Friend</h3>
+        <p style="font-size:12px;color:#555;margin-top:6px;line-height:1.5;">Every broker has a WhatsApp button. Use it to ask about properties, negotiate, and get updates. Most brokers respond within hours.</p>
+      </div>
+      <div style="background:#fffde7;border-radius:12px;padding:18px;border-left:4px solid var(--gold);">
+        <h3 style="font-size:14px;font-weight:700;color:#f57f17;">📍 Check GPS Before Visiting</h3>
+        <p style="font-size:12px;color:#555;margin-top:6px;line-height:1.5;">Every property has GPS-verified boundaries. Check them before booking a viewing to make sure the location is right for you.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 19: CLOSING -->
+<div class="slide closing-slide" data-slide="19">
+  <div class="emoji" style="font-size:48px;margin-bottom:12px;">🌿</div>
+  <h1>You're Ready to Go!</h1>
+  <p>SAGECO EVERGREEN — Uganda's trusted property platform</p>
+  <div class="cards">
+    <div class="card">
+      <div class="ic">📞</div>
+      <div class="lb">PHONE / WHATSAPP</div>
+      <div class="vl">0750 414 366</div>
+    </div>
+    <div class="card">
+      <div class="ic">📧</div>
+      <div class="lb">EMAIL</div>
+      <div class="vl">sagecoevergreen@gmail.com</div>
+    </div>
+    <div class="card">
+      <div class="ic">🌐</div>
+      <div class="lb">WEBSITE</div>
+      <div class="vl">sageco-evergreen-co.vercel.app</div>
+    </div>
+  </div>
+  <p style="margin-top:24px;font-size:11px;opacity:0.5;">SAGECO EVERGREEN CO. LTD — Built by DeryCode Technologies — Kyenjojo, Uganda 🇺🇬</p>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button onclick="prev(1)">‹</button>
+  <button onclick="next(1)">›</button>
+</div>
+<div class="counter" id="ctr">1 / 19</div>
+
+<script>
+let cur=1; const tot=19;
+function show(n){
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+  const sl=document.querySelector(`[data-slide="${n}"]`);
+  if(sl) sl.classList.add('active');
+  document.getElementById('ctr').textContent=n+' / '+tot;
+  cur=n;
+}
+function next(){ if(cur<tot) show(cur+1); }
+function prev(){ if(cur>1) show(cur-1); }
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ') next();
+  if(e.key==='ArrowLeft') prev();
+});
+</script>
+</body>
+</html>
