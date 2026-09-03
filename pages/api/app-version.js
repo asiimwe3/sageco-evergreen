@@ -1,11 +1,11 @@
 export default function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.status(200).json({
-    versionCode: 26,
+    versionCode: 27,
     versionName: "4.0.0",
-    apkUrl: "https://github.com/asiimwe3/sageco-evergreen-android/releases/download/v4.0.0-26/app-release.apk",
+    apkUrl: "https://github.com/asiimwe3/sageco-evergreen-android/releases/download/v4.0.0-27/app-release.apk",
     playStoreUrl: "https://play.google.com/store/apps/details?id=com.sagecoevergreen.app",
-    notes: "v4.0.0-26 — Fixed image loading, broker data display, and added SAGECO app icon.",
+    notes: "v4.0.0-27 — Real version tracking, fixed image/data loading, new app icon.",
     forceUpdate: false
   })
 }
