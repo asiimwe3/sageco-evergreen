@@ -2,6 +2,7 @@ import Head from "next/head"
 import Link from "next/link"
 import { useState } from "react"
 import { useAppMode } from "../hooks/useAppMode"
+import AppHomeScreen from "../components/AppHomeScreen"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
@@ -241,6 +242,10 @@ export default function Home({ featuredProperties, stats }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesJsonLd) }} />
       </Head>
 
+      {appMode ? (
+        <AppHomeScreen featured={featured} />
+      ) : (
+      <>
       {/* Hero — BIGGER, local people focused */}
       <section className={"bg-gradient-to-br from-primary via-green-700 to-green-900 text-white " + (appMode ? "py-12" : "py-32") + " px-4 text-center relative overflow-hidden"}>
         {/* Background pattern */}
@@ -432,6 +437,8 @@ export default function Home({ featuredProperties, stats }) {
           <p className="mt-8 text-green-200 text-lg">Or call us directly: <a href="tel:+256750414366" className="font-bold underline">0750 414 366</a></p>
         </div>
       </section>
+      </>
+      )}
     </>
   )
 }
