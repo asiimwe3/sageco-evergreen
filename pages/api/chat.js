@@ -39,6 +39,9 @@ const BROKER_INFO = {
   activationFee: "UGX 45,000 (monthly dashboard subscription)",
   earnings: "UGX 20,000 per confirmed viewing booking",
   payout: "Broker earnings are paid out weekly via Mobile Money. Ensure your phone number is registered in your broker profile.",
+  agentEarnings: "UGX 5,000 per direct recruit + UGX 2,000 per indirect recruit (Level 2)",
+  withdrawal: "Agents can withdraw earnings via Mobile Money, Bank Transfer, or Cash Pickup. Minimum withdrawal is UGX 1,000. Go to your Agent Dashboard and click Withdraw Funds.",
+  withdrawalTime: "Withdrawals are processed within 24-48 hours after admin approval.",
   reviewTime: "Within 48 hours",
 }
 
@@ -73,6 +76,14 @@ const FAQ = [
     `Price Negotiation\n\n` +
     `Properties marked "Negotiable" allow price discussion. Contact the broker directly or book a consultation for price negotiations.\n\n` +
     `Book a consultation: ${SITE_URL}/book` },
+  { keywords: ["agent", "mlm", "register agent", "become agent", "agent reg", "join agent", "recruit", "downline", "sponsor"], answer: () =>
+    `SAGECO Agent Program (MLM)\n\n` +
+    `Become a SAGECO Agent and build your own broker network!\n\n` +
+    `Registration: ${BROKER_INFO.agentReg}\n` +
+    `Earnings: ${BROKER_INFO.agentEarnings}\n\n` +
+    `How it works:\n1. Register as an agent (UGX 30,000)\n2. Create your group\n3. Recruit brokers using your referral link\n4. Earn commissions on every recruit\n5. Withdraw earnings to Mobile Money\n\n` +
+    `Register: ${SITE_URL}/agents\n` +
+    `Dashboard: ${SITE_URL}/agents (login with your Agent ID)` },
   { keywords: ["broker reg", "register as broker", "become broker", "join as broker", "register broker", "how to broker"], answer: () =>
     `Broker Registration\n\n` +
     `${BROKER_INFO.registration}\n\n` +
@@ -86,10 +97,21 @@ const FAQ = [
     `Broker Subscription Plans\n\n` +
     PLANS.map((p, i) => `${i + 1}. ${p.name}: ${p.price} — ${p.listings} listings (${p.expiry})`).join("\n") +
     `\n\nSubscribe here: ${SITE_URL}/plans` },
-  { keywords: ["earn", "income", "commission", "broker pay", "paid", "payout"], answer: () =>
-    `Broker Earnings\n\n` +
+  { keywords: ["withdraw", "withdrawal", "cash out", "cashout", "pull out", "payout method"], answer: () =>
+    `Agent Withdrawals\n\n` +
+    `${BROKER_INFO.withdrawal}\n\n` +
+    `Methods:\n1. Mobile Money (MTN/Airtel)\n2. Bank Transfer\n3. Cash Pickup (Office)\n\n` +
+    `Processing time: ${BROKER_INFO.withdrawalTime}\n` +
+    `Dashboard: ${SITE_URL}/agents` },
+  { keywords: ["earn", "income", "commission", "broker pay", "paid", "payout", "agent pay", "agent earn", "how much agent", "agent income"], answer: () =>
+    `Earnings & Withdrawals\n\n` +
+    `Broker Earnings:\n` +
     `You earn ${BROKER_INFO.earnings}.\n` +
-    `${BROKER_INFO.payout}` },
+    `${BROKER_INFO.payout}\n\n` +
+    `Agent MLM Earnings:\n` +
+    `Direct recruit: ${BROKER_INFO.agentEarnings}\n\n` +
+    `To withdraw your earnings:\n` +
+    `${BROKER_INFO.withdrawal}` },
   { keywords: ["career", "job open", "opening", "vacancy", "employment", "work for", "hire"], answer: () =>
     `Career Opportunities\n\n` +
     `Check our careers page for current openings: ${SITE_URL}/careers\n\n` +
