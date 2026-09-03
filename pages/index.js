@@ -271,18 +271,6 @@ export default function Home({ featuredProperties, stats }) {
             </a>
           </div>
 
-          {/* Get the App */}
-          <div className="mt-8 flex flex-wrap gap-4 justify-center items-center">
-            <a href="https://github.com/asiimwe3/sageco-evergreen-android/releases/download/v4.0.0-24/app-release.apk" target="_blank" rel="noopener" className="flex items-center gap-3 bg-white text-gray-900 px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.523 15.34c-.345-.116-.756-.402-.756-.402s-.345-.232-.345-.697c0-.465.345-.697.345-.697s.411-.286.756-.402c.345-.116.756-.174.756-.174s.411.058.756.174c.345.116.756.402.756.402s.345.232.345.697c0 .465-.345.697-.345.697s-.411.286-.756.402c-.345.116-.756.174-.756.174s-.411-.058-.756-.174z"/><path d="M3 2l10 10L3 22M21 2L11 12l10 10"/></svg>
-              <div className="text-left"><div className="text-xs text-gray-500">Download</div><div className="text-sm font-bold">Android APK</div></div>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.sagecoevergreen.app" target="_blank" rel="noopener" className="flex items-center gap-3 bg-white text-gray-900 px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg">
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.198l2.807 1.626a1 1 0 0 1 0 1.73l-2.808 1.628L15.396 12l2.302-2.491zM5.864 2.658L16.802 8.99l-2.302 2.302-8.636-8.634z"/></svg>
-              <div className="text-left"><div className="text-xs text-gray-500">Get it on</div><div className="text-sm font-bold">Google Play</div></div>
-            </a>
-          </div>
-
           {/* Payment methods badge */}
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <span className="bg-yellow-400 text-black px-4 py-2 rounded-lg text-sm font-bold">MTN MoMo</span>

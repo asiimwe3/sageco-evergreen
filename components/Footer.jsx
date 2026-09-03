@@ -57,14 +57,6 @@ export default function Footer() {
           </div>
           {/* Payment methods — local focus */}
           <div className="mt-5">
-          <div className="mt-5">
-            <p className="text-sm text-gray-500 mb-2 font-semibold">Get the App:</p>
-            <div className="flex flex-wrap gap-2">
-              <a href="https://github.com/asiimwe3/sageco-evergreen-android/releases/download/v4.0.0-24/app-release.apk" target="_blank" rel="noopener" className="bg-green-600 hover:bg-green-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">📱 Android APK</a>
-              <a href="https://play.google.com/store/apps/details?id=com.sagecoevergreen.app" target="_blank" rel="noopener" className="bg-white text-gray-900 px-3 py-1.5 rounded-lg text-xs font-bold transition">▶ Google Play</a>
-            </div>
-          </div>
-
             <p className="text-sm text-gray-500 mb-2 font-semibold">We Accept:</p>
             <div className="flex flex-wrap gap-2">
               <span className="bg-yellow-400 text-black px-3 py-1.5 rounded-lg text-xs font-bold">MTN MoMo</span>
