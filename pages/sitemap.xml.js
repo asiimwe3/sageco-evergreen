@@ -15,7 +15,7 @@ const staticPages = [
   { url: "/careers", priority: "0.6", changefreq: "monthly" },
   { url: "/faq", priority: "0.5", changefreq: "monthly" },
   { url: "/docs", priority: "0.5", changefreq: "monthly" },
-  { url: "/android", priority: "0.4", changefreq: "monthly" },
+  
   { url: "/market", priority: "0.6", changefreq: "weekly" },
   { url: "/ai-broker", priority: "0.8", changefreq: "monthly" },
   { url: "/gps-measure", priority: "0.7", changefreq: "monthly" },

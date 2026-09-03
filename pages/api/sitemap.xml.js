@@ -13,7 +13,7 @@ export default function handler(req, res) {
     { url: "/contact", priority: "0.6", changefreq: "yearly" },
     { url: "/book", priority: "0.8", changefreq: "monthly" },
     { url: "/broker-register", priority: "0.7", changefreq: "monthly" },
-    { url: "/android", priority: "0.4", changefreq: "monthly" },
+    
   ]
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

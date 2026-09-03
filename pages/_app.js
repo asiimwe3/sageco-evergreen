@@ -1,6 +1,5 @@
 import "../styles/globals.css"
 import Head from "next/head"
-import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { AuthProvider } from "../context/AuthContext"
 import Navbar from "../components/Navbar"
@@ -10,7 +9,7 @@ import AppModeStyles from "../components/AppModeStyles"
 import AppBottomNav from "../components/AppBottomNav"
 import { useAppMode } from "../hooks/useAppMode"
 
-const ChatBot = dynamic(() => import("../components/ChatBot"), { ssr: false })
+// ChatBot removed — native app has chat
 
 // Pages that should render full-screen without Navbar/Footer (chat interfaces)
 const FULLSCREEN_ROUTES = ["/ai-broker"]
@@ -129,7 +128,7 @@ function AppShell({ Component, pageProps }) {
       {!appMode && !isFullscreen && <Footer />}
 
       {/* ChatBot — hidden in app mode and on fullscreen pages (AI broker IS the chat) */}
-      {!appMode && !isFullscreen && <ChatBot />}
+      {/* ChatBot removed — native app has chat */}
 
       {/* Android bottom nav safe-area spacer */}
       {appMode && (
