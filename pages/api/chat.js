@@ -39,6 +39,7 @@ const BROKER_INFO = {
   activationFee: "UGX 45,000 (monthly dashboard subscription)",
   earnings: "UGX 20,000 per confirmed viewing booking",
   payout: "Broker earnings are paid out weekly via Mobile Money. Ensure your phone number is registered in your broker profile.",
+  agentReg: "UGX 30,000 (one-time)",
   agentEarnings: "UGX 5,000 per direct recruit + UGX 2,000 per indirect recruit (Level 2)",
   withdrawal: "Agents can withdraw earnings via Mobile Money, Bank Transfer, or Cash Pickup. Minimum withdrawal is UGX 1,000. Go to your Agent Dashboard and click Withdraw Funds.",
   withdrawalTime: "Withdrawals are processed within 24-48 hours after admin approval.",
