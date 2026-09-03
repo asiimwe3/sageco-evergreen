@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Navbar from '../components/Navbar'
+import { useAppMode } from "../hooks/useAppMode"
+import Navbar from "../components/Navbar"
 import Footer from '../components/Footer'
 import SEO from '../components/SEO'
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
 
 export default function AgentsPage() {
+  const appMode = useAppMode()
   const [view, setView] = useState('landing')
   const [agentId, setAgentId] = useState('')
   const [agentData, setAgentData] = useState(null)
@@ -81,7 +83,7 @@ export default function AgentsPage() {
     return (
       <>
         <SEO title="Become a Real Estate Agent in Uganda" description="Join SAGECO EVERGREEN as a real estate agent. Register, create groups, earn commissions, and access powerful broker tools." keywords="real estate agent Uganda, become broker Uganda, property agent registration, SAGECO agents" path="/agents" />
-        <Navbar />
+        {!appMode && <Navbar />}
         <div className="min-h-screen bg-gradient-to-br from-green-50 to-white">
           <section className="bg-green-700 text-white py-20 px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Become a SAGECO Agent</h1>
@@ -111,7 +113,7 @@ export default function AgentsPage() {
             </div>
           </section>
         </div>
-        <Footer />
+        {!appMode && <Footer />}
       </>
     )
   }
@@ -120,7 +122,7 @@ export default function AgentsPage() {
   if (view === 'register') {
     return (
       <>
-        <Navbar />
+        {!appMode && <Navbar />}
         <div className="min-h-screen bg-gray-50 py-12 px-4">
           <div className="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
             <h1 className="text-2xl font-bold mb-2 text-green-800">Agent Registration</h1>
@@ -139,7 +141,7 @@ export default function AgentsPage() {
             </form>
           </div>
         </div>
-        <Footer />
+        {!appMode && <Footer />}
       </>
     )
   }
@@ -153,7 +155,7 @@ export default function AgentsPage() {
 
     return (
       <>
-        <Navbar />
+        {!appMode && <Navbar />}
         <div className="min-h-screen bg-gray-50 py-8 px-4">
           <div className="max-w-5xl mx-auto">
             <div className="bg-green-700 text-white rounded-xl p-6 mb-6">
@@ -308,7 +310,7 @@ export default function AgentsPage() {
             </div>
           </div>
         </div>
-        <Footer />
+        {!appMode && <Footer />}
       </>
     )
   }

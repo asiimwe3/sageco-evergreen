@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import { useState, useEffect, useRef } from 'react'
 import SEO from '../components/SEO'
-import Navbar from '../components/Navbar'
+import { useAppMode } from "../hooks/useAppMode"
+import Navbar from "../components/Navbar"
 import Footer from '../components/Footer'
 
 export default function GPSMeasurePage() {
+  const appMode = useAppMode()
   const [points, setPoints] = useState([])
   const [area, setArea] = useState(0)
   const [perimeter, setPerimeter] = useState(0)
@@ -307,7 +309,7 @@ export default function GPSMeasurePage() {
         path="/gps-measure"
         breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "GPS Land Measuring", "path": "/gps-measure"}]}
       />
-      <Navbar />
+      {!appMode && <Navbar />}
       <div className="min-h-screen bg-gray-50 pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="mb-8">
@@ -461,7 +463,7 @@ export default function GPSMeasurePage() {
           </div>
         </div>
       </div>
-      <Footer />
+      {!appMode && <Footer />}
     </>
   )
 }

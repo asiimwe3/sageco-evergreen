@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import { useState } from 'react'
-import Navbar from '../components/Navbar'
+import { useAppMode } from "../hooks/useAppMode"
+import Navbar from "../components/Navbar"
 import Footer from '../components/Footer'
 import SEO from '../components/SEO'
 
 export default function TitleSearchPage() {
+  const appMode = useAppMode()
   const [searchType, setSearchType] = useState('title_number')
   const [searchValue, setSearchValue] = useState('')
   const [district, setDistrict] = useState('')
@@ -75,7 +77,7 @@ export default function TitleSearchPage() {
         path="/title-search"
         breadcrumbs={[{"name": "Home", "path": "/"}, {"name": "Title Search", "path": "/title-search"}]}
       />
-      <Navbar />
+      {!appMode && <Navbar />}
       <div className="min-h-screen bg-gray-50 pt-20 pb-12">
         <div className="max-w-4xl mx-auto px-4">
           <div className="mb-6">
@@ -321,7 +323,7 @@ export default function TitleSearchPage() {
           </div>
         </div>
       </div>
-      <Footer />
+      {!appMode && <Footer />}
     </>
   )
 }

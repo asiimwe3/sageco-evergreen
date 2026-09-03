@@ -1,6 +1,7 @@
 import { supabaseAdmin, SUPA_URL, SUPA_KEY } from '../../lib/supabaseAdmin.js'
 import { useState } from 'react'
-import Navbar from '../../components/Navbar'
+import { useAppMode } from "../hooks/useAppMode"
+import Navbar from "../components/Navbar"
 import Footer from '../../components/Footer'
 import Link from 'next/link'
 import MapPicker from '../../components/MapPicker'
@@ -47,6 +48,7 @@ export async function getServerSideProps({ params }) {
 }
 
 export default function PropertyDetail({ property, similar }) {
+  const appMode = useAppMode()
   const [activeImg, setActiveImg] = useState(0)
   const [lightbox, setLightbox] = useState(false)
   const [copied, setCopied] = useState(false)

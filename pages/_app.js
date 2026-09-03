@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
 import AppHeader from "../components/AppHeader"
 import AppModeStyles from "../components/AppModeStyles"
+import AppBottomNav from "../components/AppBottomNav"
 import { useAppMode } from "../hooks/useAppMode"
 
 const ChatBot = dynamic(() => import("../components/ChatBot"), { ssr: false })
@@ -119,7 +120,7 @@ function AppShell({ Component, pageProps }) {
       {isFullscreen ? (
         <Component {...pageProps} />
       ) : (
-        <div className="pb-16 lg:pb-0">
+        <div className={appMode ? "pb-20" : "pb-16 lg:pb-0"}>
           <Component {...pageProps} />
         </div>
       )}

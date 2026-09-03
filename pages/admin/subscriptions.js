@@ -1,3 +1,4 @@
+import { useAppMode } from "../../hooks/useAppMode"
 import Navbar from "../../components/Navbar"
 import Footer from "../../components/Footer"
 import Head from "next/head"
@@ -14,6 +15,7 @@ const PLAN_BADGE = {
 }
 
 export default function AdminSubscriptions() {
+  const appMode = useAppMode()
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState("")
   const [brokers, setBrokers] = useState([])
@@ -62,7 +64,7 @@ export default function AdminSubscriptions() {
         path="/admin/subscriptions"
         noindex
       />
-        <Navbar />
+        {!appMode && <Navbar />}
         <div className="max-w-sm mx-auto px-4 py-20 text-center">
           <div className="text-4xl mb-4">🔐</div>
           <h1 className="text-2xl font-bold text-primary mb-6">Admin Access</h1>
@@ -73,7 +75,7 @@ export default function AdminSubscriptions() {
           <button onClick={() => { if (password) setAuthed(true); else alert("Enter password") }}
             className="w-full bg-primary text-white py-3 rounded-full font-bold hover:opacity-90">Enter</button>
         </div>
-        <Footer />
+        {!appMode && <Footer />}
       </>
     )
   }
@@ -84,7 +86,7 @@ export default function AdminSubscriptions() {
   return (
     <>
       <Head><title>Subscriptions Admin | SAGECO EVERGREEN</title><meta name="robots" content="noindex" /></Head>
-      <Navbar />
+      {!appMode && <Navbar />}
       <section className="bg-primary text-white py-10 px-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between flex-wrap gap-4">
           <div>
@@ -206,7 +208,7 @@ export default function AdminSubscriptions() {
           </div>
         )}
       </div>
-      <Footer />
+      {!appMode && <Footer />}
     </>
   )
 }
