@@ -17,9 +17,9 @@ export default function AndroidPage() {
         <p className="text-green-100 text-lg mb-8 max-w-xl mx-auto">Browse properties, book viewings, and connect with brokers — all from your Android phone.</p>
         <a
           href="/downloads/sageco-app-latest.apk"
-          download="SageCo-Evergreen-v3.0.1.apk"
+          download="SageCo-Evergreen-v3.1.0.apk"
           className="inline-block bg-white text-primary font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition shadow-lg">
-          ⬇️ Download APK (v3.0.1)
+          ⬇️ Download APK (v3.1.0)
         </a>
         <p className="text-green-200 text-sm mt-4">Android 5.0+ required · Free to download</p>
       </section>
