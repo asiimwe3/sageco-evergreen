@@ -16,11 +16,10 @@ export default function AndroidPage() {
         <h1 className="text-4xl font-bold mb-3">SAGECO EVERGREEN App</h1>
         <p className="text-green-100 text-lg mb-8 max-w-xl mx-auto">Browse properties, book viewings, and connect with brokers — all from your Android phone.</p>
         <a
-          href="https://github.com/asiimwe3/sageco-evergreen-app/actions"
-          target="_blank"
-          rel="noopener"
+          href="/downloads/sageco-app-latest.apk"
+          download="SageCo-Evergreen-v3.0.0.apk"
           className="inline-block bg-white text-primary font-bold px-10 py-4 rounded-full text-lg hover:opacity-90 transition shadow-lg">
-          ⬇️ Download APK
+          ⬇️ Download APK (v3.0.0)
         </a>
         <p className="text-green-200 text-sm mt-4">Android 5.0+ required · Free to download</p>
       </section>
