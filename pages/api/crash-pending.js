@@ -51,17 +51,7 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: "token_not_configured" });
     }
 
-    // 1. Read the marker (last processed crash filename). 404 means first run.
-    let markerSha = null;
-    let last = "";
-    const markerResp = await gh(token, `contents/${MARKER_PATH}`);
-    if (markerResp.status === 200) {
-      const marker = await markerResp.json();
-      markerSha = marker.sha;
-      last = (JSON.parse(Buffer.from(marker.content, "base64").toString("utf8")) || {}).last || "";
-    }
-
-    // 2. List crash files and pick the unprocessed ones (ISO names sort correctly).
+    // 1. List crash files first (ISO-timestamp names sort correctly).
     const listResp = await gh(token, "contents/crashes");
     if (listResp.status === 404) {
       return res.status(200).json({ newCrashes: [] });
@@ -75,17 +65,43 @@ export default async function handler(req, res) {
       .filter((n) => n.endsWith(".json"))
       .sort();
 
-    let pending = files.filter((n) => n > last);
+    // 2. Read the marker (last processed crash filename).
+    let markerSha = null;
+    let last = null;
+    const markerResp = await gh(token, `contents/${MARKER_PATH}`);
 
-    // First run ever: don't replay history, just mark everything as processed.
-    if (!last && files.length) {
-      pending = [];
-      last = files[files.length - 1];
+    if (markerResp.status === 404) {
+      // First contact ever: create the marker IMMEDIATELY, pointing at the
+      // newest existing file. This guarantees the next poll has a marker, so
+      // no crash submitted later can be swallowed by a repeat "first run".
+      // Crashes already in the repo are considered pre-existing history.
+      const initial = files.length ? files[files.length - 1] : "";
+      const putResp = await gh(token, `contents/${MARKER_PATH}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          message: "Initialize crash poll marker",
+          content: Buffer.from(JSON.stringify({ last: initial }, null, 2), "utf8").toString("base64"),
+        }),
+      });
+      if (!putResp.ok) {
+        // Could not establish the marker - fail loudly so we retry next poll
+        // instead of silently losing anything submitted meanwhile.
+        return res.status(502).json({ error: "marker_init_failed" });
+      }
+      return res.status(200).json({ newCrashes: [] });
     }
+    if (!markerResp.ok) {
+      return res.status(502).json({ error: "marker_read_failed" });
+    }
+    const marker = await markerResp.json();
+    markerSha = marker.sha;
+    last = (JSON.parse(Buffer.from(marker.content, "base64").toString("utf8")) || {}).last || "";
 
+    // 3. Pick unprocessed files (names sort after the marker).
+    const pending = files.filter((n) => n > last);
     const batch = pending.slice(0, MAX_PER_POLL);
 
-    // 3. Fetch the content of each new crash file.
+    // 4. Fetch the content of each new crash file.
     const newCrashes = [];
     for (const name of batch) {
       const fileResp = await gh(token, `contents/crashes/${name}`);
@@ -99,18 +115,22 @@ export default async function handler(req, res) {
       }
     }
 
-    // 4. Advance the marker to the newest file we processed (or listed).
-    const newLast = batch.length ? batch[batch.length - 1] : last;
-    if (newLast && newLast !== last) {
-      const putBody = {
-        message: "Advance crash poll marker",
-        content: Buffer.from(JSON.stringify({ last: newLast }, null, 2), "utf8").toString("base64"),
-      };
-      if (markerSha) putBody.sha = markerSha;
-      const putResp = await gh(token, `contents/${MARKER_PATH}`, { method: "PUT", body: JSON.stringify(putBody) });
+    // 5. Advance the marker to the newest file we processed.
+    if (batch.length) {
+      const putResp = await gh(token, `contents/${MARKER_PATH}`, {
+        method: "PUT",
+        body: JSON.stringify({
+          message: "Advance crash poll marker",
+          content: Buffer.from(
+            JSON.stringify({ last: batch[batch.length - 1] }, null, 2),
+            "utf8"
+          ).toString("base64"),
+          sha: markerSha,
+        }),
+      });
       if (!putResp.ok) {
-        // Marker failed to advance - return the crashes but flag it so the
-        // workflow knows the next poll may repeat them.
+        // Marker failed to advance - return the crashes but flag it, so the
+        // caller knows the next poll may repeat them.
         return res.status(200).json({ newCrashes, markerError: true });
       }
     }
