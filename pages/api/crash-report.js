@@ -25,7 +25,10 @@ export default async function handler(req, res) {
   }
 
   try {
-    const token = process.env.CRASH_GH_TOKEN;
+    // Token is stored base64-encoded in the CRASH_GH_TOKEN_B64 env var
+    const token = process.env.CRASH_GH_TOKEN_B64
+      ? Buffer.from(process.env.CRASH_GH_TOKEN_B64, "base64").toString("utf8")
+      : null;
     if (!token) {
       return res.status(500).json({ error: "token_not_configured" });
     }
