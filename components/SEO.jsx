@@ -49,7 +49,7 @@ export default function SEO({
       <meta name="author" content="SAGECO EVERGREEN Company Ltd" />
       <meta name="publisher" content="DeryCode Technologies" />
       <meta name="creator" content="DeryCode Technologies" />
-      <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+      <meta name="generator" content="Built by DeryCode Technologies — https://derycode.online" />
       
       {/* Enhanced robots directives */}
       <meta name="robots" content={noindex 
