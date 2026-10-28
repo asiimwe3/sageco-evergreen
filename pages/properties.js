@@ -262,20 +262,25 @@ export default function Properties({ initialProperties, initialTotal }) {
 
 // ISR: Pre-render first page of properties at build time
 export async function getStaticProps() {
-  const { SUPA_URL, SUPA_KEY } = await import('../lib/supabaseAdmin.js')
+  const { SUPA_URL, SUPA_KEY, SUPA_ANON_KEY } = await import('../lib/supabaseAdmin.js')
+  const qs = 'select=id,title,description,location,price,category,images,featured,bedrooms,bathrooms,area_sqft,status&status=eq.available&limit=12&order=featured.desc.nullslast,created_at.desc'
 
-  try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/properties?select=id,title,description,location,price,category,images,featured,bedrooms,bathrooms,area_sqft,status&status=eq.available&limit=12&order=featured.desc&order=created_at.desc`, {
-      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` },
-    })
-    const data = await res.json()
-    // Ensure data is an array (Supabase returns error object on failure)
-    const properties = Array.isArray(data) ? data : []
-    return {
-      props: { initialProperties: properties, initialTotal: properties.length },
-      revalidate: 60,
+  for (const key of [SUPA_KEY, SUPA_ANON_KEY].filter(Boolean)) {
+    try {
+      const res = await fetch(`${SUPA_URL}/rest/v1/properties?${qs}`, {
+        headers: { 'apikey': key, 'Authorization': `Bearer ${key}` },
+      })
+      const data = await res.json().catch(() => null)
+      if (res.ok && Array.isArray(data)) {
+        return {
+          props: { initialProperties: data, initialTotal: data.length },
+          revalidate: 60,
+        }
+      }
+      console.error('[properties getStaticProps] read failed:', res.status, JSON.stringify(data).slice(0, 200))
+    } catch (e) {
+      console.error('[properties getStaticProps] exception:', String(e).slice(0, 200))
     }
-  } catch {
-    return { props: { initialProperties: [], initialTotal: 0 }, revalidate: 60 }
   }
+  return { props: { initialProperties: [], initialTotal: 0 }, revalidate: 60 }
 }
