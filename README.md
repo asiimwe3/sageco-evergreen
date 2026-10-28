@@ -103,7 +103,7 @@ See [CODEOWNERS](.github/CODEOWNERS) for the GitHub ownership configuration.
 ## 📞 Contact
 
 - **SAGECO EVERGREEN:** sagecoevergreen@gmail.com · +256 750 414 366
-- **DeryCode Technologies:** https://derycode.publicvm.com
+- **DeryCode Technologies:** https://derycode.online
 - **Location:** Kyenjojo, Western Uganda
 
 ---

@@ -29,7 +29,7 @@ const jsonLd = {
   "publisher": {
     "@type": "Organization",
     "name": "DeryCode Technologies",
-    "url": "https://derycode.publicvm.com",
+    "url": "https://derycode.online",
     "description": "Built by DeryCode Technologies — Software development company in Uganda"
   },
   "knowsAbout": [
@@ -163,14 +163,14 @@ const founderJsonLd = {
   "worksFor": { "@type": "Organization", "name": "SAGECO EVERGREEN" },
   "affiliation": [
     { "@type": "Organization", "name": "SAGECO EVERGREEN Company Limited", "url": SITE_URL },
-    { "@type": "Organization", "name": "DeryCode Technologies", "url": "https://derycode.publicvm.com" }
+    { "@type": "Organization", "name": "DeryCode Technologies", "url": "https://derycode.online" }
   ],
   "address": { "@type": "PostalAddress", "addressLocality": "Kyenjojo", "addressRegion": "Western Region", "addressCountry": "UG" },
   "sameAs": [
     "https://github.com/asiimwe3",
     "https://ug.linkedin.com/in/asiimwe-derick-501755313",
     "https://www.facebook.com/p/Dery-Code-61590735268937/",
-    "https://derycode.publicvm.com/authors/asiimwe-derick.html"
+    "https://derycode.online/authors/asiimwe-derick.html"
   ]
 }
 
@@ -207,7 +207,7 @@ export default function Home({ featuredProperties, stats }) {
         <meta name="author" content="SAGECO EVERGREEN Company Ltd" />
         <meta name="publisher" content="DeryCode Technologies" />
         <meta name="creator" content="DeryCode Technologies" />
-        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.online" />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
         <meta name="geo.region" content="UG" />

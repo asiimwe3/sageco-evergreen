@@ -1,7 +1,7 @@
 export default function handler(req, res) {
   const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sageco-evergreen-co.vercel.app"
   const robots = `# robots.txt — SAGECO EVERGREEN
-# Built by DeryCode Technologies — https://derycode.publicvm.com
+# Built by DeryCode Technologies — https://derycode.online
 User-agent: *
 Allow: /
 Allow: /properties

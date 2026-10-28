@@ -38,7 +38,7 @@ function AppShell({ Component, pageProps }) {
         <meta name="author" content="SAGECO EVERGREEN Company Ltd" />
         <meta name="publisher" content="DeryCode Technologies" />
         <meta name="creator" content="DeryCode Technologies" />
-        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.publicvm.com" />
+        <meta name="generator" content="Built by DeryCode Technologies — https://derycode.online" />
         <meta name="x-built-by" content="DeryCode Technologies" />
 
         {/* Google Analytics 4 */}

@@ -43,7 +43,7 @@ See [CODEOWNERS](.github/CODEOWNERS) for the ownership configuration.
 
 - **Technical:** asiimwe3 (GitHub)
 - **Business:** sagecoevergreen@gmail.com
-- **Website:** https://derycode.publicvm.com
+- **Website:** https://derycode.online
 
 ---
 
