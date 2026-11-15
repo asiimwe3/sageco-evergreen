@@ -387,7 +387,7 @@ export default function Home({ featuredProperties, stats }) {
                       <p className="text-base text-gray-600 mb-3 line-clamp-2">{p.description || "No description available."}</p>
                       <div className="flex items-center gap-3 text-base text-gray-500 mb-4">
                         <span>📍 {p.location || "Uganda"}</span>
-                        {p.size_acres && <span>· {p.size_acres} acres</span>}
+                        {(p.land_acres || p.size_acres) && <span>· {p.land_acres || p.size_acres} acres</span>}
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-2xl font-bold text-primary">UGX {formatted}</span>
@@ -447,17 +447,34 @@ export async function getServerSideProps() {
   let featuredProperties = []
   try {
     const baseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "https://emldbjqegftrngxypeca.supabase.co"
-    const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-    if (baseUrl && anonKey) {
-      const headers = { apikey: anonKey, Authorization: `Bearer ${anonKey}` }
-      const statsRes = await fetch(`${baseUrl}/rest/v1/rpc/get_site_stats`, { headers: { ...headers, "Content-Type": "application/json" }, method: "POST", body: "{}" }).catch(() => null)
-      if (statsRes && statsRes.ok) {
-        stats = await statsRes.json().catch(() => null)
+    // Server-side only. Falls back to the public anon key so the page still
+    // renders when the deployment env is missing the variable.
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtbGRianFlZ2Z0cm5neHlwZWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzMjQzNTIsImV4cCI6MjA5MzkwMDM1Mn0.cofNEj5g3n9ls2HTXFXQG1_IXPUdLINDtYr820u2MtM"
+    if (baseUrl && key) {
+      const headers = { apikey: key, Authorization: `Bearer ${key}` }
+
+      // Exact row counts so the homepage never depends on an RPC that may not exist.
+      const countOf = async (table) => {
+        try {
+          const r = await fetch(`${baseUrl}/rest/v1/${table}?select=id`, {
+            headers: { ...headers, Prefer: "count=exact", Range: "0-0" }
+          })
+          const cr = r.headers.get("content-range") || ""
+          const total = cr.split("/")[1]
+          return total && total !== "*" ? Number(total) : null
+        } catch (e) { return null }
       }
-      const propsRes = await fetch(`${baseUrl}/rest/v1/properties?select=id,title,price,location,category,description,images,featured,size_acres&featured=eq.true&limit=6&order=created_date.desc`, { headers }).catch(() => null)
-      if (propsRes && propsRes.ok) {
-        featuredProperties = await propsRes.json().catch(() => [])
-      }
+      const [propCount, brokerCount, bookingCount] = await Promise.all([
+        countOf("properties"), countOf("brokers"), countOf("bookings")
+      ])
+      if (propCount != null) stats = { properties: propCount, brokers: brokerCount, bookings: bookingCount }
+
+      // Real columns are land_acres and created_at (size_acres / created_date do not exist).
+      const propsRes = await fetch(
+        `${baseUrl}/rest/v1/properties?select=id,title,price,location,category,description,images,featured,land_acres&featured=eq.true&limit=6&order=created_at.desc`,
+        { headers }
+      ).catch(() => null)
+      if (propsRes && propsRes.ok) featuredProperties = await propsRes.json().catch(() => [])
     }
   } catch (e) {
     // silently fail — page still renders
