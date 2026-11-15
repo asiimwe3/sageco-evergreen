@@ -4,6 +4,8 @@ import { useRouter } from "next/router"
 import { AuthProvider } from "../context/AuthContext"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
+import DeryCodeNetwork from "../components/DeryCodeNetwork"
+import CrossAdPopup from "../components/CrossAdPopup"
 import AppHeader from "../components/AppHeader"
 import AppModeStyles from "../components/AppModeStyles"
 import AppBottomNav from "../components/AppBottomNav"
@@ -126,6 +128,8 @@ function AppShell({ Component, pageProps }) {
 
       {/* Footer — hidden in app mode and on fullscreen pages */}
       {!appMode && !isFullscreen && <Footer />}
+      {!appMode && !isFullscreen && <DeryCodeNetwork />}
+      {!appMode && !isFullscreen && <CrossAdPopup />}
 
       {/* ChatBot — hidden in app mode and on fullscreen pages (AI broker IS the chat) */}
       {/* ChatBot removed — native app has chat */}
